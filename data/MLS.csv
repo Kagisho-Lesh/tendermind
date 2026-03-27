@@ -1,0 +1,43 @@
+Checklist_ID,Phase,Category,Item,Responsible,Status,Due_Date,Notes
+TC001,Setup,CCS Candy,Create new Estimating contract with correct name and number,Estimator,,,
+TC002,Setup,CCS Candy,Configure Definitions and Settings — labour on-cost [F1],Estimator,,,Target ~45% total
+TC003,Setup,CCS Candy,Set base currency to RD (ZAR) and enter all foreign exchange rates,Estimator,,,"USD, EUR, GBP"
+TC004,Setup,CCS Candy,"Import or build resource library (L, P, F, M, S, Z, U, A)",Estimator,,,
+TC005,Setup,CCS Candy,Create new Planning contract linked to Estimating contract,Planner,,,Same contract name
+TC006,Setup,Programme,Configure 5-day calendar with all SA public holidays,Planner,,,Check festive shutdown dates
+TC007,Planning,Programme,Develop WBS and section structure on paper before CCS Candy entry,Planner,,,
+TC008,Planning,Programme,"Enter all activities with ID, description, duration, and calendar",Planner,,,
+TC009,Planning,Programme,Add all logic links (predecessors and successors),Planner,,,No open ends; no loops
+TC010,Planning,Programme,Run schedule (F9) and review critical path,Planner,,,Critical path must make sense
+TC011,Planning,Programme,Check all Total Float values — investigate anomalies,Planner,,,
+TC012,Planning,Programme,"Resource-load all activities (L, P, F, M, S)",Planner,,,
+TC013,Planning,Programme,Assign Broken Tooth Codes to link activities to BOQ sections,Planner,,,
+TC014,Planning,Programme,Generate S-curve and cash flow from Programme Pricing,Planner,,,
+TC015,Planning,Programme,Print barchart — A3 detailed and A4 summary,Planner,,,
+TC016,Planning,Programme,"Write Programme Narrative (critical path, assumptions, risks)",Planner,,,1-3 pages
+TC017,Estimation,Resources,Confirm all labour rates with current NBCCEI wage agreements,Estimator,,,Check effective date of agreement
+TC018,Estimation,Resources,Get minimum 3 plant hire quotes for major plant items,Estimator,,,Keep quotes on file
+TC019,Estimation,Resources,Confirm current diesel price and escalation risk,Estimator,,,
+TC020,Estimation,Resources,Get minimum 3 sub-contractor quotes for each package,Estimator,,,Scope of work attached to each RFQ
+TC021,Estimation,Resources,Confirm all long-lead item delivery durations,Estimator,,,Match to programme durations
+TC022,Estimation,BOQ,Price every BOQ item — no zero-rate items unless intentional,Estimator,,,
+TC023,Estimation,BOQ,Build rate build-up sheet for every item with resource detail,Estimator,,,Auditable trail required
+TC024,Estimation,BOQ,Price Provisional Sums exactly as per BOQ documents,Estimator,,,Do not change PS values
+TC025,Estimation,P&G,Price all P&G items — time-related and fixed,Estimator,,,
+TC026,Estimation,P&G,Confirm P&G covers full contract duration (incl. extensions),Estimator,,,
+TC027,Estimation,Summary,Add Head Office Overhead percentage,Contracts Director,,,Confirm current rate with finance
+TC028,Estimation,Summary,Add Profit margin,Management,,,Adjudication meeting decision
+TC029,Estimation,Summary,Add Contingency provision,Management,,,Based on risk register
+TC030,Review,Checks,"Run Estimating Checks report — zero rates, missing build-ups",Estimator,,,
+TC031,Review,Checks,"Perform ratio analysis (Labour %, Plant %, P&G %)",Senior Estimator,,,Compare to benchmarks
+TC032,Review,Adjudication,Hold adjudication meeting — present estimate to management,Contracts Director,,,All senior staff attend
+TC033,Review,Adjudication,Confirm final tender price and mark-up,Managing Director,,,Written authority required
+TC034,Submission,Documents,Complete and sign Form of Tender,Director,,,Authorised signatory only
+TC035,Submission,Documents,Print priced BOQ — verify totals match Form of Tender,Estimator,,,Any discrepancy = disqualification
+TC036,Submission,Documents,"Compile programme package (barchart, narrative, S-curve)",Planner,,,
+TC037,Submission,Documents,"Compile company credentials (CIDB, BEE, financials, project list)",Business Dev,,,Check expiry dates on certificates
+TC038,Submission,Documents,Collate and bind/package all tender documents,Admin,,,Follow client's specified format
+TC039,Submission,Delivery,Submit tender before closing date/time,Contracts Director,,,Allow 24-48hr buffer for delivery
+TC040,Submission,Delivery,Take screenshot of electronic submission confirmation (if e-portal),Admin,,,Proof of submission timestamp
+TC041,Post-Submit,Administration,"File all tender documents, quotes, and adjudication minutes",Admin,,,Keep for 5 years minimum
+TC042,Post-Submit,Administration,Record tender price and competition in tender register,Business Dev,,,Lessons learned database

@@ -1,0 +1,24 @@
+Code,Ledger_Name,Resource_Types,Category,Description,BOQ_Section_Typical
+2021,WAGES — Direct Labour (All-In),L,Labour,All-in wages for direct site labour including on-costs,BOQ sections B-J direct activities
+2022,WAGES — Casual / Temporary Labour,L,Labour,Short-term or casual workers hired for specific tasks,Specific activity items
+2030,SUBCONTRACT LABOUR (Labour-Only),S,Labour,Labour-only sub-contractors; main contractor supplies materials,BOQ trade items
+2050,OVERTIME WAGES,L,Labour,Premium pay for overtime hours (time-and-a-half / double time),Activity rate add-on
+3010,MATERIALS — Permanent Works,M,Materials,Materials incorporated into the permanent works,All construction BOQ items
+3020,MATERIALS — Temporary Works,M,Materials,"Formwork, scaffolding, falsework, temporary roads",Concrete and formwork items
+3030,CONSUMABLES and Small Tools,M,Materials,"Consumable tools, PPE, welding rods, grinding discs",Various BOQ items and P&G
+4010,PLANT HIRE — External,P,Plant,Hired plant from external equipment rental company,"Earthworks, lifting, concrete items"
+4020,PLANT HIRE — Internal (Company-Owned),P,Plant,Company's own plant charged at internal recovery rate,"Earthworks, owned plant items"
+4030,FUEL and Lubricants,F,Plant,"Diesel, petrol, hydraulic oil, engine oil",Linked to all plant-intensive items
+4040,PLANT Repairs and Maintenance,P,Plant,Maintenance and repair provision for company-owned plant,Owned plant items only
+5010,SUBCONTRACTORS — Specialist,S,Sub-contract,Specialist sub-contractors requiring certification or unique skills,"UXO, NDT, structural steel fab"
+5020,SUBCONTRACTORS — Domestic,S,Sub-contract,Domestic sub-contractors selected by main contractor,Trade packages
+5030,SUBCONTRACTORS — Nominated,S,Sub-contract,Nominated by client; main contractor must use them,"Eskom, specialist suppliers"
+6010,SITE OVERHEAD — Establishment,Z,P&G,Site compound establishment and de-establishment costs,P&G section BOQ
+6020,SITE OVERHEAD — Running Costs,Z,P&G,"Ongoing site facility costs: offices, power, water, security",P&G section BOQ
+6030,SITE MANAGEMENT and Supervision,Z,P&G,Project management and supervision staff costs,P&G section BOQ
+6040,SAFETY and Environmental,Z,P&G,"Safety officer, induction, safety equipment, EMP",P&G section BOQ
+7010,INSURANCES and Bonds,Z,P&G,"CAR insurance, performance bond, public liability",P&G section BOQ
+7020,PERMITS and Regulatory,Z,P&G,"Building plans, environmental permits, statutory approvals",P&G section BOQ
+7030,TESTING and Inspection,Z,P&G,"Third-party testing, NDT, hydrotests, ITP management",P&G section BOQ / specific items
+8000,CONTINGENCY,A,Adjustment,Risk allowance and contingency provision,Project summary level
+8010,PROVISIONAL SUMS,U,Provisional Sum,Prime Cost and Provisional Sums as specified in BOQ,PS items in BOQ

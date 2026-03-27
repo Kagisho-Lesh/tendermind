@@ -1,0 +1,21 @@
+{
+  "name": "tendermind",
+  "version": "1.0.0",
+  "description": "TenderMind — Construction Estimation & Tender Pricing App",
+  "type": "module",
+  "scripts": {
+    "import:colto":    "node scripts/importCSV.js --table \"[REF] COLTO Specifications\" --dir \"../01_COLTO_Specification/Colto CSV files\"",
+    "import:labour":   "node scripts/importCSV.js --table \"[REF] Labour Resources\"    --dir \"../02_Resource_Databases/CSV_Databases\" --match \"labour*\"",
+    "import:plant":    "node scripts/importCSV.js --table \"[REF] Plant Resources\"      --dir \"../02_Resource_Databases/CSV_Databases\" --match \"plant*\"",
+    "import:material": "node scripts/importCSV.js --table \"[REF] Material Resources\"   --dir \"../02_Resource_Databases/CSV_Databases\" --match \"material*\"",
+    "import:fuel":     "node scripts/importCSV.js --table \"[REF] Fuel Resources\"       --dir \"../02_Resource_Databases/CSV_Databases\" --match \"fuel*\"",
+    "import:all":      "npm run import:colto && npm run import:labour && npm run import:plant && npm run import:material && npm run import:fuel"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "csv-parse": "^5.5.6"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

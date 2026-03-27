@@ -1,0 +1,8 @@
+Resource_Code,Description,Fuel_Type,Unit,Rate_R_per_unit,Cost_Code,Currency,CCS_Type,Notes,Price_Date
+F01001,Diesel (Bulk Site Supply),Diesel,Litre,22.5,4030,RD,F,Bulk delivery price incl. transport to site. Check current wholesale price.,2024-Q1
+F01002,Petrol 95 Octane,Petrol,Litre,23.8,4030,RD,F,For petrol-driven small plant and vehicles,2024-Q1
+F02001,Hydraulic Oil 46 (Top-up),Hydraulic Oil,Litre,45.0,4030,RD,F,Plant hydraulic system maintenance,2024-Q1
+F02002,Engine Oil 15W40 (Top-up),Engine Oil,Litre,52.0,4030,RD,F,All diesel engines,2024-Q1
+F03001,LPG Propane (Heating/Cutting),LPG,Kg,28.0,4030,RD,F,Gas cutting sets and site heating,2024-Q1
+F03002,Oxy-Acetylene Cylinders,Acetylene,Cylinder,420.0,4030,RD,F,Per cylinder per day; cutting and welding,2024-Q1
+F03003,Oxygen Cylinders,Oxygen,Cylinder,280.0,4030,RD,F,Per cylinder per day; cutting only,2024-Q1

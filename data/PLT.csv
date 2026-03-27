@@ -1,0 +1,27 @@
+Resource_Code,Description,Plant_Category,Hire_Rate_R_per_hr,Fuel_L_per_hr,Fuel_Rate_R_per_L,Fuel_Cost_R_per_hr,Operator_Code,Operator_Rate_R_per_hr,Consumables_R_per_hr,AllIn_Rate_R_per_hr,Unit,Cost_Code,Currency,Owned_Or_Hired,Notes
+P01001,Excavator 25t Tracked (Cat 325),Earthworks,1850,20,22.5,450,L03005,104.13,92.5,2496.63,Hour,4010,RD,Hired,Exclude operator in hire rate
+P01002,Excavator 14t Tracked (Cat 314),Earthworks,1350,14,22.5,315,L03005,104.13,67.5,1836.63,Hour,4010,RD,Hired,Medium excavator
+P01003,Excavator 5t Mini (Cat 305),Earthworks,850,8,22.5,180,L03005,104.13,42.5,1176.63,Hour,4010,RD,Hired,Restricted access work
+P02001,ADT Truck 10m3 Articulated,Earthworks,2100,30,22.5,675,L03006,100.56,105.0,2980.56,Hour,4010,RD,Hired,Per truck; typically 2-3 trucks per excavator
+P02002,Tipper Truck 8m3 Rigid,Earthworks,1600,28,22.5,630,L03006,100.56,80.0,2410.56,Hour,4010,RD,Hired,Urban/confined sites
+P03001,D6 Dozer (Medium),Earthworks,3200,18,22.5,405,L03005,104.13,160.0,3869.13,Hour,4010,RD,Hired,Bulk spreading and compaction
+P03002,Grader 140 Motor,Earthworks,2800,15,22.5,337.5,L03005,104.13,140.0,3381.63,Hour,4010,RD,Hired,Trimming formation levels
+P04001,Water Bowser 10000L,Earthworks,850,12,22.5,270,L03006,100.56,42.5,1263.06,Hour,4010,RD,Hired,Compaction moisture control
+P04002,Smooth Drum Roller 12t,Earthworks,1400,10,22.5,225,L03005,104.13,70.0,1799.13,Hour,4010,RD,Hired,Subgrade and fill compaction
+P04003,Padfoot Roller 12t,Earthworks,1400,10,22.5,225,L03005,104.13,70.0,1799.13,Hour,4010,RD,Hired,Cohesive fill compaction
+P05001,Concrete Pump (Stationary),Concrete,800,10,22.5,225,L03005,104.13,40.0,1169.13,Hour,4010,RD,Hired,Output ~15-20 m3/hour
+P05002,Concrete Mixer 0.5m3,Concrete,350,5,22.5,112.5,L02001,58.21,17.5,538.21,Hour,4010,RD,Owned,Small pours and repairs
+P06001,Poker Vibrator Set,Concrete,180,0,22.5,0,L02002,62.03,9.0,251.03,Hour,4010,RD,Owned,Hand-held; operator included in concrete gang
+P07001,Oxy-Acetylene Cutting Set,Piping,250,0,22.5,0,L03010,97.95,12.5,360.45,Hour,4010,RD,Owned,Cutting and bevelling pipe
+P07002,Line-Up Clamp DN50-DN300,Piping,280,0,22.5,0,L03010,97.95,14.0,391.95,Hour,4010,RD,Hired,Internal line-up clamp
+P07003,Welding Machine SMAW,Piping,150,0,22.5,0,L03015,139.18,7.5,296.68,Hour,4010,RD,Owned,Per machine; welder cost separate
+P08001,Drill Rig Top Hammer,Rock Drilling,2800,25,22.5,562.5,L04001,113.93,140.0,3616.43,Hour,4010,RD,Hired,Incl. drill rods and bits (consumables priced separately)
+P09001,Mobile Crane 80t Grove,Lifting,4200,18,22.5,405,L04003,152.06,210.0,4967.06,Hour,4010,RD,Hired,Incl. operator in hire rate — confirm per quote
+P09002,Mobile Crane 30t Pick and Carry,Lifting,2400,12,22.5,270,L04003,152.06,120.0,2942.06,Hour,4010,RD,Hired,Exclude operator — check quote
+P09003,Forklift 5t Telescopic,Lifting,1200,8,22.5,180,L03005,104.13,60.0,1544.13,Hour,4010,RD,Hired,Laydown and materials handling
+P10001,Generator 30 kVA,Power,650,8,22.5,180,,0,32.5,862.5,Hour,4010,RD,Owned,Site offices and tools
+P10002,Generator 100 kVA,Power,1800,20,22.5,450,,0,90.0,2340.0,Hour,4010,RD,Hired,Site main supply
+P11001,Water Pump 75mm Diesel,Dewatering,91,3,22.5,67.5,L03005,104.13,4.55,267.18,Hour,4020,RD,Owned,25% operator time allocation
+P11002,Water Pump 150mm Diesel,Dewatering,280,8,22.5,180,L03005,104.13,14.0,578.13,Hour,4020,RD,Owned,High-volume dewatering
+P12001,Low-Bed Trailer 60t + Prime Mover,Transport,3500,35,22.5,787.5,L03006,100.56,175.0,4563.06,Hour,4010,RD,Hired,Plant transport to site
+P12002,Flat-Bed Truck 40t,Transport,2200,28,22.5,630,L03006,100.56,110.0,3040.56,Hour,4010,RD,Hired,Material deliveries

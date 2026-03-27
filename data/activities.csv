@@ -1,0 +1,108 @@
+Activity_ID,Section,Type,Description,Duration_WD,Planned_Start,Planned_Finish,Total_Float_WD,Free_Float_WD,Critical,Calendar,Resource_Loaded,Broken_Tooth_BOQ,Notes
+A010,A — Pre-Construction,Milestone,Contract Award,0,05-Aug-19,05-Aug-19,0,0,Yes,5-day,No,,Programme start point
+DM55,DM — De-Mining,Normal,UXO / De-Mining Site Clearance Certificate,70,05-Aug-19,12-Nov-19,18,18,No,5-day,Yes,S01001,Specialist sub-contractor; 18 days free float
+A020,A — Pre-Construction,Normal,Obtain Environmental and Construction Permits,30,05-Aug-19,13-Sep-19,10,10,No,5-day,No,,Client to facilitate
+A030,A — Pre-Construction,Normal,Appoint EPCM and Design Team,15,05-Aug-19,23-Aug-19,5,5,No,5-day,No,,
+A040,A — Pre-Construction,Normal,Issue for Construction Drawings — Civil,21,26-Aug-19,23-Sep-19,5,5,No,5-day,No,,Design deliverable
+A050,A — Pre-Construction,Normal,Issue for Construction Drawings — Structural,21,26-Aug-19,23-Sep-19,8,8,No,5-day,No,,
+A060,A — Pre-Construction,Normal,Issue for Construction Drawings — Piping,28,26-Aug-19,03-Oct-19,3,3,No,5-day,No,,
+A070,A — Pre-Construction,Normal,Issue for Construction Drawings — Electrical,28,26-Aug-19,03-Oct-19,3,3,No,5-day,No,,
+A080,A — Pre-Construction,Normal,Long-Lead Procurement — Wellhead Valves,60,05-Aug-19,25-Oct-19,0,0,Yes,5-day,No,,USD procurement — exchange rate risk
+A090,A — Pre-Construction,Normal,Long-Lead Procurement — Instruments,45,05-Aug-19,05-Oct-19,5,5,No,5-day,No,,
+A100,A — Pre-Construction,Normal,Long-Lead Procurement — Structural Steel,28,05-Aug-19,11-Sep-19,8,8,No,5-day,No,,Off-site fabrication lead time
+A110,A — Pre-Construction,Normal,Temporary Site Access Road,10,13-Nov-19,26-Nov-19,0,0,Yes,5-day,Yes,Z01001,Follows DM55 completion
+A400,A — Mobilisation,Normal,Establish Contractor Plant and Facilities,14,13-Nov-19,28-Nov-19,0,0,Yes,5-day,Yes,Z01001,CRITICAL — 4 days behind per Speaking Progress
+A410,A — Mobilisation,Normal,Erect Site Offices and Ablutions,7,13-Nov-19,21-Nov-19,5,5,No,5-day,Yes,Z01010,
+A420,A — Mobilisation,Normal,Install Temporary Power and Water,5,22-Nov-19,28-Nov-19,3,3,No,5-day,Yes,Z01014,
+A430,A — Mobilisation,Normal,Safety Induction — All Workers,2,29-Nov-19,02-Dec-19,0,0,Yes,5-day,No,Z03004,All workers before site entry
+A440,A — Mobilisation,Normal,Survey and Peg Out Works Area,3,29-Nov-19,03-Dec-19,2,2,No,5-day,No,S01003,Survey sub
+A450,A — Mobilisation,Milestone,Mobilisation Complete,0,03-Dec-19,03-Dec-19,0,0,Yes,5-day,No,,
+B010,B — Earthworks,Normal,Clear and Grub — Full Site,5,04-Dec-19,10-Dec-19,0,0,Yes,5-day,Yes,,
+B020,B — Earthworks,Normal,Strip Topsoil and Stockpile,8,11-Dec-19,20-Dec-19,0,0,Yes,5-day,Yes,,FESTIVE SHUTDOWN follows
+B030,B — Earthworks,Normal,Bulk Earthworks — Cut to Fill,21,06-Jan-20,03-Feb-20,0,0,Yes,5-day,Yes,M09001,Post-festive start
+B040,B — Earthworks,Normal,Bulk Earthworks — Cut to Spoil,14,06-Jan-20,23-Jan-20,2,2,No,5-day,Yes,,
+B050,B — Earthworks,Normal,Compaction of Fill Layers,14,10-Jan-20,28-Jan-20,1,0,No,5-day,Yes,P04002,SS+5 days after B030
+B060,B — Earthworks,Normal,Formation Level and Trimming,7,04-Feb-20,12-Feb-20,0,0,Yes,5-day,Yes,P03002,Follows bulk cut completion
+B070,B — Earthworks,Normal,Sub-Base Preparation G5 Gravel,10,13-Feb-20,26-Feb-20,0,0,Yes,5-day,Yes,M09002,
+B080,B — Earthworks,Normal,Pipe Trench Excavation (Main),14,06-Jan-20,23-Jan-20,5,3,No,5-day,Yes,P01001,Runs parallel to bulk works
+B090,B — Earthworks,Normal,Cable Trench Excavation,10,06-Jan-20,17-Jan-20,8,8,No,5-day,Yes,P01003,
+B100,B — Earthworks,Normal,Trench Backfill — Pipe,7,15-Apr-20,23-Apr-20,2,2,No,5-day,Yes,,Follows pipe installation and testing
+B110,B — Earthworks,Normal,Trench Backfill — Cable,5,15-Apr-20,21-Apr-20,5,5,No,5-day,Yes,,
+B120,B — Earthworks,Normal,Internal Roads — G2 Base,14,27-Feb-20,17-Mar-20,0,0,Yes,5-day,Yes,M09002,
+B130,B — Earthworks,Normal,Surface Hardening / Gravel Wearing Course,10,18-Mar-20,31-Mar-20,2,2,No,5-day,Yes,M09001,
+B140,B — Earthworks,Normal,Stormwater Channels and Sumps,14,27-Feb-20,17-Mar-20,3,3,No,5-day,Yes,,
+C010,C — Foundations,Normal,Blinding Concrete — Well Pads (8 pads),10,27-Feb-20,11-Mar-20,0,0,Yes,5-day,Yes,M01005,FS+3 after B070; 3-day inspection lag
+C020,C — Foundations,Normal,Rebar — Well Pad Foundations,8,13-Mar-20,24-Mar-20,0,0,Yes,5-day,Yes,M02003,FS+1 after blinding
+C030,C — Foundations,Normal,Formwork — Well Pad Foundations,6,25-Mar-20,01-Apr-20,0,0,Yes,5-day,Yes,M04001,
+C040,C — Foundations,Normal,Pour Concrete — Well Pad Foundations,10,02-Apr-20,15-Apr-20,0,0,Yes,5-day,Yes,M01003,
+C050,C — Foundations,Normal,Strike Formwork and Cure (14-day cure),7,06-May-20,14-May-20,0,0,Yes,5-day,Yes,,FS+14 after pour for curing
+C060,C — Foundations,Normal,Anchor Bolt Installation,5,02-Apr-20,08-Apr-20,2,0,No,5-day,Yes,M03002,Concurrent with pour
+C070,C — Foundations,Normal,Grout Column Base Plates,3,15-May-20,19-May-20,0,0,Yes,5-day,Yes,M01002,After formwork strike
+C080,C — Foundations,Normal,Pipe Support Foundations,7,27-Feb-20,06-Mar-20,5,5,No,5-day,Yes,M01003,Parallel to main foundations
+C090,C — Foundations,Normal,Valve Pit Structures,10,27-Feb-20,11-Mar-20,3,3,No,5-day,Yes,M01003,
+C100,C — Foundations,Milestone,Civil Foundations Complete,0,19-May-20,19-May-20,0,0,Yes,5-day,No,,
+D010,D — Structural Steel,Normal,Structural Steel Fabrication (Off-Site),28,05-Aug-19,11-Sep-19,0,0,Yes,5-day,Yes,S03001,Off-site — critical long-lead; starts at contract award
+D020,D — Structural Steel,Normal,Structural Steel Delivery to Site,2,20-May-20,21-May-20,0,0,Yes,5-day,No,P12001,After foundations complete
+D030,D — Structural Steel,Normal,Erect Structural Steel — Main Frame,14,22-May-20,10-Jun-20,0,0,Yes,5-day,Yes,S03002,
+D040,D — Structural Steel,Normal,Erect Structural Steel — Secondary,7,11-Jun-20,19-Jun-20,0,0,Yes,5-day,Yes,S03002,
+D050,D — Structural Steel,Normal,Grout Column Bases,3,20-Jun-20,24-Jun-20,0,0,Yes,5-day,Yes,M01002,
+D060,D — Structural Steel,Normal,Bolt Tensioning and Final Alignment,3,25-Jun-20,29-Jun-20,0,0,Yes,5-day,Yes,,High-torque bolting
+D070,D — Structural Steel,Normal,Steel Paint System — Prime and Top Coat,10,22-May-20,04-Jun-20,5,5,No,5-day,Yes,M10004,Can run parallel to erection
+D080,D — Structural Steel,Normal,Handrails and Gratings,7,30-Jun-20,08-Jul-20,0,0,Yes,5-day,Yes,M03001,
+D090,D — Structural Steel,Milestone,Structural Steel Complete,0,08-Jul-20,08-Jul-20,0,0,Yes,5-day,No,,
+E010,E — Piping,Normal,Main Line Pipe Installation DN200,35,22-May-20,10-Jul-20,0,0,Yes,5-day,Yes,M05003,Critical path activity
+E020,E — Piping,Normal,Weld Testing (NDT Radiography),21,05-Jun-20,03-Jul-20,2,0,No,5-day,Yes,S02001,SS+10 days after E010
+E030,E — Piping,Normal,Valve Installation and Actuators,14,11-Jul-20,30-Jul-20,0,0,Yes,5-day,Yes,M06001,After main pipe complete
+E040,E — Piping,Normal,Branch Connections and Fittings,10,22-May-20,04-Jun-20,5,5,No,5-day,Yes,M06002,
+E050,E — Piping,Normal,Pipe Supports and Hangers,14,22-May-20,10-Jun-20,3,3,No,5-day,Yes,M03001,
+E060,E — Piping,Normal,Wellhead Connections,7,31-Jul-20,10-Aug-20,0,0,Yes,5-day,Yes,A080,After valve installation; LLD item
+E070,E — Piping,Normal,Mechanical Equipment Setting (Pumps),7,09-Jul-20,17-Jul-20,3,3,No,5-day,Yes,,
+E080,E — Piping,Normal,Piping Insulation (Hot),14,11-Jul-20,30-Jul-20,4,4,No,5-day,Yes,S04002,
+E090,E — Piping,Normal,Pipe Painting and Coating,10,22-May-20,04-Jun-20,8,8,No,5-day,Yes,M10004,Can run parallel
+E100,E — Piping,Normal,Pipe Flushing and Cleaning,3,11-Aug-20,13-Aug-20,0,0,Yes,5-day,No,,Before pressure testing
+E110,E — Piping,Normal,Hydrostatic Pressure Testing,5,14-Aug-20,20-Aug-20,0,0,Yes,5-day,Yes,S02003,1.5x MAWP for 4 hours
+E120,E — Piping,Milestone,Piping Pressure Test Complete,0,20-Aug-20,20-Aug-20,0,0,Yes,5-day,No,,
+F010,F — Electrical,Normal,Main Power Cable Installation,21,09-Jul-20,06-Aug-20,0,0,Yes,5-day,Yes,M07002,Follows trench excavation
+F020,F — Electrical,Normal,Cable Testing and Continuity,5,07-Aug-20,13-Aug-20,0,0,Yes,5-day,Yes,S02001,FF+2 after F010
+F030,F — Electrical,Normal,MCC and Distribution Board Installation,10,09-Jul-20,22-Jul-20,3,3,No,5-day,Yes,,Concurrent with cable
+F040,F — Electrical,Normal,Instrument Cabling and Terminations,14,23-Jul-20,11-Aug-20,2,2,No,5-day,Yes,M07001,
+F050,F — Electrical,Normal,Earthing and Lightning Protection,7,09-Jul-20,17-Jul-20,5,5,No,5-day,Yes,M07001,
+F060,F — Electrical,Normal,Instrument Installation,14,23-Jul-20,11-Aug-20,2,2,No,5-day,Yes,A090,Follows instrument delivery
+F070,F — Electrical,Normal,Motor Connections and Loop Checks,10,14-Aug-20,27-Aug-20,0,0,Yes,5-day,Yes,,After cables done
+F080,F — Electrical,Normal,Site Lighting Installation,7,09-Jul-20,17-Jul-20,8,8,No,5-day,Yes,M07001,
+F090,F — Electrical,Normal,SCADA and Control System Wiring,14,14-Aug-20,01-Sep-20,2,2,No,5-day,Yes,,
+F100,F — Electrical,Normal,Electrical Inspections and CoC,5,02-Sep-20,08-Sep-20,0,0,Yes,5-day,No,,Certificate of Compliance required
+A970,A — Electrical,Normal,EDM Eskom External Connection,35,09-Jul-20,27-Aug-20,0,0,Yes,5-day,Yes,S04001,CRITICAL — Nominated sub (Eskom); 5 days behind per Speaking Progress
+F110,F — Electrical,Milestone,Electrical Works Complete,0,08-Sep-20,08-Sep-20,0,0,Yes,5-day,No,,
+G010,G — Buildings,Normal,Site Offices (Permanent),21,04-Dec-19,01-Jan-20,8,8,No,5-day,Yes,,Permanent client offices
+G020,G — Buildings,Normal,Security Gatehouse,7,04-Dec-19,12-Dec-19,10,10,No,5-day,Yes,,
+G030,G — Buildings,Normal,Chemical Store and Ablutions,14,06-Jan-20,23-Jan-20,5,5,No,5-day,Yes,,
+G040,G — Buildings,Normal,Perimeter Security Fencing,21,04-Dec-19,01-Jan-20,3,3,No,5-day,Yes,,
+G050,G — Buildings,Normal,Internal Access Gates (3 No.),5,06-Jan-20,10-Jan-20,3,3,No,5-day,Yes,,
+G060,G — Buildings,Normal,Roller Shutter Doors (Workshop),3,14-Jan-20,16-Jan-20,5,5,No,5-day,Yes,,
+G070,G — Buildings,Normal,Finishes — Painting and Tiling,10,24-Jan-20,06-Feb-20,4,4,No,5-day,Yes,M10004,
+G080,G — Buildings,Milestone,Buildings Complete,0,06-Feb-20,06-Feb-20,4,4,No,5-day,No,,
+H010,H — Services,Normal,Stormwater Drainage System,14,06-Jan-20,23-Jan-20,3,3,No,5-day,Yes,M05005,
+H020,H — Services,Normal,Bund Wall Construction,10,13-Feb-20,26-Feb-20,2,2,No,5-day,Yes,M01003,Spill containment
+H030,H — Services,Normal,Potable Water Supply Reticulation,7,06-Jan-20,14-Jan-20,5,5,No,5-day,Yes,M05005,
+H040,H — Services,Normal,Fire Water System,14,22-May-20,10-Jun-20,4,4,No,5-day,Yes,M05003,
+H050,H — Services,Normal,Sewage and Effluent System,7,06-Jan-20,14-Jan-20,5,5,No,5-day,Yes,M05005,
+H060,H — Services,Normal,Compressed Air System,5,22-May-20,28-May-20,6,6,No,5-day,Yes,M05002,
+H070,H — Services,Normal,Chemical Injection Systems,7,11-Jul-20,21-Jul-20,3,3,No,5-day,Yes,M06001,
+H080,H — Services,Normal,Flare and Vent System,10,22-May-20,04-Jun-20,4,4,No,5-day,Yes,M05003,
+H090,H — Services,Milestone,Services Complete,0,21-Jul-20,21-Jul-20,3,3,No,5-day,No,,
+I010,I — Commissioning,Normal,Pre-Commissioning Checks and Punchlist,14,09-Sep-20,26-Sep-20,0,0,Yes,5-day,Yes,,After all construction complete
+I020,I — Commissioning,Normal,System Flushing and Cleaning,5,29-Sep-20,05-Oct-20,0,0,Yes,5-day,Yes,,
+I030,I — Commissioning,Normal,Hydrostatic Test — Full System,5,06-Oct-20,12-Oct-20,0,0,Yes,5-day,Yes,S02003,Final system test
+I040,I — Commissioning,Normal,Instrument Calibration and Loop Test,10,06-Oct-20,19-Oct-20,2,2,No,5-day,Yes,,Parallel to hydrotest
+I050,I — Commissioning,Normal,Electrical Energisation and Testing,5,20-Oct-20,26-Oct-20,0,0,Yes,5-day,Yes,,After Eskom connection
+I060,I — Commissioning,Normal,Initial Start-Up and Functional Testing,7,27-Oct-20,04-Nov-20,0,0,Yes,5-day,Yes,,First gas through system
+I070,I — Commissioning,Normal,Performance Testing and Optimisation,7,05-Nov-20,13-Nov-20,0,0,Yes,5-day,Yes,,
+I080,I — Commissioning,Milestone,Commissioning Complete / Ready for Handover,0,13-Nov-20,13-Nov-20,0,0,Yes,5-day,No,,
+J010,J — Demobilisation,Normal,Punch List Rectification,14,16-Nov-20,03-Dec-20,0,0,Yes,5-day,Yes,,
+J020,J — Demobilisation,Normal,As-Built Drawings Update,10,16-Nov-20,27-Nov-20,2,2,No,5-day,Yes,S01003,
+J030,J — Demobilisation,Normal,O&M Manuals and Documentation,7,04-Dec-20,14-Dec-20,0,0,Yes,5-day,Yes,,
+J040,J — Demobilisation,Normal,Site Reinstatement,7,04-Dec-20,14-Dec-20,2,2,No,5-day,Yes,Z01002,
+J050,J — Demobilisation,Normal,Demobilise Equipment and Offices,5,15-Dec-20,21-Dec-20,0,0,Yes,5-day,Yes,Z01002,
+J060,J — Demobilisation,Normal,Snag List Final Inspection,3,15-Dec-20,17-Dec-20,2,2,No,5-day,No,,Joint inspection with client
+J070,J — Demobilisation,Milestone,Practical Completion / Handover,0,21-Dec-20,21-Dec-20,0,0,Yes,5-day,No,,Contract end date

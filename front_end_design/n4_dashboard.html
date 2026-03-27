@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N4 REHAB · TRAC/REHAB-01/2020 · Project Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-base:#0f1117;--bg-surface:#181c27;--bg-elevated:#1f2436;--bg-border:#2a2f45;
+  --accent-amber:#f59e0b;--accent-amber-dim:#92620a;--accent-teal:#14b8a6;
+  --accent-red:#ef4444;--accent-green:#22c55e;--accent-yellow:#eab308;--accent-purple:#8b5cf6;
+  --text-primary:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#475569;
+  --shadow-card:0 1px 3px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+  --shadow-float:0 8px 32px rgba(0,0,0,.5),0 2px 8px rgba(245,158,11,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg-base);color:var(--text-primary);font-family:'Inter',sans-serif;min-height:100vh;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;z-index:9999}
+.mono{font-family:'DM Mono',monospace}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg-surface)}
+::-webkit-scrollbar-thumb{background:var(--bg-border);border-radius:3px}
+
+/* SIDEBAR */
+#sidebar{width:240px;min-height:100vh;background:var(--bg-surface);border-right:1px solid var(--bg-border);
+  display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:100;overflow-y:auto;overflow-x:hidden;transition:width .2s ease}
+#sidebar.collapsed{width:64px}
+#sidebar.collapsed .nav-label,#sidebar.collapsed .sidebar-meta{display:none}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:16px;border-bottom:1px solid var(--bg-border)}
+.logo-mark{width:32px;height:32px;background:var(--accent-amber);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:#000;flex-shrink:0}
+.logo-text{font-family:'DM Mono',monospace;font-size:12px;color:var(--text-primary);line-height:1.3}
+.logo-sub{font-size:10px;color:var(--text-muted)}
+.project-badge{margin:12px;padding:10px 12px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px}
+.project-badge-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.project-badge-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent-amber)}
+.project-badge-sub{font-size:11px;color:var(--text-secondary);margin-top:2px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;border-left:3px solid transparent;
+  transition:background .2s,border-color .2s;color:var(--text-secondary);font-size:13px;white-space:nowrap;user-select:none}
+.nav-item:hover{background:var(--bg-elevated);color:var(--text-primary)}
+.nav-item.active{border-left-color:var(--accent-amber);background:var(--bg-elevated);color:var(--text-primary)}
+.nav-icon{font-size:15px;min-width:20px;text-align:center}
+.nav-divider{height:1px;background:var(--bg-border);margin:8px 0}
+.sidebar-meta{padding:12px 16px;border-top:1px solid var(--bg-border);margin-top:auto}
+.sidebar-meta-text{font-size:10px;color:var(--text-muted);font-family:'DM Mono',monospace}
+
+/* MAIN */
+#main{margin-left:240px;height:100vh;overflow-y:auto;transition:margin-left .2s ease;display:flex;flex-direction:column}
+.section{display:none;flex:1;padding:24px;min-height:0}
+.section.active{display:block}
+
+/* PAGE HEADER */
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--bg-border);flex-wrap:wrap;gap:12px}
+.page-title{font-family:'DM Mono',monospace;font-size:1.1rem;color:var(--text-primary)}
+.page-subtitle{font-size:12px;color:var(--text-muted);margin-top:2px}
+.header-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* CARDS */
+.card{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:8px;box-shadow:var(--shadow-card)}
+.kpi-card{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:8px;padding:16px;box-shadow:var(--shadow-card);position:relative;overflow:hidden}
+.kpi-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.kpi-card.green::after{background:var(--accent-green)}
+.kpi-card.yellow::after{background:var(--accent-yellow)}
+.kpi-card.red::after{background:var(--accent-red)}
+.kpi-card.teal::after{background:var(--accent-teal)}
+.kpi-label{font-size:10px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.kpi-value{font-family:'DM Mono',monospace;font-size:2rem;font-weight:500;letter-spacing:-0.04em;color:var(--text-primary);line-height:1;margin-bottom:6px}
+.kpi-meta{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.kpi-target{font-size:11px;color:var(--text-muted)}
+.kpi-trend{font-size:12px;font-family:'DM Mono',monospace}
+.kpi-trend.up{color:var(--accent-green)}
+.kpi-trend.down{color:var(--accent-red)}
+.kpi-trend.flat{color:var(--text-muted)}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500;letter-spacing:.03em;white-space:nowrap}
+.badge-green{background:rgba(34,197,94,.12);color:var(--accent-green)}
+.badge-yellow{background:rgba(234,179,8,.12);color:var(--accent-yellow)}
+.badge-red{background:rgba(239,68,68,.12);color:var(--accent-red)}
+.badge-teal{background:rgba(20,184,166,.12);color:var(--accent-teal)}
+.badge-amber{background:rgba(245,158,11,.12);color:var(--accent-amber)}
+.badge-purple{background:rgba(139,92,246,.12);color:var(--accent-purple)}
+.badge-muted{background:rgba(71,85,105,.3);color:var(--text-secondary)}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{background:var(--bg-elevated);color:var(--text-secondary);text-transform:uppercase;font-size:10px;letter-spacing:.08em;padding:9px 12px;text-align:left;font-weight:500;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--bg-border);transition:background .15s}
+tbody tr:hover{background:rgba(245,158,11,.04)}
+tbody td{padding:9px 12px;color:var(--text-primary);vertical-align:middle}
+.tbl-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--bg-border)}
+
+/* BUTTONS */
+.btn{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;transition:background .2s,border-color .2s,color .2s;border:none;font-family:'Inter',sans-serif;white-space:nowrap}
+.btn-amber{background:var(--accent-amber);color:#000}
+.btn-amber:hover{background:#fbbf24}
+.btn-ghost{background:transparent;color:var(--text-secondary);border:1px solid var(--bg-border)}
+.btn-ghost:hover{border-color:var(--accent-amber);color:var(--accent-amber)}
+.btn-sm{padding:4px 10px;font-size:11px}
+
+/* DROPDOWNS */
+select{background:var(--bg-elevated);color:var(--text-primary);border:1px solid var(--bg-border);border-radius:6px;padding:6px 10px;font-size:12px;font-family:'Inter',sans-serif;cursor:pointer;outline:none}
+select:focus{border-color:var(--accent-amber)}
+select option{background:var(--bg-elevated)}
+
+/* PROGRESS BARS */
+.prog-track{background:var(--bg-border);border-radius:3px;height:5px;overflow:hidden;min-width:80px}
+.prog-fill{height:100%;border-radius:3px;background:var(--accent-amber);transition:width .4s ease}
+.prog-fill.green{background:var(--accent-green)}
+.prog-fill.red{background:var(--accent-red)}
+.prog-fill.teal{background:var(--accent-teal)}
+
+/* CHART CONTAINERS */
+.chart-wrap{position:relative}
+
+/* SECTION TABS */
+.sec-tabs{display:flex;gap:2px;background:var(--bg-elevated);padding:3px;border-radius:7px;border:1px solid var(--bg-border)}
+.sec-tab{padding:5px 14px;border-radius:5px;font-size:12px;cursor:pointer;border:none;background:transparent;color:var(--text-secondary);transition:all .15s;font-family:'Inter',sans-serif}
+.sec-tab.active{background:var(--accent-amber);color:#000;font-weight:500}
+.sec-tab:hover:not(.active){color:var(--text-primary)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* MILESTONE ITEM */
+.mls-item{display:flex;align-items:flex-start;gap:12px;padding:12px;border-bottom:1px solid var(--bg-border)}
+.mls-item:last-child{border-bottom:none}
+.mls-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.mls-date{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted);width:90px;flex-shrink:0}
+
+/* TIMELINE BAR (activity section) */
+.act-prog{display:flex;align-items:center;gap:8px;min-width:120px}
+.act-pct{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-secondary);width:34px;text-align:right}
+
+/* SUMMARY ROW */
+.summary-row{display:flex;gap:3px;flex-wrap:wrap}
+
+/* FILTER BAR */
+.filter-bar{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;padding:12px;background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:8px}
+.filter-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* PROJECT HEADER BAND */
+.proj-band{background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(20,184,166,.04));border:1px solid rgba(245,158,11,.15);border-radius:10px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.proj-band-title{font-family:'DM Mono',monospace;font-size:1rem;color:var(--text-primary)}
+.proj-band-meta{font-size:12px;color:var(--text-secondary);margin-top:2px}
+.proj-band-stat{text-align:center}
+.proj-band-stat-val{font-family:'DM Mono',monospace;font-size:1.3rem;color:var(--accent-amber)}
+.proj-band-stat-lbl{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* DSD diary styles */
+.diary-card{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:8px;padding:14px;margin-bottom:10px}
+.diary-date{font-family:'DM Mono',monospace;font-size:13px;color:var(--accent-amber)}
+.diary-weather{font-size:12px;color:var(--text-secondary);display:flex;gap:12px;margin-top:4px}
+.weather-icon{margin-right:3px}
+
+/* SCROLLABLE PANEL */
+.scroll-panel{overflow-y:auto;max-height:420px}
+
+/* GRID HELPERS */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:1200px){.grid-4{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}#sidebar{width:64px}#main{margin-left:64px}.nav-label,.sidebar-meta,.project-badge{display:none}}
+
+/* SCROLLABLE MAIN LAYOUT */
+.dash-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:1100px){.dash-layout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">N4</div>
+    <div>
+      <div class="logo-text">Smart Data Engine</div>
+      <div class="logo-sub">TRAC/REHAB-01/2020</div>
+    </div>
+  </div>
+
+  <div class="project-badge sidebar-meta" style="margin:10px;padding:10px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px">
+    <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em">Active Project</div>
+    <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--accent-amber);margin-top:2px">N4-REHAB-2026</div>
+    <div style="font-size:11px;color:var(--text-secondary);margin-top:2px">KM 0.00 – 41.29</div>
+    <select id="projectSelector" style="width:100%;margin-top:6px;font-size:11px;padding:4px 6px" onchange="switchProject(this.value)">
+      <option value="N4-REHAB-2026">N4-REHAB-2026 (Active)</option>
+    </select>
+  </div>
+
+  <div class="nav-item active" onclick="showSection('dashboard',this)">
+    <span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span>
+  </div>
+  <div class="nav-item" onclick="showSection('activities',this)">
+    <span class="nav-icon">📋</span><span class="nav-label">Activities</span>
+  </div>
+  <div class="nav-item" onclick="showSection('costs',this)">
+    <span class="nav-icon">💰</span><span class="nav-label">Budget &amp; Costs</span>
+  </div>
+  <div class="nav-item" onclick="showSection('milestones',this)">
+    <span class="nav-icon">🎯</span><span class="nav-label">Milestones</span>
+  </div>
+  <div class="nav-item" onclick="showSection('inspections',this)">
+    <span class="nav-icon">🔍</span><span class="nav-label">Inspections</span>
+  </div>
+  <div class="nav-item" onclick="showSection('delays',this)">
+    <span class="nav-icon">⏱️</span><span class="nav-label">Delays / EOT</span>
+  </div>
+  <div class="nav-item" onclick="showSection('plant',this)">
+    <span class="nav-icon">🚜</span><span class="nav-label">Plant Utilization</span>
+  </div>
+  <div class="nav-item" onclick="showSection('diary',this)">
+    <span class="nav-icon">📓</span><span class="nav-label">Site Diary</span>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-item" onclick="showSection('kpi',this)">
+    <span class="nav-icon">📈</span><span class="nav-label">KPI Register</span>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="sidebar-meta" style="padding:12px 16px;margin-top:auto;border-top:1px solid var(--bg-border)">
+    <div style="font-size:10px;color:var(--text-muted);font-family:'DM Mono',monospace">Day 88 of Programme</div>
+    <div style="font-size:10px;color:var(--text-muted);margin-top:2px">Last sync: 26/06/2026 17:30</div>
+  </div>
+</nav>
+
+<!-- ═══════════════════ MAIN ═══════════════════ -->
+<main id="main">
+
+<!-- ─── DASHBOARD ─── -->
+<div id="sec-dashboard" class="section active">
+  <div class="page-header">
+    <div>
+      <div class="page-title">N4 Rehabilitation — Project Dashboard</div>
+      <div class="page-subtitle">EN4 Section 1 · Ressano Garcia KM 0.00 → Moamba KM 41.29 · COLTO Standard Spec</div>
+    </div>
+    <div class="header-controls">
+      <select id="periodFilter" onchange="refreshDashboard()">
+        <option value="week">This Week</option>
+        <option value="month" selected>This Month</option>
+        <option value="ytd">Year to Date</option>
+      </select>
+      <button class="btn btn-ghost" onclick="refreshDashboard()">↻ Refresh</button>
+      <button class="btn btn-ghost" onclick="syncAllFromAirtable()" id="atSyncBtn" title="Reload all data from Airtable">⬇ Sync Airtable</button>
+      <span class="badge badge-amber" id="atStatusBadge">● LIVE</span>
+    </div>
+  </div>
+
+  <!-- Project band -->
+  <div class="proj-band">
+    <div style="flex:1;min-width:200px">
+      <div class="proj-band-title">TRAC/REHAB-01/2020 · EN4 Section 1</div>
+      <div class="proj-band-meta">Contractor: WBHO Roads & Earthworks · RE: TRAC Infrastructure</div>
+    </div>
+    <div class="proj-band-stat">
+      <div class="proj-band-stat-val">22.5%</div>
+      <div class="proj-band-stat-lbl">Overall Progress</div>
+    </div>
+    <div class="proj-band-stat">
+      <div class="proj-band-stat-val" style="color:var(--accent-yellow)">25.0%</div>
+      <div class="proj-band-stat-lbl">Planned to Date</div>
+    </div>
+    <div class="proj-band-stat">
+      <div class="proj-band-stat-val" style="color:var(--accent-teal)">9.0 km</div>
+      <div class="proj-band-stat-lbl">Break-up Complete</div>
+    </div>
+    <div class="proj-band-stat">
+      <div class="proj-band-stat-val" style="color:var(--accent-red)">24 days</div>
+      <div class="proj-band-stat-lbl">Delays Recorded</div>
+    </div>
+    <div>
+      <span class="badge badge-yellow">⚠ At Risk</span>
+    </div>
+  </div>
+
+  <!-- KPI Grid -->
+  <div class="grid-4" style="margin-bottom:16px">
+    <div class="kpi-card yellow">
+      <div class="kpi-label">Schedule Performance (SPI)</div>
+      <div class="kpi-value">0.94</div>
+      <div class="kpi-meta">
+        <span class="kpi-target">Target: ≥ 1.00</span>
+        <span class="kpi-trend down">▼ -0.03</span>
+      </div>
+      <span class="badge badge-yellow" style="margin-top:8px;font-size:10px">⚠ At Risk</span>
+    </div>
+    <div class="kpi-card yellow">
+      <div class="kpi-label">Cost Performance (CPI)</div>
+      <div class="kpi-value">0.97</div>
+      <div class="kpi-meta">
+        <span class="kpi-target">Target: ≥ 1.00</span>
+        <span class="kpi-trend down">▼ -0.01</span>
+      </div>
+      <span class="badge badge-yellow" style="margin-top:8px;font-size:10px">⚠ At Risk</span>
+    </div>
+    <div class="kpi-card yellow">
+      <div class="kpi-label">Quality Test Pass Rate</div>
+      <div class="kpi-value">96.2%</div>
+      <div class="kpi-meta">
+        <span class="kpi-target">Target: ≥ 97%</span>
+        <span class="kpi-trend flat">→ stable</span>
+      </div>
+      <span class="badge badge-yellow" style="margin-top:8px;font-size:10px">⚠ At Risk</span>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">LTIFR (Safety)</div>
+      <div class="kpi-value">0.00</div>
+      <div class="kpi-meta">
+        <span class="kpi-target">Target: 0 LTI</span>
+        <span class="kpi-trend up">▲ 88 days LTI-free</span>
+      </div>
+      <span class="badge badge-green" style="margin-top:8px;font-size:10px">✓ On Track</span>
+    </div>
+  </div>
+
+  <!-- Charts row -->
+  <div class="dash-layout" style="margin-bottom:16px">
+    <div class="card" style="padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-secondary)">BUDGET BURN — YEAR 1 (ZAR M)</div>
+        <span class="badge badge-teal" style="font-size:10px">Monthly</span>
+      </div>
+      <div class="chart-wrap" style="height:200px"><canvas id="burnChart"></canvas></div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-secondary)">ACTIVITY STATUS BREAKDOWN</div>
+        <span class="badge badge-amber" style="font-size:10px">26 Total</span>
+      </div>
+      <div class="chart-wrap" style="height:200px"><canvas id="statusChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Bottom row: milestones + BVA snap -->
+  <div class="grid-2">
+    <div class="card">
+      <div style="padding:12px 16px;border-bottom:1px solid var(--bg-border);display:flex;justify-content:space-between;align-items:center">
+        <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-secondary)">UPCOMING MILESTONES</span>
+        <button class="btn btn-ghost btn-sm" onclick="showSection('milestones',null)">View All</button>
+      </div>
+      <div id="dashMilestones"></div>
+    </div>
+    <div class="card">
+      <div style="padding:12px 16px;border-bottom:1px solid var(--bg-border);display:flex;justify-content:space-between;align-items:center">
+        <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-secondary)">TOP COST VARIANCES</span>
+        <button class="btn btn-ghost btn-sm" onclick="showSection('costs',null)">Full BVA</button>
+      </div>
+      <div id="dashBVA"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── ACTIVITIES ─── -->
+<div id="sec-activities" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Activity Progress Register (APR)</div>
+      <div class="page-subtitle" id="actSubtitle">COLTO Spec Series · Loading from Airtable…</div>
+    </div>
+    <div class="header-controls">
+      <select id="wbsFilter" onchange="filterActivities()">
+        <option value="all">All Sections</option>
+        <option value="A">A — Mobilisation</option>
+        <option value="B">B — Site Works</option>
+        <option value="C">C — Earthworks</option>
+        <option value="D">D — Civils</option>
+        <option value="E">E — Mechanical</option>
+        <option value="F">F — Electrical</option>
+        <option value="G">G — Instrumentation</option>
+        <option value="H">H — Structural Steel</option>
+        <option value="I">I — Commissioning</option>
+        <option value="J">J — Demobilisation</option>
+      </select>
+      <select id="statusFilter" onchange="filterActivities()">
+        <option value="all">All Statuses</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Complete">Complete</option>
+        <option value="Not Started">Not Started</option>
+        <option value="Milestone">Milestone</option>
+      </select>
+      <select id="typeFilter" onchange="filterActivities()">
+        <option value="all">All Types</option>
+        <option value="Normal">Normal</option>
+        <option value="Milestone">Milestone</option>
+        <option value="Summary">Summary</option>
+      </select>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>Activity ID</th><th>Section</th><th>Description</th>
+        <th>Unit / Duration</th><th>Planned</th><th>Completed</th>
+        <th>Progress</th><th>Status</th><th>Start</th><th>Finish</th>
+      </tr></thead>
+      <tbody id="activityTbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ─── COSTS ─── -->
+<div id="sec-costs" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Budget vs Actual — Year 1</div>
+      <div class="page-subtitle">16 Cost Code Categories · ZAR Values</div>
+    </div>
+    <div class="header-controls">
+      <select id="costStatusFilter" onchange="filterCosts()">
+        <option value="all">All Statuses</option>
+        <option value="On Track">On Track</option>
+        <option value="At Risk">At Risk</option>
+        <option value="Over Budget">Over Budget</option>
+      </select>
+    </div>
+  </div>
+  <!-- BVA summary cards -->
+  <div class="grid-4" style="margin-bottom:16px" id="bvaSummaryCards"></div>
+  <!-- BVA chart -->
+  <div class="card" style="padding:16px;margin-bottom:16px">
+    <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-secondary);margin-bottom:12px">BUDGET VS ACTUAL BY COST CODE (ZAR M)</div>
+    <div class="chart-wrap" style="height:240px"><canvas id="bvaChart"></canvas></div>
+  </div>
+  <!-- BVA table -->
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>BVA ID</th><th>Cost Code</th><th>Category</th>
+        <th>Year 1 Budget (ZAR)</th><th>Actual to Date</th><th>Committed</th>
+        <th>FAC</th><th>Variance (ZAR)</th><th>Var %</th><th>Status</th>
+      </tr></thead>
+      <tbody id="costTbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ─── MILESTONES ─── -->
+<div id="sec-milestones" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Milestone Register</div>
+      <div class="page-subtitle">20 Programme Milestones · Year 1 (Mar 2026 – Feb 2027)</div>
+    </div>
+    <div class="header-controls">
+      <select id="mlsStatusFilter" onchange="filterMilestones()">
+        <option value="all">All Statuses</option>
+        <option value="Complete">Complete</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Upcoming">Upcoming</option>
+        <option value="At Risk">At Risk</option>
+      </select>
+      <select id="mlsSeriesFilter" onchange="filterMilestones()">
+        <option value="all">All Series</option>
+        <option value="1000">Series 1000</option>
+        <option value="2000">Series 2000</option>
+        <option value="3000">Series 3000</option>
+        <option value="4000">Series 4000</option>
+        <option value="5000">Series 5000</option>
+        <option value="6000">Series 6000</option>
+      </select>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>MLS ID</th><th>Milestone</th><th>Spec Series</th><th>Chainage</th>
+        <th>Planned Date</th><th>Actual Date</th><th>Status</th><th>Responsible</th><th>Notes</th>
+      </tr></thead>
+      <tbody id="mlsTbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ─── INSPECTIONS ─── -->
+<div id="sec-inspections" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Inspection Register (INS)</div>
+      <div class="page-subtitle">ITP Hold Points &amp; Quality Inspections</div>
+    </div>
+    <div class="header-controls">
+      <select id="insTypeFilter" onchange="filterInspections()">
+        <option value="all">All Types</option>
+        <option value="Hold Point">Hold Points</option>
+        <option value="ITP">ITP</option>
+        <option value="Environmental">Environmental</option>
+      </select>
+      <select id="insResultFilter" onchange="filterInspections()">
+        <option value="all">All Results</option>
+        <option value="Pass">Pass</option>
+        <option value="Fail">Fail</option>
+        <option value="Conditional">Conditional</option>
+        <option value="Pending">Pending</option>
+      </select>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>INS ID</th><th>Type</th><th>HP</th><th>Spec Section</th><th>Description</th>
+        <th>Chainage</th><th>Inspector</th><th>Date</th><th>Result</th><th>NCR</th><th>Ref</th>
+      </tr></thead>
+      <tbody id="insTbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ─── DELAYS ─── -->
+<div id="sec-delays" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Delay &amp; EOT Register (DLR)</div>
+      <div class="page-subtitle">Extension of Time Claims &amp; Programme Impacts</div>
+    </div>
+    <div class="header-controls">
+      <select id="dlrTypeFilter" onchange="filterDelays()">
+        <option value="all">All Delay Types</option>
+        <option value="Weather">Weather</option>
+        <option value="Utility">Utility Relocation</option>
+        <option value="Design">Design Change</option>
+        <option value="Access">Access / Interface</option>
+      </select>
+    </div>
+  </div>
+  <!-- Summary cards -->
+  <div class="grid-4" style="margin-bottom:16px">
+    <div class="kpi-card red">
+      <div class="kpi-label">Total Days Lost</div>
+      <div class="kpi-value">24</div>
+      <div class="kpi-meta"><span class="kpi-target">Calendar days</span></div>
+    </div>
+    <div class="kpi-card yellow">
+      <div class="kpi-label">EOT Claimed</div>
+      <div class="kpi-value">13</div>
+      <div class="kpi-meta"><span class="kpi-target">Working days</span></div>
+    </div>
+    <div class="kpi-card teal">
+      <div class="kpi-label">EOT Approved</div>
+      <div class="kpi-value">0</div>
+      <div class="kpi-meta"><span class="kpi-target">Pending assessment</span></div>
+    </div>
+    <div class="kpi-card yellow">
+      <div class="kpi-label">Cost Impact</div>
+      <div class="kpi-value" style="font-size:1.4rem">R4.8M</div>
+      <div class="kpi-meta"><span class="kpi-target">Estimated claim</span></div>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>DLR ID</th><th>Type</th><th>Cause</th><th>Start</th><th>End</th>
+        <th>Days Lost</th><th>Chainage</th><th>EOT Claimed</th><th>EOT Status</th><th>Cost Impact</th><th>Ref</th>
+      </tr></thead>
+      <tbody id="dlrTbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ─── PLANT UTILIZATION ─── -->
+<div id="sec-plant" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Plant Utilization Log (PLU)</div>
+      <div class="page-subtitle">Equipment Productivity &amp; Hours Tracking</div>
+    </div>
+    <div class="header-controls">
+      <select id="pluAssetFilter" onchange="filterPlant()">
+        <option value="all">All Equipment</option>
+        <option value="Grader">Grader</option>
+        <option value="Compactor">Compactor</option>
+        <option value="ADT">Articulated Dump Truck</option>
+        <option value="Excavator">Excavator</option>
+        <option value="Cold Planer">Cold Planer</option>
+        <option value="Loader">Loader</option>
+      </select>
+    </div>
+  </div>
+  <!-- Utilization chart -->
+  <div class="card" style="padding:16px;margin-bottom:16px">
+    <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-secondary);margin-bottom:12px">EQUIPMENT UTILIZATION % BY ASSET</div>
+    <div class="chart-wrap" style="height:200px"><canvas id="pluChart"></canvas></div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>PLU ID</th><th>Date</th><th>Asset</th><th>Type</th>
+        <th>Hrs Available</th><th>Hrs Working</th><th>Idle</th><th>Breakdown</th>
+        <th>Utilization %</th><th>Fuel (L)</th><th>Activity</th>
+      </tr></thead>
+      <tbody id="pluTbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ─── SITE DIARY ─── -->
+<div id="sec-diary" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Daily Site Diary (DSD)</div>
+      <div class="page-subtitle">Field Diary — Submitted by Site Agent · Approved by TRAC RE</div>
+    </div>
+    <div class="header-controls">
+      <select id="dsdWeatherFilter" onchange="filterDiary()">
+        <option value="all">All Weather</option>
+        <option value="Clear">Clear Days</option>
+        <option value="Rain">Rain Days</option>
+        <option value="Rest Day">Rest Days</option>
+      </select>
+    </div>
+  </div>
+  <div id="diaryCards"></div>
+</div>
+
+<!-- ─── KPI REGISTER ─── -->
+<div id="sec-kpi" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">KPI Register</div>
+      <div class="page-subtitle">Key Performance Indicators — N4 REHAB · Period: June 2026</div>
+    </div>
+  </div>
+  <div class="grid-3" style="margin-bottom:20px" id="kpiCards"></div>
+  <div class="card" style="padding:16px">
+    <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-secondary);margin-bottom:12px">KPI PERFORMANCE RADAR — TARGET VS ACTUAL</div>
+    <div class="chart-wrap" style="height:300px"><canvas id="kpiRadar"></canvas></div>
+  </div>
+</div>
+
+</main>
+
+<!-- ═══════════════════ DATA + LOGIC ═══════════════════ -->
+<script>
+// ── DATA LAYER ──────────────────────────────────────────────────────────────
+
+const PROJECT = {
+  id: 'N4-REHAB-2026',
+  name: 'EN4 Section 1 — Ressano Garcia to Moamba',
+  contract: 'TRAC/REHAB-01/2020',
+  length_km: 41.29,
+  start: '01/03/2026',
+  end_planned: '28/02/2028',
+  contractor: 'WBHO Roads & Earthworks',
+  re: 'TRAC Infrastructure'
+};
+
+const KPI_DATA = [
+  {id:'KPI-N4-001',type:'Schedule',name:'Schedule Performance Index (SPI)',value:0.94,target:1.00,unit:'index',status:'At Risk',trend:'Down',period:'Jun 2026'},
+  {id:'KPI-N4-002',type:'Cost',name:'Cost Performance Index (CPI)',value:0.97,target:1.00,unit:'index',status:'At Risk',trend:'Down',period:'Jun 2026'},
+  {id:'KPI-N4-003',type:'Quality',name:'Quality Test Pass Rate',value:96.2,target:97.0,unit:'%',status:'At Risk',trend:'Stable',period:'Jun 2026'},
+  {id:'KPI-N4-004',type:'Safety',name:'LTIFR (Lost Time Injury Frequency Rate)',value:0.00,target:0.00,unit:'LTIFR',status:'On Track',trend:'Stable',period:'Jun 2026'},
+  {id:'KPI-N4-005',type:'Safety',name:'Total Recordable Incident Rate (TRIR)',value:0.00,target:0.00,unit:'TRIR',status:'On Track',trend:'Stable',period:'Jun 2026'},
+  {id:'KPI-N4-006',type:'Progress',name:'Overall Physical Progress',value:22.5,target:25.0,unit:'%',status:'At Risk',trend:'Down',period:'Jun 2026'},
+  {id:'KPI-N4-007',type:'Progress',name:'Break-up Completion Progress',value:21.8,target:22.0,unit:'% of 41.29km',status:'On Track',trend:'Up',period:'Jun 2026'},
+  {id:'KPI-N4-008',type:'Social',name:'Local Employment Percentage',value:68.0,target:65.0,unit:'%',status:'On Track',trend:'Up',period:'Jun 2026'},
+  {id:'KPI-N4-009',type:'Social',name:'SMME Subcontracting Value',value:12.3,target:15.0,unit:'% of contract',status:'At Risk',trend:'Stable',period:'Jun 2026'},
+  {id:'KPI-N4-010',type:'Environment',name:'Environmental Incidents (reportable)',value:0,target:0,unit:'incidents',status:'On Track',trend:'Stable',period:'Jun 2026'},
+  {id:'KPI-N4-011',type:'Environment',name:'Fuel Berm Non-Conformances (open)',value:1,target:0,unit:'NCRs',status:'At Risk',trend:'Stable',period:'Jun 2026'},
+  {id:'KPI-N4-012',type:'Quality',name:'Hold Points Cleared (cumulative)',value:6,target:6,unit:'HPs',status:'On Track',trend:'Up',period:'Jun 2026'}
+];
+
+const MLS_DATA = [
+  {id:'MLS-N4-001',name:'Site Establishment Complete',series:'1000',km_from:0,km_to:41.29,planned:'30/04/2026',actual:'28/04/2026',status:'Complete',responsible:'Site Agent',notes:'Completed 2 days early'},
+  {id:'MLS-N4-002',name:'Traffic Accommodation Fully Implemented',series:'1000',km_from:0,km_to:41.29,planned:'15/04/2026',actual:'12/04/2026',status:'Complete',responsible:'Site Agent',notes:'TMP approved by TRAC'},
+  {id:'MLS-N4-003',name:'Clearing & Grubbing KM 0-30 Complete',series:'1000',km_from:0,km_to:30,planned:'15/05/2026',actual:'10/05/2026',status:'Complete',responsible:'Site Agent',notes:''},
+  {id:'MLS-N4-004',name:'U-Drain KM 0-10 Installed',series:'2000',km_from:0,km_to:10,planned:'31/05/2026',actual:'',status:'In Progress',responsible:'Site Agent',notes:'KM 0-4 done; KM 4-10 ongoing'},
+  {id:'MLS-N4-005',name:'Culverts C1-C5 Complete',series:'2000',km_from:0,km_to:20,planned:'30/06/2026',actual:'',status:'In Progress',responsible:'Site Agent',notes:'C1-C4 complete; C5 in progress'},
+  {id:'MLS-N4-006',name:'Break-up KM 0-9 Achieved',series:'3000',km_from:0,km_to:9,planned:'30/06/2026',actual:'26/06/2026',status:'Complete',responsible:'Site Agent',notes:'Milestone achieved Day 88'},
+  {id:'MLS-N4-007',name:'G6 Sub-base KM 0-4 Complete (Layer 1-3)',series:'3000',km_from:0,km_to:4,planned:'15/07/2026',actual:'',status:'In Progress',responsible:'Site Agent',notes:'Layer 3 placed; HP inspection cleared'},
+  {id:'MLS-N4-008',name:'Earthworks Trim KM 0-15 Complete',series:'3000',km_from:0,km_to:15,planned:'31/07/2026',actual:'',status:'Upcoming',responsible:'Site Agent',notes:''},
+  {id:'MLS-N4-009',name:'Break-up KM 9-20 Achieved',series:'3000',km_from:9,km_to:20,planned:'31/08/2026',actual:'',status:'Upcoming',responsible:'Site Agent',notes:''},
+  {id:'MLS-N4-010',name:'G4 Base Course KM 0-4',series:'3000',km_from:0,km_to:4,planned:'15/08/2026',actual:'',status:'Upcoming',responsible:'Site Agent',notes:'Dependent on G6 completion'},
+  {id:'MLS-N4-011',name:'Gabion Walls KM 0-5 Complete',series:'2000',km_from:0,km_to:5,planned:'31/07/2026',actual:'',status:'In Progress',responsible:'Site Agent',notes:'KM 3.2 wall #4 in progress'},
+  {id:'MLS-N4-012',name:'AC Wearing Course KM 0-2 (Year 1 pilot)',series:'4000',km_from:0,km_to:2,planned:'28/11/2026',actual:'',status:'Upcoming',responsible:'Site Agent',notes:'Subject to sub-base HP clearance'},
+  {id:'MLS-N4-013',name:'Edge Patching KM 0-10',series:'5000',km_from:0,km_to:10,planned:'31/10/2026',actual:'',status:'In Progress',responsible:'Site Agent',notes:'KM 5.1-5.6 in progress'},
+  {id:'MLS-N4-014',name:'Safety Rail KM 0-5 Installed',series:'5000',km_from:0,km_to:5,planned:'30/11/2026',actual:'',status:'Upcoming',responsible:'Site Agent',notes:''},
+  {id:'MLS-N4-015',name:'Bridge Structure B1 Substructure Complete',series:'6000',km_from:18.4,km_to:18.4,planned:'28/02/2027',actual:'',status:'Upcoming',responsible:'Site Agent',notes:'Long-lead item — piling starts Aug'},
+  {id:'MLS-N4-016',name:'ECO Conditional Item Closed (Fuel Berm)',series:'ENV',km_from:0,km_to:41.29,planned:'15/07/2026',actual:'',status:'At Risk',responsible:'ECO',notes:'Open NCR from 21/06/2026 inspection'},
+  {id:'MLS-N4-017',name:'Mid-Year Progress Payment Certified',series:'CONTRACT',km_from:0,km_to:41.29,planned:'31/07/2026',actual:'',status:'Upcoming',responsible:'TRAC RE',notes:'Subject to PM approval'},
+  {id:'MLS-N4-018',name:'Break-up KM 20-30 Achieved',series:'3000',km_from:20,km_to:30,planned:'31/10/2026',actual:'',status:'Upcoming',responsible:'Site Agent',notes:''},
+  {id:'MLS-N4-019',name:'Utility Relocation EOT Resolved',series:'CONTRACT',km_from:0,km_to:41.29,planned:'31/08/2026',actual:'',status:'At Risk',responsible:'TRAC RE',notes:'Eskom & Vodacom claims pending'},
+  {id:'MLS-N4-020',name:'Year 1 Close-Out Inspection',series:'CONTRACT',km_from:0,km_to:41.29,planned:'28/02/2027',actual:'',status:'Upcoming',responsible:'TRAC RE',notes:''}
+];
+
+let APR_DATA = [
+  {id:'APR-N4-001',series:'1000',activity:'Site Establishment',km_from:0,km_to:41.29,unit:'Sum',planned:1,completed:1,pct:100,status:'Complete',start:'01/03/2026',end:'28/04/2026'},
+  {id:'APR-N4-002',series:'1000',activity:'Traffic Accommodation — TMP Implementation',km_from:0,km_to:41.29,unit:'Sum',planned:1,completed:1,pct:100,status:'Complete',start:'01/03/2026',end:'12/04/2026'},
+  {id:'APR-N4-003',series:'1000',activity:'Clearing & Grubbing',km_from:0,km_to:41.29,unit:'Ha',planned:82.6,completed:65,pct:79,status:'In Progress',start:'01/04/2026',end:'30/06/2026'},
+  {id:'APR-N4-004',series:'2000',activity:'U-Drain (Concrete)',km_from:0,km_to:25,unit:'m',planned:4200,completed:1850,pct:44,status:'In Progress',start:'15/04/2026',end:'31/08/2026'},
+  {id:'APR-N4-005',series:'2000',activity:'Culvert Construction (Pipe & Headwalls)',km_from:0,km_to:25,unit:'Nr',planned:18,completed:9,pct:50,status:'In Progress',start:'01/04/2026',end:'31/10/2026'},
+  {id:'APR-N4-006',series:'2000',activity:'Gabion Basket Retaining Walls',km_from:0,km_to:10,unit:'m³',planned:3200,completed:680,pct:21,status:'In Progress',start:'01/05/2026',end:'30/11/2026'},
+  {id:'APR-N4-007',series:'3000',activity:'Earthworks — Bulk Excavation / Trim',km_from:0,km_to:41.29,unit:'m³',planned:145000,completed:28000,pct:19,status:'In Progress',start:'01/04/2026',end:'28/02/2027'},
+  {id:'APR-N4-008',series:'3000',activity:'G6 Sub-base Layer Works',km_from:0,km_to:41.29,unit:'m³',planned:95000,completed:18500,pct:19,status:'In Progress',start:'15/04/2026',end:'28/02/2027'},
+  {id:'APR-N4-009',series:'3000',activity:'G4 Base Course',km_from:0,km_to:41.29,unit:'m³',planned:68000,completed:0,pct:0,status:'Not Started',start:'01/08/2026',end:'28/02/2027'},
+  {id:'APR-N4-010',series:'3000',activity:'Break-up Existing Asphalt Pavement',km_from:0,km_to:41.29,unit:'m²',planned:148000,completed:32200,pct:22,status:'In Progress',start:'01/04/2026',end:'30/11/2026'},
+  {id:'APR-N4-011',series:'3000',activity:'Nuclear Density Testing (QC)',km_from:0,km_to:41.29,unit:'Tests',planned:420,completed:86,pct:20,status:'In Progress',start:'01/04/2026',end:'28/02/2027'},
+  {id:'APR-N4-012',series:'4000',activity:'Prime Coat Application',km_from:0,km_to:41.29,unit:'m²',planned:123870,completed:0,pct:0,status:'Not Started',start:'01/10/2026',end:'28/02/2027'},
+  {id:'APR-N4-013',series:'4000',activity:'AC Wearing Course (40mm)',km_from:0,km_to:41.29,unit:'m²',planned:123870,completed:0,pct:0,status:'Not Started',start:'01/11/2026',end:'28/02/2027'},
+  {id:'APR-N4-014',series:'4000',activity:'Edge Patching — Existing AC',km_from:0,km_to:41.29,unit:'m²',planned:18000,completed:2800,pct:16,status:'In Progress',start:'15/04/2026',end:'30/09/2026'},
+  {id:'APR-N4-015',series:'5000',activity:'Guard Rails & Safety Barriers',km_from:0,km_to:41.29,unit:'m',planned:8200,completed:0,pct:0,status:'Not Started',start:'01/09/2026',end:'28/02/2027'},
+  {id:'APR-N4-016',series:'5000',activity:'Road Marking — Thermoplastic',km_from:0,km_to:41.29,unit:'m²',planned:12400,completed:0,pct:0,status:'Not Started',start:'01/11/2026',end:'28/02/2027'},
+  {id:'APR-N4-017',series:'5000',activity:'Road Signs & Delineators',km_from:0,km_to:41.29,unit:'Nr',planned:320,completed:45,pct:14,status:'In Progress',start:'01/04/2026',end:'28/02/2027'},
+  {id:'APR-N4-018',series:'5000',activity:'Landscaping & Reinstatement',km_from:0,km_to:41.29,unit:'m²',planned:65000,completed:0,pct:0,status:'Not Started',start:'01/12/2026',end:'28/02/2027'},
+  {id:'APR-N4-019',series:'6000',activity:'Culvert B1 — Pile Foundation',km_from:18.4,km_to:18.4,unit:'m',planned:480,completed:0,pct:0,status:'Not Started',start:'01/08/2026',end:'30/11/2026'},
+  {id:'APR-N4-020',series:'6000',activity:'Bridge B1 — Substructure (Abutments)',km_from:18.4,km_to:18.4,unit:'m³',planned:1850,completed:0,pct:0,status:'Not Started',start:'01/09/2026',end:'28/02/2027'},
+  {id:'APR-N4-021',series:'6000',activity:'Retaining Wall — Type B (KM 22-24)',km_from:22,km_to:24,unit:'m²',planned:2100,completed:0,pct:0,status:'Not Started',start:'01/10/2026',end:'28/02/2027'},
+  {id:'APR-N4-022',series:'3000',activity:'Compaction Testing — COLTO Table 3402',km_from:0,km_to:41.29,unit:'Tests',planned:380,completed:72,pct:19,status:'In Progress',start:'01/04/2026',end:'28/02/2027'},
+  {id:'APR-N4-023',series:'2000',activity:'Stormwater Outlet Structures',km_from:0,km_to:41.29,unit:'Nr',planned:35,completed:8,pct:23,status:'In Progress',start:'01/04/2026',end:'30/09/2026'},
+  {id:'APR-N4-024',series:'1000',activity:'Environmental Monitoring (ECO Monthly)',km_from:0,km_to:41.29,unit:'Reports',planned:12,completed:4,pct:33,status:'In Progress',start:'01/03/2026',end:'28/02/2027'},
+  {id:'APR-N4-025',series:'5000',activity:'Speed Humps & Traffic Calming',km_from:0,km_to:41.29,unit:'Nr',planned:12,completed:0,pct:0,status:'Not Started',start:'01/11/2026',end:'28/02/2027'},
+  {id:'APR-N4-026',series:'4000',activity:'Slurry Seal / Surface Dressing (KM 30-41)',km_from:30,km_to:41.29,unit:'m²',planned:33000,completed:0,pct:0,status:'Not Started',start:'01/01/2027',end:'28/02/2027'}
+];
+
+const BVA_DATA = [
+  {id:'BVA-N4-001',code:'CC10',name:'Site Establishment & Preliminaries',wbs:'WBS-1000',budget:28500000,actual:22300000,committed:4200000,fac:29100000,variance:-600000,var_pct:-2.1,status:'At Risk'},
+  {id:'BVA-N4-002',code:'CC11',name:'Traffic Accommodation',wbs:'WBS-1000',budget:8200000,actual:5100000,committed:1800000,fac:7800000,variance:400000,var_pct:4.9,status:'On Track'},
+  {id:'BVA-N4-003',code:'CC12',name:'Environmental Management',wbs:'WBS-ENV',budget:3500000,actual:1800000,committed:400000,fac:3600000,variance:-100000,var_pct:-2.9,status:'At Risk'},
+  {id:'BVA-N4-004',code:'CC20',name:'Drainage Works (U-drains, Culverts)',wbs:'WBS-2000',budget:42000000,actual:18500000,committed:8000000,fac:44000000,variance:-2000000,var_pct:-4.8,status:'At Risk'},
+  {id:'BVA-N4-005',code:'CC21',name:'Gabion & Retaining Structures',wbs:'WBS-2000',budget:12800000,actual:3200000,committed:1500000,fac:12400000,variance:400000,var_pct:3.1,status:'On Track'},
+  {id:'BVA-N4-006',code:'CC30',name:'Earthworks & Excavation',wbs:'WBS-3000',budget:68000000,actual:18200000,committed:12000000,fac:72000000,variance:-4000000,var_pct:-5.9,status:'Over Budget'},
+  {id:'BVA-N4-007',code:'CC31',name:'G6 Sub-base Layer Works',wbs:'WBS-3000',budget:45000000,actual:8900000,committed:6000000,fac:44500000,variance:500000,var_pct:1.1,status:'On Track'},
+  {id:'BVA-N4-008',code:'CC32',name:'G4 Base Course',wbs:'WBS-3000',budget:38000000,actual:0,committed:0,fac:38000000,variance:0,var_pct:0,status:'On Track'},
+  {id:'BVA-N4-009',code:'CC33',name:'Break-up & Removal of Existing Pavement',wbs:'WBS-3000',budget:22000000,actual:7100000,committed:3000000,fac:22500000,variance:-500000,var_pct:-2.3,status:'At Risk'},
+  {id:'BVA-N4-010',code:'CC40',name:'Asphalt Pavement & Prime Coat',wbs:'WBS-4000',budget:92000000,actual:0,committed:15000000,fac:92000000,variance:0,var_pct:0,status:'On Track'},
+  {id:'BVA-N4-011',code:'CC41',name:'Edge Patching & Slurry Seal',wbs:'WBS-4000',budget:9800000,actual:2200000,committed:1500000,fac:10200000,variance:-400000,var_pct:-4.1,status:'At Risk'},
+  {id:'BVA-N4-012',code:'CC50',name:'Road Furniture & Markings',wbs:'WBS-5000',budget:14500000,actual:450000,committed:500000,fac:14500000,variance:0,var_pct:0,status:'On Track'},
+  {id:'BVA-N4-013',code:'CC60',name:'Bridge & Structural Works (B1)',wbs:'WBS-6000',budget:38000000,actual:0,committed:2000000,fac:38000000,variance:0,var_pct:0,status:'On Track'},
+  {id:'BVA-N4-014',code:'CC07',name:'Fuel & Lubricants',wbs:'ALL',budget:18500000,actual:7800000,committed:3000000,fac:19200000,variance:-700000,var_pct:-3.8,status:'At Risk'},
+  {id:'BVA-N4-015',code:'CC08',name:'Plant Maintenance & Repairs',wbs:'ALL',budget:8200000,actual:2900000,committed:1200000,fac:8600000,variance:-400000,var_pct:-4.9,status:'At Risk'},
+  {id:'BVA-N4-016',code:'CC09',name:'Labour & Personnel Costs',wbs:'ALL',budget:32000000,actual:13400000,committed:5000000,fac:33000000,variance:-1000000,var_pct:-3.1,status:'At Risk'}
+];
+
+const INS_DATA = [
+  {id:'INS-N4-001',type:'Hold Point',hp:true,spec:'Cl 3402',desc:'G6 Layer 1 KM 0-2 compaction HP',chainage:'KM 0-2',inspector:'TRAC RE',date:'15/04/2026',result:'Pass',ncr:'',ref:'HP-001'},
+  {id:'INS-N4-002',type:'ITP',hp:false,spec:'Cl 3402',desc:'G6 Layer 1 nuclear density KM 2-4',chainage:'KM 2-4',inspector:'TRAC RE',date:'22/04/2026',result:'Pass',ncr:'',ref:'ITP-001'},
+  {id:'INS-N4-003',type:'Hold Point',hp:true,spec:'Cl 2106',desc:'Culvert C1 pipe bedding & haunch',chainage:'KM 1.8',inspector:'TRAC RE',date:'28/04/2026',result:'Fail',ncr:'NCR-N4-001',ref:'HP-002'},
+  {id:'INS-N4-004',type:'ITP',hp:false,spec:'Cl 2402',desc:'U-drain KM 0-1 concrete quality',chainage:'KM 0-1',inspector:'TRAC RE',date:'02/05/2026',result:'Pass',ncr:'',ref:'ITP-002'},
+  {id:'INS-N4-005',type:'Hold Point',hp:true,spec:'Cl 3402',desc:'G6 Layer 2 KM 0-2 HP',chainage:'KM 0-2',inspector:'TRAC RE',date:'12/05/2026',result:'Pass',ncr:'',ref:'HP-003'},
+  {id:'INS-N4-006',type:'Environmental',hp:false,spec:'EMP',desc:'Monthly ECO inspection (May 2026)',chainage:'Full site',inspector:'ECO',date:'20/05/2026',result:'Pass',ncr:'',ref:'ECO-001'},
+  {id:'INS-N4-007',type:'Hold Point',hp:true,spec:'Cl 3402',desc:'G6 Layer 2 KM 2-4 compaction HP',chainage:'KM 2-4',inspector:'TRAC RE',date:'28/05/2026',result:'Fail',ncr:'NCR-N4-002',ref:'HP-004'},
+  {id:'INS-N4-008',type:'ITP',hp:false,spec:'Cl 3402',desc:'G6 Layer 2 KM 2-4 re-test after rework',chainage:'KM 2-4',inspector:'TRAC RE',date:'02/06/2026',result:'Pass',ncr:'',ref:'ITP-003'},
+  {id:'INS-N4-009',type:'Hold Point',hp:true,spec:'Cl 3402',desc:'G6 Layer 3 KM 0-2 HP',chainage:'KM 0-2',inspector:'TRAC RE',date:'10/06/2026',result:'Pass',ncr:'',ref:'HP-005'},
+  {id:'INS-N4-010',type:'Environmental',hp:false,spec:'EMP',desc:'Monthly ECO inspection (June 2026)',chainage:'Full site',inspector:'ECO',date:'21/06/2026',result:'Conditional',ncr:'NCR-N4-003',ref:'ECO-002'},
+  {id:'INS-N4-011',type:'Hold Point',hp:true,spec:'Cl 3402',desc:'G6 Layer 3 KM 0-4 HP (full section)',chainage:'KM 0-4',inspector:'TRAC RE',date:'25/06/2026',result:'Pass',ncr:'',ref:'HP-006'},
+  {id:'INS-N4-012',type:'ITP',hp:false,spec:'Cl 2106',desc:'Culvert C5 pipe laying KM 4.2',chainage:'KM 4.2',inspector:'TRAC RE',date:'26/06/2026',result:'Pass',ncr:'',ref:'ITP-004'},
+  {id:'INS-N4-013',type:'ITP',hp:false,spec:'Cl 2402',desc:'U-drain KM 1.6-1.9 line & level',chainage:'KM 1.6-1.9',inspector:'TRAC RE',date:'27/06/2026',result:'Pending',ncr:'',ref:'ITP-005'},
+  {id:'INS-N4-014',type:'ITP',hp:false,spec:'Cl 1703',desc:'Clearing & grubbing KM 25-30',chainage:'KM 25-30',inspector:'Site Agent',date:'05/06/2026',result:'Pass',ncr:'',ref:'ITP-006'},
+  {id:'INS-N4-015',type:'Hold Point',hp:true,spec:'Cl 2106',desc:'Culvert C9 pipe bedding KM 8.6',chainage:'KM 8.6',inspector:'TRAC RE',date:'',result:'Pending',ncr:'',ref:'HP-007'}
+];
+
+const DLR_DATA = [
+  {id:'DLR-N4-001',type:'Weather',cause:'Heavy rainfall — compaction halted',start:'20/03/2026',end:'21/03/2026',days:2,chainage:'KM 0-15',eot_claimed:'No',eot_status:'N/A',cost:'R85,000',ref:'WR-001'},
+  {id:'DLR-N4-002',type:'Utility',cause:'Eskom power line relocation (KM 5.4)',start:'28/03/2026',end:'08/04/2026',days:8,chainage:'KM 5.0-6.0',eot_claimed:'Yes — 8 WD',eot_status:'Pending',cost:'R1,850,000',ref:'EOT-001'},
+  {id:'DLR-N4-003',type:'Weather',cause:'Rain event — 12mm over 2 days',start:'14/04/2026',end:'15/04/2026',days:2,chainage:'KM 0-10',eot_claimed:'No',eot_status:'N/A',cost:'R110,000',ref:'WR-002'},
+  {id:'DLR-N4-004',type:'Design',cause:'Drainage redesign at KM 3.8 — culvert invert revised',start:'22/04/2026',end:'25/04/2026',days:2,chainage:'KM 3.8',eot_claimed:'No',eot_status:'N/A',cost:'R45,000',ref:'RFI-012'},
+  {id:'DLR-N4-005',type:'Utility',cause:'Vodacom fibre optic — unmarked cable KM 7.1',start:'02/05/2026',end:'09/05/2026',days:5,chainage:'KM 7.0-7.5',eot_claimed:'Yes — 5 WD',eot_status:'Pending',cost:'R2,100,000',ref:'EOT-002'},
+  {id:'DLR-N4-006',type:'Weather',cause:'Sustained rainfall — compaction halted',start:'18/05/2026',end:'19/05/2026',days:2,chainage:'KM 0-20',eot_claimed:'No',eot_status:'N/A',cost:'R95,000',ref:'WR-003'},
+  {id:'DLR-N4-007',type:'Access',cause:'Community access road blocked — social',start:'25/05/2026',end:'26/05/2026',days:1,chainage:'KM 12.0',eot_claimed:'No',eot_status:'N/A',cost:'R35,000',ref:'SI-001'},
+  {id:'DLR-N4-008',type:'Design',cause:'Gabion wall design revision KM 3.2',start:'01/06/2026',end:'02/06/2026',days:1,chainage:'KM 3.2',eot_claimed:'No',eot_status:'N/A',cost:'R18,000',ref:'RFI-021'},
+  {id:'DLR-N4-009',type:'Weather',cause:'Rain — afternoon compaction halted (4mm)',start:'20/06/2026',end:'20/06/2026',days:1,chainage:'KM 7-11',eot_claimed:'No',eot_status:'N/A',cost:'R52,000',ref:'WR-004'},
+  {id:'DLR-N4-010',type:'Access',cause:'Abnormal load permit delay — crusher delivery',start:'23/06/2026',end:'23/06/2026',days:0,chainage:'Site access',eot_claimed:'No',eot_status:'N/A',cost:'R12,000',ref:'LOG-003'}
+];
+
+const PLU_DATA = [
+  {id:'PLU-N4-001',date:'17/06/2026',asset:'CAT 140M Grader',type:'Grader',avail:9,working:8.0,idle:0.5,breakdown:0.5,util:88.9,fuel:210,activity:'G6 sub-base shaping KM 2-4'},
+  {id:'PLU-N4-002',date:'17/06/2026',asset:'Bomag BW213 Roller',type:'Compactor',avail:9,working:8.5,idle:0.5,breakdown:0.0,util:94.4,fuel:85,activity:'G6 compaction KM 2-4'},
+  {id:'PLU-N4-003',date:'17/06/2026',asset:'Bell B30E ADT',type:'ADT',avail:9,working:7.5,idle:1.0,breakdown:0.5,util:83.3,fuel:420,activity:'G6 haulage — 45 loads'},
+  {id:'PLU-N4-004',date:'17/06/2026',asset:'CAT 320 Excavator',type:'Excavator',avail:9,working:7.0,idle:1.5,breakdown:0.5,util:77.8,fuel:310,activity:'U-drain excavation KM 1.6-1.9'},
+  {id:'PLU-N4-005',date:'18/06/2026',asset:'CAT 140M Grader',type:'Grader',avail:9,working:8.5,idle:0.5,breakdown:0.0,util:94.4,fuel:215,activity:'G6 layer 2 final trim KM 2-4'},
+  {id:'PLU-N4-006',date:'18/06/2026',asset:'Wirtgen W200 Cold Planer',type:'Cold Planer',avail:9,working:8.0,idle:1.0,breakdown:0.0,util:88.9,fuel:580,activity:'Break-up existing AC KM 6.5-7.0'},
+  {id:'PLU-N4-007',date:'20/06/2026',asset:'CAT 140M Grader',type:'Grader',avail:9,working:5.0,idle:1.0,breakdown:0.0,util:55.6,fuel:140,activity:'Morning earthworks — halted rain PM'},
+  {id:'PLU-N4-008',date:'21/06/2026',asset:'Wirtgen W200 Cold Planer',type:'Cold Planer',avail:9,working:8.5,idle:0.5,breakdown:0.0,util:94.4,fuel:595,activity:'Break-up KM 7.4-7.9'},
+  {id:'PLU-N4-009',date:'24/06/2026',asset:'CAT 320 Excavator',type:'Excavator',avail:9,working:8.5,idle:0.5,breakdown:0.0,util:94.4,fuel:325,activity:'Culvert C9 pipe trench KM 8.6'},
+  {id:'PLU-N4-010',date:'25/06/2026',asset:'LiuGong 856H Loader',type:'Loader',avail:9,working:8.5,idle:0.5,breakdown:0.0,util:94.4,fuel:200,activity:'G6 loading — HP inspection KM 0-4'}
+];
+
+const DSD_DATA = [
+  {id:'DSD-N4-001',date:'17/06/2026',day:79,weather_am:'Clear',weather_pm:'Partly Cloudy',temp:24,rain:0,workers:68,hours:8.5,activities:'G6 sub-base layer 2 @ KM 2-4; Drainage U-drain KM 1.6-1.9; Edge patching KM 5.1-5.6',delays:'None',visitors:'None',notes:'Productive day — all fronts active'},
+  {id:'DSD-N4-002',date:'18/06/2026',day:80,weather_am:'Clear',weather_pm:'Clear',temp:26,rain:0,workers:71,hours:8.5,activities:'G6 layer 2 compact KM 2-4; Break-up existing AC KM 6.5-7.0; Culvert C8 headwall formwork',delays:'None',visitors:'TRAC PM (site visit)',notes:'PM site visit — progress accepted'},
+  {id:'DSD-N4-003',date:'19/06/2026',day:81,weather_am:'Cloudy',weather_pm:'Cloudy',temp:21,rain:0,workers:70,hours:8.0,activities:'Nuclear density testing KM 2-4; Earthworks trim KM 11-12; Gabion basket KM 3.2 wall #4',delays:'None',visitors:'None',notes:'All tests passed (97% MDD)'},
+  {id:'DSD-N4-004',date:'20/06/2026',day:82,weather_am:'Overcast',weather_pm:'Light Rain',temp:19,rain:4,workers:68,hours:6.0,activities:'Earthworks halted PM (4mm rain); Morning: break-up KM 7.0-7.4; Drainage continued',delays:'Light Rain — 2hrs lost PM',visitors:'None',notes:'Rain during afternoon — compaction halted'},
+  {id:'DSD-N4-005',date:'21/06/2026',day:83,weather_am:'Clear',weather_pm:'Clear',temp:25,rain:0,workers:68,hours:8.5,activities:'G6 layer 3 placed KM 0-2; Break-up KM 7.4-7.9; U-drain KM 2.1-2.4; ECO monthly inspection',delays:'None',visitors:'ECO (monthly)',notes:'ECO inspection — 1 conditional item fuel berm'},
+  {id:'DSD-N4-006',date:'22/06/2026',day:84,weather_am:'Clear',weather_pm:'Clear',temp:27,rain:0,workers:65,hours:8.5,activities:'Weekend crew — maintenance and fuel; No earthwork progress',delays:'None',visitors:'None',notes:'Minimal crew Saturday'},
+  {id:'DSD-N4-007',date:'23/06/2026',day:85,weather_am:'Rest Day',weather_pm:'Rest Day',temp:null,rain:null,workers:0,hours:0,activities:'Sunday — no work',delays:'None',visitors:'None',notes:'Sunday — site closed'},
+  {id:'DSD-N4-008',date:'24/06/2026',day:86,weather_am:'Clear',weather_pm:'Clear',temp:24,rain:0,workers:72,hours:8.5,activities:'G6 layer 3 comp KM 0-2; Break-up KM 7.9-8.4; Culvert C9 pipe laying KM 8.6',delays:'None',visitors:'None',notes:'Strong progress'},
+  {id:'DSD-N4-009',date:'25/06/2026',day:87,weather_am:'Clear',weather_pm:'Partly Cloudy',temp:23,rain:0,workers:72,hours:8.5,activities:'HP inspection G6 KM 0-4 passed; Break-up KM 8.4-8.9; Earthworks trim KM 12-13',delays:'None',visitors:'TRAC RE (HP inspection)',notes:'Hold point cleared — layer 3 approved'},
+  {id:'DSD-N4-010',date:'26/06/2026',day:88,weather_am:'Clear',weather_pm:'Clear',temp:22,rain:0,workers:72,hours:8.5,activities:'G6 layer 4 placed KM 0-2; Break-up complete KM 0-9; Patching crew KM 6.5-7.0',delays:'None',visitors:'None',notes:'Break-up milestone KM 0-9 achieved'}
+];
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+
+function fmt(n){return 'R '+Number(n).toLocaleString('en-ZA');}
+function fmtM(n){return 'R '+Number(n/1e6).toFixed(1)+'M';}
+function pct(v,t){return t?Math.round(v/t*100):0;}
+
+function badgeStatus(s){
+  const m={
+    'Complete':'badge-green','On Track':'badge-green',
+    'In Progress':'badge-teal','Pending':'badge-teal','Pending Assessment':'badge-teal',
+    'At Risk':'badge-yellow','Conditional':'badge-yellow',
+    'Over Budget':'badge-red','Off Track':'badge-red','Fail':'badge-red','Blocked':'badge-red',
+    'N/A':'badge-muted','Not Started':'badge-muted','Rest Day':'badge-muted'
+  };
+  return m[s]||'badge-muted';
+}
+function dot(s){
+  const m={'Complete':'var(--accent-green)','On Track':'var(--accent-green)',
+    'In Progress':'var(--accent-amber)','At Risk':'var(--accent-yellow)',
+    'Upcoming':'var(--accent-teal)','Not Started':'var(--text-muted)',
+    'Over Budget':'var(--accent-red)'};
+  return m[s]||'var(--text-muted)';
+}
+function weatherIcon(w){
+  if(!w||w==='Rest Day') return '🚫';
+  if(w.includes('Rain')) return '🌧';
+  if(w.includes('Cloudy')||w.includes('Overcast')) return '☁️';
+  return '☀️';
+}
+
+// ── NAV ──────────────────────────────────────────────────────────────────────
+
+function showSection(id, el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  if(el) el.classList.add('active');
+  else{
+    document.querySelectorAll('.nav-item').forEach(n=>{
+      if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+id+"'")) n.classList.add('active');
+    });
+  }
+  if(id==='costs') renderCosts();
+  if(id==='plant') renderPlant();
+  if(id==='kpi') renderKPIPage();
+}
+
+function switchProject(v){console.log('Project:',v);}
+
+// ── RENDER: DASHBOARD ────────────────────────────────────────────────────────
+
+let burnChartInst=null, statusChartInst=null;
+
+function refreshDashboard(){
+  // Burn chart
+  const ctx=document.getElementById('burnChart');
+  if(burnChartInst) burnChartInst.destroy();
+  const months=['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'];
+  const planned=[18,36,55,76,98,118,140,162,185,210,235,260];
+  const actual=[17,33,51,74,null,null,null,null,null,null,null,null];
+  burnChartInst=new Chart(ctx,{
+    type:'line',
+    data:{labels:months,datasets:[
+      {label:'Planned (ZAR M)',data:planned,borderColor:'#14b8a6',backgroundColor:'rgba(20,184,166,.1)',tension:.4,pointRadius:3,fill:true},
+      {label:'Actual (ZAR M)',data:actual,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.1)',tension:.4,pointRadius:4,fill:true,spanGaps:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}},
+        tooltip:{callbacks:{label:ctx=>'R '+ctx.raw+'M'}}},
+      scales:{
+        x:{grid:{color:'#2a2f45'},ticks:{color:'#94a3b8',font:{size:11}}},
+        y:{grid:{color:'#2a2f45'},ticks:{color:'#94a3b8',font:{size:11},callback:v=>'R'+v+'M'}}
+      }}
+  });
+
+  // Status donut
+  const ctx2=document.getElementById('statusChart');
+  if(statusChartInst) statusChartInst.destroy();
+  statusChartInst=new Chart(ctx2,{
+    type:'doughnut',
+    data:{labels:['Complete','In Progress','Not Started','At Risk'],
+      datasets:[{data:[4,12,8,2],backgroundColor:['#22c55e','#f59e0b','#475569','#ef4444'],borderWidth:0,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'65%',
+      plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:11},padding:14}}}}
+  });
+
+  // Milestones (next 5)
+  const upcoming=MLS_DATA.filter(m=>m.status!=='Complete').slice(0,5);
+  const mlsCont=document.getElementById('dashMilestones');
+  mlsCont.innerHTML=upcoming.map(m=>`
+    <div class="mls-item">
+      <div class="mls-dot" style="background:${dot(m.status)}"></div>
+      <div class="mls-date">${m.planned||'TBD'}</div>
+      <div style="flex:1">
+        <div style="font-size:12px;color:var(--text-primary)">${m.name}</div>
+        <div style="font-size:11px;color:var(--text-muted)">Series ${m.series} · KM ${m.km_from}–${m.km_to}</div>
+      </div>
+      <span class="badge ${badgeStatus(m.status)}" style="font-size:10px">${m.status}</span>
+    </div>`).join('');
+
+  // BVA top variances
+  const topBVA=[...BVA_DATA].sort((a,b)=>a.variance-b.variance).slice(0,5);
+  const bvaCont=document.getElementById('dashBVA');
+  bvaCont.innerHTML=`<table><thead><tr><th>Code</th><th>Category</th><th>Variance</th><th>Status</th></tr></thead><tbody>`+
+    topBVA.map(b=>`<tr>
+      <td><span class="mono" style="font-size:12px;color:var(--accent-amber)">${b.code}</span></td>
+      <td style="font-size:12px">${b.name}</td>
+      <td class="mono" style="font-size:12px;color:${b.variance<0?'var(--accent-red)':'var(--accent-green)'}">
+        ${b.variance<0?'▼':'▲'} ${fmtM(Math.abs(b.variance))}</td>
+      <td><span class="badge ${badgeStatus(b.status)}" style="font-size:10px">${b.status}</span></td>
+    </tr>`).join('')+`</tbody></table>`;
+}
+
+// ── RENDER: ACTIVITIES ───────────────────────────────────────────────────────
+
+function filterActivities(){
+  const wbs=document.getElementById('wbsFilter').value;
+  const stat=document.getElementById('statusFilter').value;
+  const typeF=document.getElementById('typeFilter')?.value||'all';
+  let rows=APR_DATA;
+  if(wbs!=='all') rows=rows.filter(r=>r.series===wbs);
+  if(stat!=='all') rows=rows.filter(r=>r.status===stat);
+  if(typeF!=='all') rows=rows.filter(r=>(r.type||'Normal')===typeF);
+  const tbody=document.getElementById('activityTbody');
+  tbody.innerHTML=rows.map(r=>{
+    const pctVal=r.pct||0;
+    const col=pctVal===100?'green':pctVal>50?'':'red';
+    const isMilestone=(r.type==='Milestone');
+    const critIcon=r.critical?'<span style="color:var(--accent-red);font-size:10px" title="Critical">🔴</span> ':'';
+    return `<tr>
+      <td class="mono" style="font-size:11px;color:var(--text-muted)">${r.id}</td>
+      <td><span class="badge badge-amber" style="font-size:10px">${r.series}</span></td>
+      <td style="max-width:240px">${critIcon}${r.activity}</td>
+      <td style="font-size:12px;color:var(--text-secondary)">${r.unit}</td>
+      <td class="mono" style="font-size:12px">${isMilestone?'—':Number(r.planned).toLocaleString()}</td>
+      <td class="mono" style="font-size:12px">${isMilestone?'—':Number(r.completed).toLocaleString()}</td>
+      <td>
+        ${isMilestone?`<span style="color:var(--accent-amber);font-size:13px">◆</span>`:`
+        <div class="act-prog">
+          <div class="prog-track" style="flex:1"><div class="prog-fill ${col}" style="width:${pctVal}%"></div></div>
+          <span class="act-pct">${pctVal}%</span>
+        </div>`}
+      </td>
+      <td><span class="badge ${badgeStatus(r.status)}" style="font-size:10px">${r.status}</span></td>
+      <td style="font-size:11px;color:var(--text-muted)">${r.start}</td>
+      <td style="font-size:11px;color:var(--text-muted)">${r.end}</td>
+    </tr>`;
+  }).join('');
+  if(!rows.length) tbody.innerHTML=`<tr><td colspan="10" style="text-align:center;color:var(--text-muted);padding:20px">No activities match current filters</td></tr>`;
+}
+
+// ── RENDER: COSTS ─────────────────────────────────────────────────────────────
+
+let bvaChartInst=null;
+function filterCosts(){
+  const stat=document.getElementById('costStatusFilter').value;
+  let rows=stat==='all'?BVA_DATA:BVA_DATA.filter(r=>r.status===stat);
+  const tbody=document.getElementById('costTbody');
+  tbody.innerHTML=rows.map(b=>`<tr>
+    <td class="mono" style="font-size:11px;color:var(--text-muted)">${b.id}</td>
+    <td><span class="mono" style="color:var(--accent-amber);font-size:12px">${b.code}</span></td>
+    <td style="font-size:12px">${b.name}</td>
+    <td class="mono" style="font-size:12px">${fmtM(b.budget)}</td>
+    <td class="mono" style="font-size:12px">${fmtM(b.actual)}</td>
+    <td class="mono" style="font-size:12px">${fmtM(b.committed)}</td>
+    <td class="mono" style="font-size:12px">${fmtM(b.fac)}</td>
+    <td class="mono" style="font-size:12px;color:${b.variance<0?'var(--accent-red)':'var(--accent-green)'}">${b.variance<0?'▼ ':'▲ '}${fmtM(Math.abs(b.variance))}</td>
+    <td class="mono" style="font-size:12px;color:${b.var_pct<0?'var(--accent-red)':'var(--accent-green)'}">${b.var_pct}%</td>
+    <td><span class="badge ${badgeStatus(b.status)}" style="font-size:10px">${b.status}</span></td>
+  </tr>`).join('');
+}
+
+function renderCosts(){
+  filterCosts();
+  // Summary cards
+  const total=BVA_DATA.reduce((a,b)=>a+b.budget,0);
+  const act=BVA_DATA.reduce((a,b)=>a+b.actual,0);
+  const comm=BVA_DATA.reduce((a,b)=>a+b.committed,0);
+  const varTot=BVA_DATA.reduce((a,b)=>a+b.variance,0);
+  document.getElementById('bvaSummaryCards').innerHTML=`
+    <div class="kpi-card teal"><div class="kpi-label">Total Year 1 Budget</div><div class="kpi-value" style="font-size:1.5rem">${fmtM(total)}</div></div>
+    <div class="kpi-card yellow"><div class="kpi-label">Actual to Date</div><div class="kpi-value" style="font-size:1.5rem">${fmtM(act)}</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px">${pct(act,total)}% spent</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Committed</div><div class="kpi-value" style="font-size:1.5rem">${fmtM(comm)}</div></div>
+    <div class="kpi-card ${varTot<0?'red':'green'}"><div class="kpi-label">Total Variance</div><div class="kpi-value" style="font-size:1.5rem;color:${varTot<0?'var(--accent-red)':'var(--accent-green)'}">${varTot<0?'▼':'▲'} ${fmtM(Math.abs(varTot))}</div></div>`;
+
+  // BVA chart
+  const ctx=document.getElementById('bvaChart');
+  if(bvaChartInst) bvaChartInst.destroy();
+  const top=BVA_DATA.slice(0,10);
+  bvaChartInst=new Chart(ctx,{
+    type:'bar',
+    data:{labels:top.map(b=>b.code),datasets:[
+      {label:'Budget',data:top.map(b=>+(b.budget/1e6).toFixed(1)),backgroundColor:'rgba(20,184,166,.5)',borderColor:'#14b8a6',borderWidth:1},
+      {label:'Actual',data:top.map(b=>+(b.actual/1e6).toFixed(1)),backgroundColor:'rgba(245,158,11,.6)',borderColor:'#f59e0b',borderWidth:1}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}},
+      scales:{
+        x:{grid:{color:'#2a2f45'},ticks:{color:'#94a3b8',font:{size:11}}},
+        y:{grid:{color:'#2a2f45'},ticks:{color:'#94a3b8',font:{size:11},callback:v=>'R'+v+'M'}}
+      }}
+  });
+}
+
+// ── RENDER: MILESTONES ───────────────────────────────────────────────────────
+
+function filterMilestones(){
+  const stat=document.getElementById('mlsStatusFilter').value;
+  const ser=document.getElementById('mlsSeriesFilter').value;
+  let rows=MLS_DATA;
+  if(stat!=='all') rows=rows.filter(r=>r.status===stat);
+  if(ser!=='all') rows=rows.filter(r=>r.series===ser);
+  const tbody=document.getElementById('mlsTbody');
+  tbody.innerHTML=rows.map(m=>`<tr>
+    <td class="mono" style="font-size:11px;color:var(--text-muted)">${m.id}</td>
+    <td style="font-size:12px">${m.name}</td>
+    <td><span class="badge badge-amber" style="font-size:10px">S-${m.series}</span></td>
+    <td class="mono" style="font-size:11px">KM ${m.km_from}–${m.km_to}</td>
+    <td class="mono" style="font-size:12px">${m.planned||'—'}</td>
+    <td class="mono" style="font-size:12px;color:${m.actual?'var(--accent-green)':'var(--text-muted)'}">${m.actual||'—'}</td>
+    <td><span class="badge ${badgeStatus(m.status)}" style="font-size:10px">${m.status}</span></td>
+    <td style="font-size:12px;color:var(--text-secondary)">${m.responsible}</td>
+    <td style="font-size:11px;color:var(--text-muted)">${m.notes||'—'}</td>
+  </tr>`).join('');
+}
+
+// ── RENDER: INSPECTIONS ──────────────────────────────────────────────────────
+
+function filterInspections(){
+  const type=document.getElementById('insTypeFilter').value;
+  const res=document.getElementById('insResultFilter').value;
+  let rows=INS_DATA;
+  if(type!=='all') rows=rows.filter(r=>r.type===type);
+  if(res!=='all') rows=rows.filter(r=>r.result===res);
+  const tbody=document.getElementById('insTbody');
+  tbody.innerHTML=rows.map(i=>`<tr>
+    <td class="mono" style="font-size:11px;color:var(--text-muted)">${i.id}</td>
+    <td><span class="badge ${i.type==='Hold Point'?'badge-amber':i.type==='Environmental'?'badge-teal':'badge-muted'}" style="font-size:10px">${i.type}</span></td>
+    <td style="text-align:center">${i.hp?'<span style="color:var(--accent-red);font-size:14px">◆</span>':'—'}</td>
+    <td class="mono" style="font-size:11px;color:var(--text-secondary)">${i.spec}</td>
+    <td style="font-size:12px;max-width:200px">${i.desc}</td>
+    <td class="mono" style="font-size:11px">${i.chainage}</td>
+    <td style="font-size:12px">${i.inspector}</td>
+    <td class="mono" style="font-size:11px">${i.date||'Pending'}</td>
+    <td><span class="badge ${badgeStatus(i.result)}" style="font-size:10px">${i.result}</span></td>
+    <td style="font-size:11px">${i.ncr?`<span style="color:var(--accent-red)">${i.ncr}</span>`:'—'}</td>
+    <td class="mono" style="font-size:11px;color:var(--text-muted)">${i.ref}</td>
+  </tr>`).join('');
+}
+
+// ── RENDER: DELAYS ───────────────────────────────────────────────────────────
+
+function filterDelays(){
+  const type=document.getElementById('dlrTypeFilter').value;
+  let rows=type==='all'?DLR_DATA:DLR_DATA.filter(r=>r.type===type);
+  const tbody=document.getElementById('dlrTbody');
+  tbody.innerHTML=rows.map(d=>`<tr>
+    <td class="mono" style="font-size:11px;color:var(--text-muted)">${d.id}</td>
+    <td><span class="badge ${d.type==='Utility'?'badge-amber':d.type==='Weather'?'badge-teal':'badge-muted'}" style="font-size:10px">${d.type}</span></td>
+    <td style="font-size:12px;max-width:200px">${d.cause}</td>
+    <td class="mono" style="font-size:11px">${d.start}</td>
+    <td class="mono" style="font-size:11px">${d.end}</td>
+    <td class="mono" style="font-size:12px;color:${d.days>3?'var(--accent-red)':'var(--text-primary)'};font-weight:500">${d.days}d</td>
+    <td class="mono" style="font-size:11px">${d.chainage}</td>
+    <td style="font-size:12px">${d.eot_claimed}</td>
+    <td><span class="badge ${d.eot_status==='Pending'?'badge-yellow':'badge-muted'}" style="font-size:10px">${d.eot_status}</span></td>
+    <td class="mono" style="font-size:12px;color:${d.eot_claimed.includes('Yes')?'var(--accent-red)':'var(--text-secondary)'}">${d.cost}</td>
+    <td class="mono" style="font-size:11px;color:var(--text-muted)">${d.ref}</td>
+  </tr>`).join('');
+}
+
+// ── RENDER: PLANT ─────────────────────────────────────────────────────────────
+
+let pluChartInst=null;
+function filterPlant(){
+  const type=document.getElementById('pluAssetFilter').value;
+  let rows=type==='all'?PLU_DATA:PLU_DATA.filter(r=>r.type===type);
+  const tbody=document.getElementById('pluTbody');
+  tbody.innerHTML=rows.map(p=>`<tr>
+    <td class="mono" style="font-size:11px;color:var(--text-muted)">${p.id}</td>
+    <td class="mono" style="font-size:11px">${p.date}</td>
+    <td style="font-size:12px">${p.asset}</td>
+    <td><span class="badge badge-teal" style="font-size:10px">${p.type}</span></td>
+    <td class="mono" style="font-size:12px">${p.avail}h</td>
+    <td class="mono" style="font-size:12px;color:var(--accent-green)">${p.working}h</td>
+    <td class="mono" style="font-size:12px;color:var(--accent-yellow)">${p.idle}h</td>
+    <td class="mono" style="font-size:12px;color:${p.breakdown>0?'var(--accent-red)':'var(--text-muted)'}">${p.breakdown}h</td>
+    <td>
+      <div class="act-prog">
+        <div class="prog-track" style="flex:1;min-width:60px">
+          <div class="prog-fill ${p.util>=90?'green':p.util>=70?'':'red'}" style="width:${p.util}%"></div>
+        </div>
+        <span class="act-pct">${p.util}%</span>
+      </div>
+    </td>
+    <td class="mono" style="font-size:12px">${p.fuel}L</td>
+    <td style="font-size:11px;color:var(--text-secondary);max-width:180px">${p.activity}</td>
+  </tr>`).join('');
+}
+
+function renderPlant(){
+  filterPlant();
+  // Build utilization chart by asset
+  const byAsset={};
+  PLU_DATA.forEach(p=>{
+    if(!byAsset[p.asset]) byAsset[p.asset]={sum:0,cnt:0};
+    byAsset[p.asset].sum+=p.util;byAsset[p.asset].cnt++;
+  });
+  const assets=Object.keys(byAsset);
+  const avgs=assets.map(a=>(byAsset[a].sum/byAsset[a].cnt).toFixed(1));
+  const ctx=document.getElementById('pluChart');
+  if(pluChartInst) pluChartInst.destroy();
+  pluChartInst=new Chart(ctx,{
+    type:'bar',
+    data:{labels:assets.map(a=>a.replace(/CAT |Bell |LiuGong |Bomag |Wirtgen |Hamm /g,'')),
+      datasets:[{label:'Avg Utilization %',data:avgs,
+        backgroundColor:avgs.map(v=>v>=90?'rgba(34,197,94,.6)':v>=75?'rgba(245,158,11,.6)':'rgba(239,68,68,.6)'),
+        borderColor:avgs.map(v=>v>=90?'#22c55e':v>=75?'#f59e0b':'#ef4444'),borderWidth:1}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+      plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:ctx=>ctx.raw+'%'}}},
+      scales:{
+        x:{grid:{color:'#2a2f45'},ticks:{color:'#94a3b8',font:{size:11},callback:v=>v+'%'},max:100},
+        y:{grid:{color:'#2a2f45'},ticks:{color:'#94a3b8',font:{size:11}}}
+      }}
+  });
+}
+
+// ── RENDER: DIARY ─────────────────────────────────────────────────────────────
+
+function filterDiary(){
+  const wf=document.getElementById('dsdWeatherFilter').value;
+  let rows=DSD_DATA;
+  if(wf==='Clear') rows=rows.filter(r=>r.weather_am==='Clear');
+  if(wf==='Rain') rows=rows.filter(r=>r.weather_am.includes('Rain')||r.weather_pm.includes('Rain')||r.weather_am==='Overcast');
+  if(wf==='Rest Day') rows=rows.filter(r=>r.weather_am==='Rest Day');
+  const cont=document.getElementById('diaryCards');
+  cont.innerHTML=rows.map(d=>`
+    <div class="diary-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+        <div>
+          <span class="diary-date">${d.date}</span>
+          <span class="mono" style="font-size:11px;color:var(--text-muted);margin-left:8px">Day ${d.day}</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          ${d.rain>0?`<span class="badge badge-red" style="font-size:10px">🌧 ${d.rain}mm rain</span>`:''}
+          ${d.visitors&&d.visitors!=='None'?`<span class="badge badge-purple" style="font-size:10px">👤 ${d.visitors}</span>`:''}
+          ${d.workers>0?`<span class="badge badge-teal" style="font-size:10px">👷 ${d.workers} workers · ${d.hours}h</span>`:'<span class="badge badge-muted" style="font-size:10px">🚫 No work</span>'}
+        </div>
+      </div>
+      <div class="diary-weather">
+        <span>${weatherIcon(d.weather_am)} AM: ${d.weather_am}</span>
+        <span>${weatherIcon(d.weather_pm)} PM: ${d.weather_pm}</span>
+        ${d.temp?`<span>🌡 ${d.temp}°C</span>`:''}
+      </div>
+      <div style="margin-top:8px;font-size:12px;color:var(--text-primary);line-height:1.6">${d.activities}</div>
+      ${d.delays!=='None'?`<div style="margin-top:6px;font-size:12px;color:var(--accent-yellow)">⚠ Delays: ${d.delays}</div>`:''}
+      ${d.notes?`<div style="margin-top:6px;font-size:11px;color:var(--text-muted);font-style:italic">${d.notes}</div>`:''}
+    </div>`).join('');
+}
+
+// ── RENDER: KPI PAGE ─────────────────────────────────────────────────────────
+
+let kpiRadarInst=null;
+function renderKPIPage(){
+  const cont=document.getElementById('kpiCards');
+  cont.innerHTML=KPI_DATA.map(k=>{
+    const over=k.value>k.target&&k.target>0;
+    const under=k.value<k.target;
+    const statusColor=k.status==='On Track'?'green':k.status==='At Risk'?'yellow':'red';
+    return `<div class="kpi-card ${statusColor}">
+      <div class="kpi-label">${k.name}</div>
+      <div class="kpi-value" style="font-size:1.6rem">${k.value}${k.unit==='%'?'%':''}</div>
+      <div class="kpi-meta">
+        <span class="kpi-target">Target: ${k.target}${k.unit==='%'?'%':''} ${k.unit!=='%'&&k.unit!=='index'?k.unit:''}</span>
+        <span class="kpi-trend ${k.trend==='Up'?'up':k.trend==='Down'?'down':'flat'}">${k.trend==='Up'?'▲':k.trend==='Down'?'▼':'→'} ${k.trend}</span>
+      </div>
+      <span class="badge ${badgeStatus(k.status)}" style="margin-top:8px;font-size:10px">${k.status}</span>
+    </div>`;
+  }).join('');
+
+  const ctx=document.getElementById('kpiRadar');
+  if(kpiRadarInst) kpiRadarInst.destroy();
+  kpiRadarInst=new Chart(ctx,{
+    type:'radar',
+    data:{
+      labels:['SPI','CPI','Quality %','Safety (LTIFR)','Local Employ %','Progress %','SMME %','Env NCRs (inv)'],
+      datasets:[
+        {label:'Actual',data:[94,97,96.2,100,91.3,90,82,100],fill:true,backgroundColor:'rgba(245,158,11,.15)',borderColor:'#f59e0b',pointBackgroundColor:'#f59e0b'},
+        {label:'Target',data:[100,100,97,100,100,100,100,100],fill:false,backgroundColor:'rgba(20,184,166,.05)',borderColor:'rgba(20,184,166,.5)',borderDash:[4,4],pointBackgroundColor:'#14b8a6'}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}},
+      scales:{r:{
+        grid:{color:'#2a2f45'},
+        angleLines:{color:'#2a2f45'},
+        pointLabels:{color:'#94a3b8',font:{size:10}},
+        ticks:{color:'#475569',backdropColor:'transparent',font:{size:9}}
+      }}}
+  });
+}
+
+// ── AIRTABLE INTEGRATION ──────────────────────────────────────────────────────
+// Base: TenderMind — N4-REHAB-2026 (appx9oZUOiM141LKx)
+// Works both locally (via window.AT_CONFIG) and on Vercel (via /api/airtable proxy)
+
+const _AT_BASE = 'appx9oZUOiM141LKx';
+const _AT_IS_LOCAL = window.location.hostname === 'localhost' ||
+                     window.location.hostname === '127.0.0.1' ||
+                     window.location.hostname === '';
+
+async function _atRequest(table, params = {}) {
+  let url, headers = {};
+  const qs = new URLSearchParams({ returnFieldsByFieldId: 'true', ...params });
+  if (_AT_IS_LOCAL && window.AT_CONFIG) {
+    url = `https://api.airtable.com/v0/${_AT_BASE}/${encodeURIComponent(table)}?${qs}`;
+    headers = { 'Authorization': `Bearer ${window.AT_CONFIG.apiKey}` };
+  } else {
+    url = `/api/airtable?table=${encodeURIComponent(table)}&${qs}`;
+  }
+  const res = await fetch(url, { headers });
+  if (!res.ok) throw new Error(`Airtable ${res.status}: ${res.statusText}`);
+  return res.json();
+}
+
+async function _atList(table) {
+  const all = []; let offset = null;
+  do {
+    const params = offset ? { offset } : {};
+    const data = await _atRequest(table, params);
+    all.push(...(data.records || []));
+    offset = data.offset || null;
+  } while (offset);
+  return all;
+}
+
+// Field IDs for [N4] Programme Activities (tbl8HbLkogpZ1pUL0)
+const ACT_FLD = {
+  id:       'fldWZK2nEGCdlRnXi',
+  section:  'fldaupqg1s9GfRWWH',
+  type:     'fldJMNVyml0bCRyQ4',
+  desc:     'fldJL4gaLjQpzXXjA',
+  dur:      'fldp5sXbtrxVMu0GG',
+  start:    'fldsIbx6zZ2F8bwZ1',
+  finish:   'fldy8gTLglR1GXDhh',
+  critical: 'fldbLInpyf7I80iAA'
+};
+
+function _actStatus(f) {
+  const type = (f[ACT_FLD.type]?.name || 'Normal');
+  if (type === 'Milestone') return 'Milestone';
+  const end = f[ACT_FLD.finish];
+  const now = new Date().toISOString().slice(0,10);
+  const start = f[ACT_FLD.start];
+  if (end && end < now) return 'Complete';
+  if (start && start <= now) return 'In Progress';
+  return 'Not Started';
+}
+
+async function loadActivitiesFromAirtable() {
+  try {
+    const badge = document.getElementById('atStatusBadge');
+    if (badge) { badge.textContent = '⟳ Syncing…'; badge.className = 'badge badge-muted'; }
+    const records = await _atList('[N4] Programme Activities');
+    APR_DATA = records.map((r, i) => {
+      const f = r.fields || {};
+      const sec = (f[ACT_FLD.section] || '').replace(/\s*—.*/, '').trim(); // "A", "B"…
+      const status = _actStatus(f);
+      const pct = status === 'Complete' ? 100 : status === 'In Progress' ? 50 : 0;
+      return {
+        id:        f[ACT_FLD.id] || `ACT-${i+1}`,
+        series:    sec,
+        activity:  f[ACT_FLD.desc] || '—',
+        km_from:   0, km_to: 0,
+        unit:      f[ACT_FLD.dur] ? `${f[ACT_FLD.dur]} d` : 'Sum',
+        planned:   f[ACT_FLD.dur] || 1,
+        completed: status === 'Complete' ? (f[ACT_FLD.dur] || 1) : 0,
+        pct,
+        status,
+        start: (f[ACT_FLD.start] || '').replace(/-/g, '/'),
+        end:   (f[ACT_FLD.finish] || '').replace(/-/g, '/'),
+        critical: !!f[ACT_FLD.critical],
+        type: f[ACT_FLD.type]?.name || 'Normal'
+      };
+    });
+    const sub = document.getElementById('actSubtitle');
+    if (sub) sub.textContent = `Programme Activities · ${APR_DATA.length} records · Synced from Airtable`;
+    if (badge) { badge.textContent = '● Airtable'; badge.className = 'badge badge-teal'; }
+    filterActivities();
+  } catch (err) {
+    console.warn('[n4-dashboard] Airtable load failed, using sample data:', err.message);
+    const sub = document.getElementById('actSubtitle');
+    if (sub) sub.textContent = `COLTO Spec Series · ${APR_DATA.length} Tracked Activities (sample data)`;
+    const badge = document.getElementById('atStatusBadge');
+    if (badge) { badge.textContent = '● LIVE'; badge.className = 'badge badge-amber'; }
+  }
+}
+
+async function syncAllFromAirtable() {
+  const btn = document.getElementById('atSyncBtn');
+  if (btn) btn.disabled = true;
+  await loadActivitiesFromAirtable();
+  if (btn) btn.disabled = false;
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded',()=>{
+  Chart.defaults.color='#94a3b8';
+  Chart.defaults.borderColor='#2a2f45';
+  refreshDashboard();
+  filterMilestones();
+  filterInspections();
+  filterDelays();
+  filterDiary();
+  // Load live activities from Airtable (falls back to hardcoded data on error)
+  loadActivitiesFromAirtable();
+});
+</script>
+</body>
+</html>

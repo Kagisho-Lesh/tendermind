@@ -1,0 +1,27 @@
+Activity_Type,Description,Unit_of_Measurement,Crew_Composition,Output_per_Day,Duration_Formula,Conditions,Labour_Hrs_per_Unit,Plant_Hrs_per_Unit,Source,Notes
+Earthworks,Clear and Grub — Light bush,ha,4 labourers + chainsaw,0.5 ha/day,Q/0.5,Flat terrain; light bush,32 hrs/ha,0,Historical,Increases 50% in heavy bush
+Earthworks,Strip Topsoil 200mm,m3,1x D6 dozer + 2x ADT,1000 m3/day,Q/1000,Flat; material stockpile <200m,0.032 hrs/m3 dozer,0.002 D6/m3,Historical,
+Earthworks,Bulk Excavation — Soft Rock,m3,1x 25t excavator + 2x ADT,1200 m3/day,Q/1200,BCM; haul 500m,0.000 L/m3,0.0008 P/m3 excav,Historical,
+Earthworks,Bulk Excavation — Hard Rock (B&B),m3,Drill rig + blast + excavator,500 m3/day,Q/500,Drill 76mm holes; 2m pattern,0.030 driller/m3,0.0020 rig/m3,Historical,Includes 2 shifts drill + 1 blast/day
+Earthworks,Pipe Trench — Hand Dig,m,2 labourers (600x600),8 m/day,Q/8,Normal soil; no shoring,2.0 L-hrs/m,0,Historical,
+Earthworks,Compaction (Fill),m3,1x 12t roller + bowser,800 m3/day,Q/800,200mm layers; 3 passes,0,0.00125 roller/m3,Historical,
+Concrete,Blinding 50mm (pump),m2,4 gang + pump,120 m2/day,Q/120,Flat; simple layout,0.28 L-hrs/m2,0.008 pump/m2,Historical,0.05 m3/m2
+Concrete,Reinforced Foundation (pump),m3,6 gang + pump,15 m3/day,Q/15,Complex layout; tight rebar,3.33 L-hrs/m3,0.067 pump/m3,Historical,Includes placing and finishing
+Concrete,Formwork — Wall (timber),m2,3 carpenters + 2 assistants,25 m2/day,Q/25,Straight wall; reuse x4,1.6 L-hrs/m2,0,Historical,Strike same rate after curing
+Reinforcing Steel,Steel Fixing — Slab,kg,3 steel fixers,2500 kg/day,Q/2500,Flat slab; Y12-Y16,0.010 L-hrs/kg,0,Historical,Tighter spacing reduces output
+Reinforcing Steel,Steel Fixing — Column,kg,3 steel fixers,1500 kg/day,Q/1500,Column cage; complex ties,0.016 L-hrs/kg,0,Historical,
+Structural Steel,Fabrication (workshop),t,5 boilermakers + 2 assistants,1.5 t/day,Q/1.5,Standard sections,26.7 L-hrs/t,0,Historical,Off-site; 1.5t/day per team
+Structural Steel,Erection (mobile crane),t,4 riggers + 2 signallers + crane,2 t/day,Q/2,Accessible site; <15m lift,12.0 L-hrs/t,0.5 crane-hrs/t,Historical,Complexity reduces output
+Piping,CS Pipe DN100 — Weld Install,m,2 welders + 2 helpers,12 m/day,Q/12,Butt-weld; 2 joints/m,1.33 W-hrs/m,0,Historical,
+Piping,CS Pipe DN200 — Weld Install,m,2 welders + 2 helpers,8 m/day,Q/8,DN200; 3 joints/m average,2.0 W-hrs/m,0,Historical,
+Piping,CS Pipe DN300 — Weld Install,m,3 welders + 3 helpers,5 m/day,Q/5,DN300; 4 welders may be needed,2.4 W-hrs/m,0,Historical,
+Piping,HDPE Pipe 110mm Butt Fusion,m,2 operators + fusion machine,30 m/day,Q/30,Flat; open trench,0.27 L-hrs/m,0.033 mach/m,Historical,Cooling time limits speed
+Electrical,Power Cable 4-core 35mm2 Pull,m,4 electricians + drum stand,80 m/day,Q/80,In duct/trench; cable drum,0.40 L-hrs/m,0,Historical,"Includes pulling, laying, tying"
+Electrical,Cable Termination (per end),No.,1 electrician + 1 assistant,12 ends/day,Q/12,Clean termination; glanding,1.33 L-hrs/end,0,Historical,
+Electrical,Conduit Install 25mm,m,2 electricians,25 m/day,Q/25,Surface mount,0.64 L-hrs/m,0,Historical,
+Painting,Surface Prep (needle gun),m2,2 workers,15 m2/day,Q/15,Corroded steel; Sa2.5 standard,1.07 L-hrs/m2,0,Historical,
+Painting,Airless Spray — 2-coat,m2,2 painters + 1 assistant,40 m2/day,Q/40,Good access; no masking,0.60 L-hrs/m2,0,Historical,
+Brickwork,Face Brick External (230mm),m2,1 bricklayer + 1 assistant,7 m2/day,Q/7,Standard bond; scaffold,2.29 L-hrs/m2,0,Historical,~65 bricks/m2
+Brickwork,Internal Blockwork 190mm,m2,1 bricklayer + 1 assistant,10 m2/day,Q/10,Internal; no scaffold,1.60 L-hrs/m2,0,Historical,
+Roads,G5 Gravel Spread and Compact,m3,1 grader + 1 roller + 2 trucks,200 m3/day (finished),Q/200,200mm layer; flat ground,0,0.005 grader/m3,Historical,
+Roads,Asphalt 40mm Wearing Course,m2,Paver + 2 rollers + crew,800 m2/day,Q/800,Good subbase; paver,0.100 L-hrs/m2,0.00125 paver/m2,Historical,

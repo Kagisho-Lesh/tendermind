@@ -1,0 +1,22 @@
+Line_No,Section,Description,Net_Cost_R,Pct_of_Total,Notes
+1,BOQ Section A,Pre-Construction and Mobilisation,850000,1.9,"Permits, de-mining sub, mobilisation"
+2,BOQ Section B,Earthworks and Grading,4200000,9.3,"Bulk cut/fill, roads, trenches"
+3,BOQ Section C,Civil Foundations,3800000,8.4,"Blinding, rebar, formwork, concrete"
+4,BOQ Section D,Structural Steel,5500000,12.2,"Fabrication, erection, grouting"
+5,BOQ Section E,Piping and Mechanical,7200000,16.0,"Line pipe, valves, fittings, insulation"
+6,BOQ Section F,Electrical and Instrumentation,4800000,10.7,"Cable, panels, instruments, Eskom connection"
+7,BOQ Section G,Buildings and Finishes,1800000,4.0,"Offices, ablutions, fencing"
+8,BOQ Section H,Site Services,2100000,4.7,"Water, stormwater, bunds, roads"
+9,BOQ Section I,Commissioning and Testing,1500000,3.3,"Pre-comm, hydrotests, start-up"
+10,BOQ Section J,Demobilisation and Handover,650000,1.4,"Reinstatement, documentation, handover"
+11,BOQ Section P&G,Preliminaries and General,5436000,12.1,"Site management, establishment, insurance"
+12,SUB-TOTAL,Direct Construction Cost (excl. PS),37836000,84.1,Sum of Sections A-J + P&G
+13,Provisional Sums,"Client-specified PS items (UXO, EDM, etc.)",3500000,7.8,U-code resources; passed through at cost
+14,NET COST,Total Net Cost,41336000,91.9,Before overhead and profit
+15,Adjustment,Head Office Overhead (8% of net cost),3306880,7.3,
+16,Adjustment,Profit (6% of net + overhead),2675877,5.9,
+17,Adjustment,Contingency (3% of net cost),1240080,2.8,Risk provision
+18,TENDER PRICE,Total Tender Price (excl. VAT),48558837,107.9,
+19,VAT,VAT at 15%,7283825,16.2,
+20,TENDER PRICE INC VAT,Total Including VAT,55842662,124.1,Amount on Form of Tender
+21,NOTES,,,,Labour 22.1%; Plant 26.8%; Materials 18.7%; Sub-contract 16.5%; P&G 12.1%; PS 7.8%

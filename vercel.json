@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "name": "tendermind",
+  "functions": {
+    "api/game.js":  { "maxDuration": 30 },
+    "api/data.js":  { "maxDuration": 10 },
+    "api/airtable.js": { "maxDuration": 30 }
+  },
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1.js" },
+    { "src": "/dashboard", "dest": "/front_end_design/n4_dashboard.html" },
+    { "src": "/sbde",      "dest": "/front_end_design/index.html" },
+    { "src": "/game",      "dest": "/estimation_masterclass.html" },
+    { "src": "/(.*)",      "dest": "/front_end_design/index.html" }
+  ],
+  "env": {
+    "MODEL":      "claude-haiku-4-5-20251001",
+    "MAX_TOKENS": "2048"
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control",              "value": "no-store" },
+        { "key": "Access-Control-Allow-Origin","value": "*" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+Resource_Code,Description,Specification,Unit,Supply_Rate_R,Delivery_R_per_unit,Wastage_Pct,Offloading_R,AllIn_Rate_R,Cost_Code,Currency,CCS_Type,Notes
+M01001,Ready-Mix Concrete C20/25,SANS 878 / C20/25 Normal,m3,1650,37.33,3.0,0,1741.93,3010,RD,M,Pump-mix; per batch plant quote
+M01002,Ready-Mix Concrete C25/30,SANS 878 / C25/30 Normal,m3,1750,37.33,3.0,0,1841.93,3010,RD,M,Standard structural concrete
+M01003,Ready-Mix Concrete C30/37,SANS 878 / C30/37 Pump-Mix,m3,1850,37.33,3.0,0,1941.93,3010,RD,M,Used for well pad foundations
+M01004,Ready-Mix Concrete C40/50,SANS 878 / C40/50 High Strength,m3,2100,37.33,3.0,0,2201.93,3010,RD,M,Precast or specialist elements
+M01005,Blinding Concrete 10MPa,Lean mix / no-fines,m3,1200,37.33,5.0,0,1297.33,3010,RD,M,50mm blinding layer under foundations
+M02001,Reinforcing Steel Y10,SANS 920 Grade 450 MPa,kg,18.2,0.35,7.5,0,19.89,3010,RD,M,Includes 7.5% wastage for laps and offcuts
+M02002,Reinforcing Steel Y12,SANS 920 Grade 450 MPa,kg,18.1,0.35,7.5,0,19.78,3010,RD,M,Most common slab and beam bar
+M02003,Reinforcing Steel Y16,SANS 920 Grade 450 MPa,kg,17.9,0.35,7.5,0,19.57,3010,RD,M,Column and wall bars
+M02004,Reinforcing Steel Y20,SANS 920 Grade 450 MPa,kg,17.8,0.35,7.5,0,19.47,3010,RD,M,Heavy sections
+M02005,Reinforcing Steel Y25,SANS 920 Grade 450 MPa,kg,17.7,0.35,7.5,0,19.37,3010,RD,M,Pile caps and heavy footings
+M03001,Structural Steel A36 / S275,SANS 657 Sections,kg,28.5,0.8,3.0,0,30.16,3010,RD,M,"Columns, beams, angles"
+M03002,Structural Steel Plate 10mm,SANS 1431 Grade 300W,kg,26.8,0.8,3.0,0,28.4,3010,RD,M,"Base plates, stiffeners"
+M04001,Formwork Timber (Pine),SAP Pine Structural,m2,380,15.0,15.0,0,452.0,3020,RD,M,Per m2 contact area; 4-use basis
+M04002,Plywood Formwork 18mm,Class 3 Structural Ply,m2,420,15.0,12.0,0,486.0,3020,RD,M,Smooth finish; 6-use basis
+M04003,Release Agent (Mould Oil),Standard release oil,L,45,0,5.0,0,47.25,3020,RD,M,0.1L per m2 contact area
+M05001,Line Pipe CS DN100 Sch40,ASTM A106 Gr B Seamless,m,320,8.0,3.0,0,337.6,3010,RD,M,Carbon steel pressure pipe
+M05002,Line Pipe CS DN150 Sch40,ASTM A106 Gr B Seamless,m,520,10.0,3.0,0,545.6,3010,RD,M,
+M05003,Line Pipe CS DN200 Sch40,ASTM A106 Gr B Seamless,m,820,12.0,3.0,0,856.6,3010,RD,M,Main line pipe Sasol project
+M05004,Line Pipe CS DN300 Sch40,ASTM A106 Gr B Seamless,m,1480,15.0,3.0,0,1539.4,3010,RD,M,
+M05005,HDPE Pipe 110mm PN16,SANS 4427 PE100,m,185,5.0,3.0,0,195.55,3010,RD,M,Water reticulation and services
+M05006,HDPE Pipe 200mm PN10,SANS 4427 PE100,m,380,8.0,3.0,0,399.4,3010,RD,M,Bulk water supply
+M06001,BW Fittings CS DN200 (Elbow),ASTM A234 WPB,No.,1200,25.0,3.0,0,1261.0,3010,RD,M,Butt-weld 90deg LR elbow
+M06002,BW Fittings CS DN200 (Tee),ASTM A234 WPB,No.,1800,30.0,3.0,0,1884.0,3010,RD,M,Equal tee
+M07001,Electrical Cable 4-core 16mm2 CU,SANS 1574 Armoured,m,185,2.5,4.0,0,194.9,3010,RD,M,Main power cable
+M07002,Electrical Cable 4-core 35mm2 CU,SANS 1574 Armoured,m,320,3.5,4.0,0,336.8,3010,RD,M,Feeder cables
+M07003,Conduit 25mm PVC,SANS 61386,m,18,0.5,5.0,0,19.44,3010,RD,M,Surface and buried conduit
+M08001,ANFO Explosive,Class 1.5 blasting agent,kg,42,0,2.0,0,42.84,3010,RD,M,Rock blasting only
+M08002,Non-Electric Detonators,Class 1.1,No.,180,0,2.0,0,183.6,3010,RD,M,Per detonator; licensed use only
+M09001,G5 Gravel (Road Base),COLTO Class G5,m3,185,28.0,8.0,0,227.88,3010,RD,M,Road layer works
+M09002,Crusher Run (G2),COLTO Class G2,m3,280,35.0,8.0,0,338.4,3010,RD,M,Selected sub-base
+M09003,Sand (Concrete Plaster),SANS 1090 Building Sand,m3,320,22.0,10.0,0,376.2,3010,RD,M,Fine aggregate
+M09004,19mm Stone Aggregate,SANS 1083,m3,380,25.0,8.0,0,435.6,3010,RD,M,Coarse aggregate
+M10001,Drilling Bits (76mm Button),Carbide button insert,No.,450,0,0,0,450.0,3030,RD,M,~800-1000m life in medium rock
+M10002,Welding Electrodes 3.2mm (E6013),AWS E6013,kg,68,0,5.0,0,71.4,3030,RD,M,General welding; ~0.3kg/joint
+M10003,Welding Electrodes 3.2mm (E7018),AWS E7018,kg,95,0,5.0,0,99.75,3030,RD,M,Low hydrogen; pressure systems
+M10004,Anti-Corrosion Paint Primer,2-part epoxy primer,L,185,0,5.0,0,194.25,3010,RD,M,Steel protection
+M10005,Top-Coat Paint (Industrial),2-part polyurethane,L,220,0,5.0,0,231.0,3010,RD,M,Final coat
