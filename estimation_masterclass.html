@@ -325,9 +325,7 @@ input[type=range]{width:100%;accent-color:var(--accent-amber);height:4px;cursor:
     <div class="nav-item" onclick="showSection('machine')" style="color:var(--accent-teal)"><span class="nav-icon">⚙️</span>Machine Output</div>
     <div class="nav-item" onclick="showSection('game')" style="color:var(--accent-amber)"><span class="nav-icon">🎮</span>Tender Game</div>
     <div class="nav-divider"></div>
-    <div class="nav-item" onclick="showSection('enrich')" style="color:#60a5fa"><span class="nav-icon">📚</span>Spec Enrichment</div>
-    <div class="nav-item" onclick="showSection('quiz')" style="color:#f472b6"><span class="nav-icon">🎯</span>Spec Quiz</div>
-    <div class="nav-item" onclick="showSection('concepts')" style="color:#34d399"><span class="nav-icon">🏫</span>Concepts</div>
+    <div class="nav-item" onclick="showSection('tutor')" style="color:var(--accent-purple)"><span class="nav-icon">📚</span>Standards Tutor</div>
   </div>
   <div class="sidebar-bottom">
     <div class="version">CCS Candy Inspired</div>
@@ -1368,285 +1366,13 @@ Cost/unit   = Rate_R/hr ÷ Output/hr</div>
 </div>
 </section>
 
-<!-- ═══════════════════ SPEC ENRICHMENT ═══════════════════ -->
-<section id="sec-enrich" class="section">
-<style>
-.spec-source-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:20px}
-.spec-source-card{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:8px;padding:14px;cursor:pointer;transition:all .15s}
-.spec-source-card:hover,.spec-source-card.active{border-color:var(--spec-color,var(--accent-amber));box-shadow:0 0 0 1px var(--spec-color,var(--accent-amber))}
-.spec-source-icon{font-size:22px;margin-bottom:6px}
-.spec-source-name{font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:var(--text-primary)}
-.spec-source-full{font-size:10px;color:var(--text-muted);margin-top:3px;line-height:1.3}
-.spec-chapter-list{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
-.spec-chapter-btn{background:var(--bg-elevated);border:1px solid var(--bg-border);border-radius:6px;padding:10px 14px;cursor:pointer;text-align:left;color:var(--text-primary);font-size:12px;font-weight:500;transition:all .15s;display:flex;justify-content:space-between;align-items:center}
-.spec-chapter-btn:hover{border-color:var(--accent-amber);color:var(--accent-amber)}
-.spec-topic-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.spec-topic-chip{padding:3px 10px;border-radius:12px;font-size:10px;background:var(--bg-border);color:var(--text-muted);cursor:pointer;transition:all .15s;border:1px solid transparent}
-.spec-topic-chip:hover{background:var(--accent-amber);color:#000}
-.enrich-card{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:10px;padding:20px;margin-top:0}
-.enrich-section-title{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent-amber);text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px}
-.enrich-bullet{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg-border);font-size:13px;color:var(--text-primary);line-height:1.4}
-.enrich-bullet:last-child{border-bottom:none}
-.enrich-bullet-dot{color:var(--accent-amber);font-weight:700;flex-shrink:0}
-.enrich-qa{background:var(--bg-elevated);border-radius:6px;padding:10px 14px;margin-bottom:8px}
-.enrich-qa-q{font-size:12px;color:var(--accent-teal);font-weight:600;margin-bottom:4px}
-.enrich-qa-a{font-size:12px;color:var(--text-primary);line-height:1.5}
-.enrich-gotcha{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:6px;padding:8px 12px;margin-bottom:6px;font-size:12px;color:var(--text-primary)}
-.enrich-boq-item{display:grid;grid-template-columns:80px 1fr 60px;gap:8px;padding:7px 0;border-bottom:1px solid var(--bg-border);align-items:start;font-size:12px}
-.enrich-boq-item:last-child{border-bottom:none}
-.enrich-boq-ref{font-family:'DM Mono',monospace;color:var(--accent-amber);font-size:11px}
-.enrich-boq-unit{font-family:'DM Mono',monospace;color:var(--text-secondary);font-size:11px;text-align:right}
-.enrich-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
-.enrich-table th{background:var(--bg-elevated);color:var(--text-muted);font-size:10px;text-transform:uppercase;letter-spacing:.07em;padding:6px 10px;text-align:left;border-bottom:1px solid var(--bg-border)}
-.enrich-table td{padding:7px 10px;border-bottom:1px solid var(--bg-border);color:var(--text-primary);vertical-align:top}
-.enrich-table tr:hover td{background:var(--bg-elevated)}
-.enrich-table td:first-child{font-family:'DM Mono',monospace;color:var(--accent-teal);font-size:11px}
-.enrich-table td:nth-child(2){font-weight:600;color:var(--accent-amber)}
-.enrich-loading{display:flex;align-items:center;justify-content:center;gap:12px;padding:60px;color:var(--text-secondary);font-size:13px}
-.enrich-empty{padding:40px;text-align:center;color:var(--text-muted);font-size:13px}
-.spec-panels{display:grid;grid-template-columns:260px 1fr;gap:16px;height:calc(100vh - 160px);overflow:hidden}
-.spec-panel-left{overflow-y:auto;padding-right:4px}
-.spec-panel-right{overflow-y:auto}
-.enrich-tender-box{background:rgba(20,184,166,.06);border:1px solid rgba(20,184,166,.2);border-radius:6px;padding:12px 16px;font-size:13px;color:var(--text-primary);line-height:1.6;margin-top:6px}
-</style>
-
-<div style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
-  <div>
-    <h2 style="font-family:'DM Mono',monospace;font-size:16px;color:#60a5fa;margin-bottom:4px">📚 Specification Enrichment</h2>
-    <p style="font-size:12px;color:var(--text-muted)">Select a specification source and chapter to get a rich AI-powered explanation of key requirements, BOQ implications, and practical tips.</p>
-  </div>
-  <div id="enrich-ai-badge" style="display:none;padding:4px 12px;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.3);border-radius:20px;font-size:11px;color:#60a5fa;font-family:'DM Mono',monospace">AI LIVE</div>
-</div>
-
-<div class="spec-panels">
-  <!-- LEFT: Source + Chapter selector -->
-  <div class="spec-panel-left">
-    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Specification Source</div>
-    <div class="spec-source-grid" id="enrich-source-grid" style="grid-template-columns:1fr 1fr"></div>
-    <div id="enrich-chapter-area" style="display:none;margin-top:14px">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Chapter / Series</div>
-      <div class="spec-chapter-list" id="enrich-chapter-list"></div>
-    </div>
-  </div>
-
-  <!-- RIGHT: Enrichment content -->
-  <div class="spec-panel-right" id="enrich-content-area">
-    <div class="enrich-empty">
-      <div style="font-size:36px;margin-bottom:12px">📖</div>
-      <div style="color:var(--text-secondary);font-size:14px;margin-bottom:6px">Select a specification source and chapter</div>
-      <div style="color:var(--text-muted);font-size:12px">AI will generate a detailed explanation with key clauses, BOQ items, and practical tips.</div>
-    </div>
-  </div>
-</div>
-</section>
-
-<!-- ═══════════════════ SPEC QUIZ ═══════════════════ -->
-<section id="sec-quiz" class="section">
-<style>
-.quiz-source-selector{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:14px}
-.quiz-source-btn{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:8px;padding:10px 12px;cursor:pointer;text-align:center;transition:all .15s;font-size:11px;color:var(--text-secondary)}
-.quiz-source-btn:hover,.quiz-source-btn.active{border-color:var(--acc,#f472b6);color:var(--acc,#f472b6)}
-.quiz-diff-btn{padding:6px 16px;border-radius:20px;border:1px solid var(--bg-border);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:12px;font-weight:600;transition:all .15s}
-.quiz-diff-btn:hover{border-color:#f472b6;color:#f472b6}
-.quiz-diff-btn.active{background:#f472b6;color:#000;border-color:#f472b6}
-.quiz-start-btn{padding:10px 28px;background:linear-gradient(135deg,#f472b6,#db2777);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.03em;transition:opacity .15s}
-.quiz-start-btn:hover{opacity:.88}
-.quiz-start-btn:disabled{opacity:.4;cursor:not-allowed}
-.quiz-q-card{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:10px;padding:20px;margin-bottom:14px}
-.quiz-q-number{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;display:flex;justify-content:space-between}
-.quiz-q-type-badge{padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700;text-transform:uppercase}
-.quiz-q-type-mcq{background:rgba(96,165,250,.15);color:#60a5fa}
-.quiz-q-type-sa{background:rgba(34,197,94,.15);color:#22c55e}
-.quiz-q-type-tf{background:rgba(245,158,11,.15);color:var(--accent-amber)}
-.quiz-q-text{font-size:14px;color:var(--text-primary);line-height:1.55;margin-bottom:14px;font-weight:500}
-.quiz-option{display:flex;align-items:flex-start;gap:10px;padding:9px 14px;border:1px solid var(--bg-border);border-radius:6px;margin-bottom:6px;cursor:pointer;font-size:13px;color:var(--text-secondary);transition:all .15s;line-height:1.4}
-.quiz-option:hover{border-color:#f472b6;color:var(--text-primary)}
-.quiz-option.selected{border-color:#f472b6;background:rgba(244,114,182,.1);color:var(--text-primary)}
-.quiz-option.correct{border-color:#22c55e;background:rgba(34,197,94,.12);color:#22c55e}
-.quiz-option.wrong{border-color:#ef4444;background:rgba(239,68,68,.1);color:#ef4444}
-.quiz-option-key{font-family:'DM Mono',monospace;font-size:11px;font-weight:700;width:18px;flex-shrink:0;padding-top:1px}
-.quiz-sa-input{width:100%;padding:10px 14px;background:var(--bg-elevated);border:1px solid var(--bg-border);border-radius:6px;color:var(--text-primary);font-size:13px;resize:vertical;min-height:80px;font-family:'Inter',sans-serif;outline:none;margin-bottom:8px}
-.quiz-sa-input:focus{border-color:#f472b6}
-.quiz-explanation{background:var(--bg-elevated);border-left:3px solid #22c55e;border-radius:0 6px 6px 0;padding:12px 14px;margin-top:10px;font-size:12px;color:var(--text-primary);line-height:1.55;display:none}
-.quiz-clause-ref{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);margin-top:6px}
-.quiz-results-card{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:12px;padding:24px;margin-bottom:20px}
-.quiz-score-big{font-family:'DM Mono',monospace;font-size:48px;color:#f472b6;font-weight:700;text-align:center;margin-bottom:4px}
-.quiz-score-label{font-size:13px;color:var(--text-muted);text-align:center;margin-bottom:20px}
-.quiz-score-bar-wrap{height:8px;background:var(--bg-border);border-radius:4px;margin-bottom:20px;overflow:hidden}
-.quiz-score-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,#f472b6,#db2777);transition:width .6s ease}
-</style>
-
-<div style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
-  <div>
-    <h2 style="font-family:'DM Mono',monospace;font-size:16px;color:#f472b6;margin-bottom:4px">🎯 Specification Quiz</h2>
-    <p style="font-size:12px;color:var(--text-muted)">Test your knowledge of SA road construction specifications — independently from the Tender Game.</p>
-  </div>
-  <div id="quiz-ai-badge" style="display:none;padding:4px 12px;background:rgba(244,114,182,.1);border:1px solid rgba(244,114,182,.3);border-radius:20px;font-size:11px;color:#f472b6;font-family:'DM Mono',monospace">AI LIVE</div>
-</div>
-
-<!-- QUIZ SETUP PANEL -->
-<div id="quiz-setup" class="panel" style="margin-bottom:16px">
-  <div class="panel-title">⚙️ Configure Your Quiz</div>
-
-  <div style="margin-bottom:14px">
-    <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">1. Choose Specification</div>
-    <div class="quiz-source-selector" id="quiz-source-grid"></div>
-    <div id="quiz-chapter-area" style="display:none;margin-top:10px">
-      <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">2. Choose Chapter / Focus Area</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px" id="quiz-chapter-chips"></div>
-    </div>
-  </div>
-
-  <div style="margin-bottom:16px">
-    <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">3. Difficulty Level</div>
-    <div style="display:flex;gap:8px">
-      <button class="quiz-diff-btn" id="qdiff-foundation" onclick="setQuizDiff('foundation')">🌱 Foundation</button>
-      <button class="quiz-diff-btn active" id="qdiff-intermediate" onclick="setQuizDiff('intermediate')">⚡ Intermediate</button>
-      <button class="quiz-diff-btn" id="qdiff-expert" onclick="setQuizDiff('expert')">🔥 Expert</button>
-    </div>
-  </div>
-
-  <div style="display:flex;align-items:center;gap:16px">
-    <button class="quiz-start-btn" id="quiz-start-btn" onclick="startSpecQuiz()" disabled>Generate Quiz →</button>
-    <div id="quiz-setup-status" style="font-size:12px;color:var(--text-muted)">Select a specification and chapter above</div>
-  </div>
-</div>
-
-<!-- QUIZ ACTIVE AREA -->
-<div id="quiz-active-area" style="display:none">
-  <div id="quiz-progress-bar" style="height:4px;background:var(--bg-border);border-radius:2px;margin-bottom:20px;overflow:hidden">
-    <div id="quiz-progress-fill" style="height:100%;background:linear-gradient(90deg,#f472b6,#db2777);width:0%;transition:width .3s"></div>
-  </div>
-  <div id="quiz-questions-wrap"></div>
-  <div style="margin-top:20px;display:flex;gap:12px;align-items:center">
-    <button class="quiz-start-btn" onclick="submitSpecQuiz()">Submit Answers</button>
-    <button class="quiz-diff-btn" onclick="resetSpecQuiz()">↩ Start Over</button>
-    <div id="quiz-answered-count" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-muted)"></div>
-  </div>
-</div>
-
-<!-- QUIZ RESULTS AREA -->
-<div id="quiz-results-area" style="display:none">
-  <div class="quiz-results-card">
-    <div class="quiz-score-big" id="quiz-final-score">—</div>
-    <div class="quiz-score-label" id="quiz-final-label">—</div>
-    <div class="quiz-score-bar-wrap"><div class="quiz-score-bar" id="quiz-score-bar" style="width:0%"></div></div>
-    <div id="quiz-results-breakdown" style="font-size:13px;color:var(--text-muted)"></div>
-  </div>
-  <div id="quiz-review-wrap"></div>
-  <div style="margin-top:16px;display:flex;gap:12px">
-    <button class="quiz-start-btn" onclick="retrySpecQuiz()">🔄 Retry Same Spec</button>
-    <button class="quiz-diff-btn" onclick="resetSpecQuiz()">↩ New Quiz</button>
-  </div>
-</div>
-</section>
-
-<!-- ═══════════════════ CONCEPTS EDUCATION ═══════════════════ -->
-<section id="sec-concepts" class="section">
-<style>
-.concepts-layout{display:flex;gap:16px;height:calc(100vh - 120px);overflow:hidden}
-.concepts-sidebar{width:220px;flex-shrink:0;overflow-y:auto;background:var(--bg-card);border-radius:10px;padding:12px}
-.concepts-main{flex:1;overflow-y:auto}
-.concept-cat-btn{display:block;width:100%;text-align:left;padding:9px 12px;border-radius:7px;border:none;background:transparent;color:var(--text-secondary);cursor:pointer;font-size:12px;font-weight:500;transition:.2s;margin-bottom:3px;line-height:1.3}
-.concept-cat-btn:hover{background:rgba(255,255,255,.07);color:var(--text-primary)}
-.concept-cat-btn.active{background:rgba(52,211,153,.15);color:#34d399;font-weight:700}
-.concept-topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;padding:4px 0 12px}
-.concept-topic-chip{padding:7px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);cursor:pointer;font-size:12px;color:var(--text-secondary);transition:.2s;text-align:left}
-.concept-topic-chip:hover{border-color:rgba(52,211,153,.4);color:#34d399}
-.concept-topic-chip.active{border-color:#34d399;background:rgba(52,211,153,.1);color:#34d399;font-weight:700}
-.concept-card{background:var(--bg-card);border-radius:12px;padding:20px;border:1px solid rgba(52,211,153,.2)}
-.concept-card h2{font-size:18px;font-weight:700;color:#34d399;margin:0 0 4px}
-.concept-card .cat-badge{font-size:11px;background:rgba(52,211,153,.15);color:#34d399;padding:2px 10px;border-radius:20px;display:inline-block;margin-bottom:12px}
-.concept-section-label{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
-.concept-points{list-style:none;padding:0;margin:0}
-.concept-points li{padding:5px 0 5px 16px;border-left:2px solid rgba(52,211,153,.3);margin-bottom:4px;font-size:13px;color:var(--text-secondary)}
-.concept-example{background:rgba(52,211,153,.06);border-left:3px solid #34d399;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:var(--text-secondary);line-height:1.6;margin:4px 0}
-.concept-mistakes{list-style:none;padding:0;margin:0}
-.concept-mistakes li{padding:5px 0 5px 18px;position:relative;font-size:13px;color:#f87171;margin-bottom:3px}
-.concept-mistakes li::before{content:"⚠";position:absolute;left:0;font-size:11px}
-.concept-qa-grid{display:grid;gap:8px}
-.concept-qa-item{background:rgba(255,255,255,.04);border-radius:8px;padding:10px 12px}
-.concept-qa-q{font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:4px}
-.concept-qa-a{font-size:12px;color:var(--text-secondary)}
-.concepts-mode-tabs{display:flex;gap:8px;margin-bottom:16px}
-.concepts-tab{padding:7px 18px;border-radius:7px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-muted);cursor:pointer;font-size:13px;font-weight:600;transition:.2s}
-.concepts-tab:hover{border-color:rgba(52,211,153,.4);color:#34d399}
-.concepts-tab.active{background:rgba(52,211,153,.15);border-color:#34d399;color:#34d399}
-.concepts-ai-badge{display:none;padding:3px 10px;background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.3);border-radius:20px;font-size:11px;color:#34d399;margin-left:10px;vertical-align:middle}
-.concept-quiz-setup{background:var(--bg-card);border-radius:12px;padding:20px;border:1px solid rgba(255,255,255,.06)}
-.cq-diff-row{display:flex;gap:8px;margin:8px 0 16px}
-.cq-diff-btn{padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text-muted);cursor:pointer;font-size:12px;font-weight:600;transition:.2s}
-.cq-diff-btn:hover{border-color:rgba(52,211,153,.4);color:#34d399}
-.cq-diff-btn.active{background:rgba(52,211,153,.15);border-color:#34d399;color:#34d399}
-</style>
-<div style="padding:20px">
-  <div style="display:flex;align-items:center;margin-bottom:16px">
-    <h1 style="font-size:22px;font-weight:700;margin:0">🏫 Tendering Concepts</h1>
-    <span id="concepts-ai-badge" class="concepts-ai-badge">✦ AI Live</span>
-  </div>
-  <div class="concepts-mode-tabs">
-    <button class="concepts-tab active" id="ctab-learn" onclick="setConceptsTab('learn')">📖 Learn</button>
-    <button class="concepts-tab" id="ctab-quiz" onclick="setConceptsTab('cquiz')">🎯 Quiz Me</button>
-  </div>
-
-  <!-- LEARN MODE -->
-  <div id="concepts-learn-mode">
-    <div class="concepts-layout">
-      <div class="concepts-sidebar">
-        <div style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Categories</div>
-        <div id="concept-cats"></div>
-      </div>
-      <div class="concepts-main">
-        <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Topics</div>
-        <div class="concept-topic-grid" id="concept-topics"></div>
-        <div id="concept-content"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- QUIZ MODE -->
-  <div id="concepts-quiz-mode" style="display:none">
-    <div class="concept-quiz-setup" id="cq-setup">
-      <div style="font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:10px">Select Category &amp; Topic</div>
-      <div id="cq-cat-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:14px"></div>
-      <div id="cq-topic-row" style="display:none">
-        <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px">Topic (optional)</div>
-        <div class="concept-topic-grid" id="cq-topics" style="margin-bottom:14px"></div>
-      </div>
-      <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px">Difficulty</div>
-      <div class="cq-diff-row">
-        <button class="cq-diff-btn" id="cqd-foundation" onclick="setCqDiff('foundation')">Foundation</button>
-        <button class="cq-diff-btn active" id="cqd-intermediate" onclick="setCqDiff('intermediate')">Intermediate</button>
-        <button class="cq-diff-btn" id="cqd-expert" onclick="setCqDiff('expert')">Expert</button>
-      </div>
-      <button class="quiz-start-btn" onclick="startConceptQuiz()" id="cq-start-btn" disabled>Generate Quiz</button>
-    </div>
-    <div id="cq-active" style="display:none">
-      <div id="cq-progress-bar-wrap" style="background:rgba(255,255,255,.06);border-radius:4px;height:4px;margin-bottom:16px">
-        <div id="cq-progress-bar" style="height:4px;background:#34d399;border-radius:4px;transition:.4s;width:0%"></div>
-      </div>
-      <div id="cq-q-counter" style="font-size:12px;color:var(--text-muted);margin-bottom:12px"></div>
-      <div id="cq-questions"></div>
-      <button class="quiz-start-btn" onclick="submitConceptQuiz()" style="margin-top:16px">Submit Answers</button>
-    </div>
-    <div id="cq-results" style="display:none">
-      <div id="cq-score-display" style="text-align:center;padding:24px 0"></div>
-      <div id="cq-review"></div>
-      <div style="margin-top:16px;display:flex;gap:8px">
-        <button class="quiz-start-btn" onclick="retryConceptQuiz()">🔄 Retry Same Topic</button>
-        <button class="quiz-diff-btn" onclick="resetConceptQuiz()">↩ New Quiz</button>
-      </div>
-    </div>
-  </div>
-</div>
-</section>
-
 </div><!-- end #main -->
 
 <!-- STATUS BAR -->
 <div id="statusbar" style="position:fixed;bottom:0;left:0;right:0">
-  <span>WBHO Estimation Masterclass — For Training Purposes Only</span>
+  <span>TenderMind — Estimation & Tender Pricing</span>
   <span class="status-active" id="status-section">🏠 Home</span>
+  <span style="display:none;align-items:center;gap:4px;padding:1px 8px;border-radius:4px;font-size:10px;background:rgba(20,184,166,.15);color:#14b8a6" id="at-sync-badge"></span>
   <span id="status-time"></span>
 </div>
 
@@ -2462,11 +2188,13 @@ let progFilter='all';
 function showSection(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('sec-'+id).classList.add('active');
+  const sec=document.getElementById('sec-'+id);
+  if(sec)sec.classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n=>{if(n.getAttribute('onclick')===`showSection('${id}')`)n.classList.add('active')});
   const names={home:'🏠 Home',resources:'📦 Resource Library',rates:'🏗️ Production Rates',
                 calc:'🧮 Calculation Pad',script:'📝 Variable Scriptpad',factors:'📐 Factors Library',
-                programme:'📋 Programme Reference',machine:'⚙️ Machine Output Calc',game:'🎮 Tender Pricing Game'};
+                programme:'📋 Programme Reference',machine:'⚙️ Machine Output Calc',
+                game:'🎮 Tender Pricing Game',tutor:'📚 Standards Tutor'};
   document.getElementById('status-section').textContent=names[id]||id;
   if(id==='resources')renderResources();
   if(id==='rates')renderRates();
@@ -2476,7 +2204,9 @@ function showSection(id){
   if(id==='programme')renderProgramme();
   if(id==='machine'){ calcHauler(); calcExcavator(); calcPaver(); calcRoller(); calcGrader(); calcMilling(); calcCustom(); }
   if(id==='game')renderScenarioGrid();
+  if(id==='tutor')tutorInit();
 }
+window.showSection=showSection;
 
 // ════ UTILS ════
 const R=v=>v==null?'—':'R '+Number(v).toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -4824,881 +4554,619 @@ function isOverridden(code) {
   return !!overrides[code];
 }
 
-document.addEventListener('DOMContentLoaded', init);
-
 // ════════════════════════════════════════════════════════
-// SPEC ENRICHMENT & QUIZ — Shared Data
+// AIRTABLE INTEGRATION — Live Rate Data
+// Merges real Material Resources from Airtable into
+// RESOURCES[] so the Rate Library shows live project data.
+// Works locally (via window.AT_CONFIG) and on Vercel (/api/airtable).
 // ════════════════════════════════════════════════════════
-const SPEC_ENDPOINT = '/api/specs';
-let specAiLive = false;
 
-const SPEC_SOURCES = [
-  { id:'colto', name:'COLTO', icon:'🛣️', color:'#f59e0b',
-    full:'Committee of Land Transport Officials',
-    chapters:[
-      {id:'colto-1000', name:'Series 1000 — General', topics:['Definitions & terms','Traffic accommodation','Overhaul & free haul','Clearing & grubbing']},
-      {id:'colto-2000', name:'Series 2000 — Drainage', topics:['Culverts & bedding classes','Kerbing & channelling','Drains & sumps']},
-      {id:'colto-3000', name:'Series 3000 — Earthworks & Gravel', topics:['G1–G7 material specs','Mass earthworks','Compaction standards','Stabilisation']},
-      {id:'colto-4000', name:'Series 4000 — Bituminous Works', topics:['Prime coat rates','Surface seals','AC14 & UTFC','Asphalt production']},
-      {id:'colto-5000', name:'Series 5000 — Ancillary Roadworks', topics:['Road markings','Guardrails','Signs','Culverts & headwalls']},
-    ]},
-  { id:'coto', name:'COTO 2020', icon:'📋', color:'#14b8a6',
-    full:'Standard Specifications for Road & Bridge Works (2020)',
-    chapters:[
-      {id:'coto-ch1',  name:'Chapter 1 — General',              topics:['General preamble','Site establishment','Traffic accommodation','Clearing & grubbing']},
-      {id:'coto-ch2',  name:'Chapter 2 — Services',             topics:['Trenching','Dry & wet services','Utility crossings']},
-      {id:'coto-ch3',  name:'Chapter 3 — Drainage',             topics:['Culverts','Kerbing & channelling','Open drains']},
-      {id:'coto-ch4',  name:'Chapter 4 — Earthworks Materials', topics:['Borrow materials','Cut material classes','RAP & recycled materials']},
-      {id:'coto-ch5',  name:'Chapter 5 — Earthworks Construction', topics:['Fill & compaction','Layer works','Stabilisation procedures']},
-      {id:'coto-ch9',  name:'Chapter 9 — Asphalt Layers',       topics:['Mix design','Laying temperatures','Compaction & density','Testing frequency']},
-      {id:'coto-ch10', name:'Chapter 10 — Surface Treatments',  topics:['Prime & tack coat','Surface seal types','Chip spreader calibration']},
-      {id:'coto-ch11', name:'Chapter 11 — Ancillary Roadworks', topics:['Gabions','Road restraint systems','Signs & markings']},
-    ]},
-  { id:'satcc', name:'SATCC 1998', icon:'🌍', color:'#818cf8',
-    full:'Southern Africa Transport & Communications Commission',
-    chapters:[
-      {id:'satcc-1000', name:'Series 1000 — General',    topics:['Definitions','Traffic accommodation','Contractor obligations']},
-      {id:'satcc-2000', name:'Series 2000 — Drainage',   topics:['Culverts','Gabions','Kerbing']},
-      {id:'satcc-3000', name:'Series 3000 — Earthworks', topics:['Mass earthworks','Gravel layers','Stabilisation']},
-      {id:'satcc-4000', name:'Series 4000 — Bituminous', topics:['Primes','Surface seals','Asphalt concrete']},
-      {id:'satcc-5000', name:'Series 5000 — Concrete',   topics:['Concrete road layers','Joints','Structures']},
-    ]},
-  { id:'sapem', name:'SAPEM', icon:'📐', color:'#f472b6',
-    full:'South African Pavement Engineering Manual (SANRAL)',
-    chapters:[
-      {id:'sapem-ch2',  name:'Ch 2 — Pavement Composition',     topics:['Layer types','Flexible vs rigid','Distress modes','Stiffness moduli']},
-      {id:'sapem-ch3',  name:'Ch 3 — Materials Testing',        topics:['Atterberg limits','CBR testing','Aggregate tests','TMH test methods']},
-      {id:'sapem-ch9',  name:'Ch 9 — Materials Utilisation',    topics:['Material classification','Layer equivalency','Design inputs']},
-      {id:'sapem-ch10', name:'Ch 10 — Pavement Design',         topics:['SAMDM method','Traffic categories','Reliability levels','Design structures']},
-      {id:'sapem-ch11', name:'Ch 11 — Documentation & Tendering',topics:['Contract docs','BOQ preparation','COLTO vs COTO','Tender adjudication']},
-      {id:'sapem-ch12', name:'Ch 12 — Construction Equipment',  topics:['Equipment selection','Production rates','Fleet sizing','Compaction passes']},
-    ]},
-  { id:'tg1', name:'Sabita TG1', icon:'🔥', color:'#fb923c',
-    full:'Technical Guideline — Modified Bituminous Binders (5th Ed, 2020)',
-    chapters:[
-      {id:'tg1-ch3', name:'Ch 3 — Binder Composition',        topics:['SBS/SBR/EVA modifiers','Bitumen Rubber','Rheology & adhesion']},
-      {id:'tg1-ch6', name:'Ch 6 — Product Requirements',      topics:['PMB grades (SANS 4001-BT3)','Softening points','Penetration ranges']},
-      {id:'tg1-ch7', name:'Ch 7 — Application',               topics:['Spray seals','Hot-mix asphalt','Application temperatures']},
-      {id:'tg1-ch8', name:'Ch 8 — Construction',              topics:['Equipment requirements','Temperature logging','Storage & handling']},
-    ]},
-  { id:'tg2', name:'Sabita TG2', icon:'🏗️', color:'#34d399',
-    full:'Technical Guideline — Bitumen Stabilised Materials (3rd Ed, 2020)',
-    chapters:[
-      {id:'tg2-ch2', name:'Ch 2 — BSM Design Approach',       topics:['BSM-emulsion vs BSM-foam','Behaviour & classification','ITS & UCS targets']},
-      {id:'tg2-ch4', name:'Ch 4 — Mix Design',                topics:['Design procedure','Active filler','Target binder content','RSR criteria']},
-      {id:'tg2-ch5', name:'Ch 5 — Structural Design',         topics:['Pavement Number method','ME design criteria','Structural layers']},
-      {id:'tg2-ch6', name:'Ch 6 — Construction',              topics:['In-situ recycling','Compaction requirements','Curing period','Surfacing']},
-    ]},
-  { id:'manual35', name:'Sabita M35', icon:'⚗️', color:'#a78bfa',
-    full:'Manual 35 — Asphalt Design (2nd Ed, Sabita)',
-    chapters:[
-      {id:'m35-mix',  name:'Mix Design & Volumetrics', topics:['Marshall method','VFB/VTM/VMA','Stability & flow targets']},
-      {id:'m35-mats', name:'Material Requirements',    topics:['Aggregate grading','LA abrasion','Bitumen grade selection']},
-      {id:'m35-prod', name:'Production & QC',          topics:['Plant calibration','Temperature control','Acceptance testing']},
-    ]},
-  { id:'cat42', name:'CAT PHB 42', icon:'🚛', color:'#fbbf24',
-    full:'Caterpillar Performance Handbook — Edition 42',
-    chapters:[
-      {id:'cat-earthmov', name:'Excavators & Dozers', topics:['Cycle time analysis','Fill factors','Swell factors','Payload ratings']},
-      {id:'cat-haulers',  name:'Haulers & ADTs',      topics:['ADT payload/volume','Haul road resistance','Fleet sizing formula']},
-      {id:'cat-compact',  name:'Compaction Equipment',topics:['Lift thickness','Number of passes','Vibratory roller output']},
-      {id:'cat-paving',   name:'Road Building Plant', topics:['Motor graders','Paving spreads','Cold milling output']},
-    ]},
-  { id:'vogele', name:'Vogele Paving', icon:'🛤️', color:'#60a5fa',
-    full:'Vogele SUPER Paver Operating Guide',
-    chapters:[
-      {id:'vog-basics',  name:'Paving Basics',     topics:['Screed pre-heat','Material temperature','Paver set-up']},
-      {id:'vog-ops',     name:'Operations',        topics:['Grade & slope control','Averaging beam','Guidance systems']},
-      {id:'vog-quality', name:'Quality Factors',   topics:['Compaction train','Segregation prevention','Surface regularity tolerances']},
-    ]},
-];
+const _AT_BASE = 'appx9oZUOiM141LKx';
+const _AT_LOCAL = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
 
-// ── ENRICHMENT ────────────────────────────────────────────────────────────
-let selectedEnrichSource = null;
-let selectedEnrichChapter = null;
-
-function initEnrich() {
-  const grid = document.getElementById('enrich-source-grid');
-  if (!grid || grid.dataset.init) return;
-  grid.dataset.init = '1';
-  grid.innerHTML = SPEC_SOURCES.map(s => `
-    <div class="spec-source-card" id="esrc-${s.id}" style="--spec-color:${s.color}"
-         onclick="selectEnrichSource('${s.id}')">
-      <div class="spec-source-icon">${s.icon}</div>
-      <div class="spec-source-name" style="color:${s.color}">${s.name}</div>
-      <div class="spec-source-full">${s.full}</div>
-    </div>`).join('');
-  checkSpecAi('enrich');
-}
-
-function selectEnrichSource(id) {
-  selectedEnrichSource = id;
-  selectedEnrichChapter = null;
-  document.querySelectorAll('#enrich-source-grid .spec-source-card').forEach(c => c.classList.remove('active'));
-  const card = document.getElementById('esrc-' + id);
-  if (card) card.classList.add('active');
-  const src = SPEC_SOURCES.find(s => s.id === id);
-  const area = document.getElementById('enrich-chapter-area');
-  const list = document.getElementById('enrich-chapter-list');
-  area.style.display = 'block';
-  list.innerHTML = src.chapters.map(ch => `
-    <div class="spec-chapter-btn" id="ech-${ch.id}" onclick="selectEnrichChapter('${ch.id}','${ch.name.replace(/'/g,"\\'")}')">
-      <span>${ch.name}</span>
-      <span style="font-size:10px;color:var(--text-muted)">→</span>
-    </div>
-    <div class="spec-topic-chips">
-      ${ch.topics.map(t => `<span class="spec-topic-chip" onclick="event.stopPropagation();loadEnrichment('${ch.id}','${t.replace(/'/g,"\\'")}')">${t}</span>`).join('')}
-    </div>`).join('');
-}
-
-function selectEnrichChapter(chId, chName) {
-  selectedEnrichChapter = chId;
-  document.querySelectorAll('.spec-chapter-btn').forEach(b => b.style.borderColor = '');
-  const btn = document.getElementById('ech-' + chId);
-  if (btn) btn.style.borderColor = 'var(--accent-amber)';
-  loadEnrichment(chId, '');
-}
-
-async function loadEnrichment(specId, topic) {
-  const area = document.getElementById('enrich-content-area');
-  area.innerHTML = `<div class="enrich-loading"><div class="loader-dot" style="animation:pulse 1s infinite">⚡</div><span>Generating enrichment for <strong>${specId}</strong>...</span></div>`;
-  try {
-    const url = `${SPEC_ENDPOINT}?action=enrich&spec=${encodeURIComponent(specId)}&topic=${encodeURIComponent(topic)}`;
-    const r = await fetch(url);
-    if (!r.ok) throw new Error('API error ' + r.status);
-    const data = await r.json();
-    renderEnrichment(data, area);
-  } catch(e) {
-    area.innerHTML = renderEnrichOffline(specId, topic);
+async function _atGet(table, params = {}) {
+  const qs = new URLSearchParams({ returnFieldsByFieldId: 'true', ...params });
+  let url, hdrs = {};
+  if (_AT_LOCAL && window.AT_CONFIG) {
+    url = `https://api.airtable.com/v0/${_AT_BASE}/${encodeURIComponent(table)}?${qs}`;
+    hdrs = { Authorization: `Bearer ${window.AT_CONFIG.apiKey}` };
+  } else {
+    url = `/api/airtable?table=${encodeURIComponent(table)}&${qs}`;
   }
+  const r = await fetch(url, { headers: hdrs });
+  if (!r.ok) throw new Error(`AT ${r.status}`);
+  return r.json();
 }
 
-function renderEnrichment(d, area) {
-  area.innerHTML = `
-    <div class="enrich-card">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
-        <div>
-          <div style="font-family:'DM Mono',monospace;font-size:15px;color:var(--text-primary);font-weight:500">${d.title || d.topic}</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:3px">${d.spec_ref}</div>
-        </div>
-        <span class="badge badge-ok">Enriched</span>
-      </div>
-
-      <div class="enrich-section-title">What This Covers</div>
-      <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:0">${d.what_it_covers || ''}</p>
-
-      <div class="enrich-section-title">Key Requirements</div>
-      ${(d.key_requirements||[]).map(r => `<div class="enrich-bullet"><span class="enrich-bullet-dot">▸</span><span>${r}</span></div>`).join('')}
-
-      <div class="enrich-section-title">How This Affects Your Tender</div>
-      <div class="enrich-tender-box">${d.tender_impact || ''}</div>
-
-      ${d.key_table && d.key_table.rows && d.key_table.rows.length ? `
-      <div class="enrich-section-title">Key Specification Values</div>
-      <table class="enrich-table">
-        <thead><tr>${(d.key_table.headers||[]).map(h=>`<th>${h}</th>`).join('')}</tr></thead>
-        <tbody>${d.key_table.rows.map(row=>`<tr>${row.map(cell=>`<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody>
-      </table>` : ''}
-
-      <div class="enrich-section-title">Typical BOQ Items</div>
-      <div style="margin-top:4px">
-        ${(d.boq_items||[]).map(item=>`
-          <div class="enrich-boq-item">
-            <span class="enrich-boq-ref">${item.ref}</span>
-            <span style="color:var(--text-primary)">${item.description}</span>
-            <span class="enrich-boq-unit">${item.unit}</span>
-          </div>`).join('')}
-      </div>
-
-      <div class="enrich-section-title">Quick Q&A</div>
-      ${(d.quick_qa||[]).map(qa=>`
-        <div class="enrich-qa">
-          <div class="enrich-qa-q">Q: ${qa.q}</div>
-          <div class="enrich-qa-a">A: ${qa.a}</div>
-        </div>`).join('')}
-
-      <div class="enrich-section-title">⚠️ Gotchas & Common Mistakes</div>
-      ${(d.gotchas||[]).map(g=>`<div class="enrich-gotcha">⚠️ ${g}</div>`).join('')}
-
-      <div style="margin-top:16px;display:flex;gap:8px">
-        <button class="filter-btn" onclick="loadEnrichment('${d.spec_ref ? encodeURIComponent(d.spec_ref) : ''}','')">🔄 Regenerate</button>
-        <button class="filter-btn" onclick="showSection('quiz');preloadQuizFromEnrich('${d.spec_ref||''}')">🎯 Quiz Me On This →</button>
-      </div>
-    </div>`;
+async function _atAll(table) {
+  const all = []; let off = null;
+  do {
+    const d = await _atGet(table, off ? { offset: off } : {});
+    all.push(...(d.records || []));
+    off = d.offset || null;
+  } while (off);
+  return all;
 }
 
-function renderEnrichOffline(specId, topic) {
-  return `<div class="enrich-card">
-    <div style="text-align:center;padding:20px">
-      <div style="font-size:30px;margin-bottom:8px">📡</div>
-      <div style="font-size:14px;color:var(--text-secondary);margin-bottom:6px">AI offline — running in offline mode</div>
-      <div style="font-size:12px;color:var(--text-muted);max-width:400px;margin:0 auto">
-        Deploy to Vercel with <code style="background:var(--bg-border);padding:1px 5px;border-radius:3px">ANTHROPIC_API_KEY</code> to activate live AI enrichment.
-        <br><br>
-        In the meantime, refer to the <strong>AI_SPECS_TUTOR_INSTRUCTIONS.md</strong> file in the project for comprehensive spec coverage.
-      </div>
-      <button class="quiz-start-btn" style="margin-top:16px" onclick="showSection('quiz')">Try the Spec Quiz →</button>
-    </div>
-  </div>`;
-}
-
-// ── QUIZ ──────────────────────────────────────────────────────────────────
-let quizState = {
-  source: null, chapter: null, difficulty: 'intermediate',
-  questions: [], answers: {}, submitted: false
+// [REF] Material Resources field IDs
+const MAT = {
+  code:    'fldD7IAURtH3NX1f5',   // Resource_Code
+  desc:    'fldze2tQnQKgowmk3',   // Description
+  spec:    'fld5ngP0m24o8j7XX',   // Specification
+  unit:    'fldBRNYFC9OlLYuM4',   // Unit
+  supply:  'fld72LBJuMZGYNQ5T',   // Supply_Rate_R
+  allin:   'flduOSo6nr6aMclK4',   // AllIn_Rate_R
+  wastage: 'fldhXsznRJWoAesnt',   // Wastage_Pct
+  ccsType: 'flduswcrTuuCnHIFL',   // CCS_Type
+  notes:   'fldAQZtcR7kRqzmNP'    // Notes
 };
 
-function initQuiz() {
-  const grid = document.getElementById('quiz-source-grid');
-  if (!grid || grid.dataset.init) return;
-  grid.dataset.init = '1';
-  grid.innerHTML = SPEC_SOURCES.map(s => `
-    <div class="quiz-source-btn" id="qsrc-${s.id}" style="--acc:${s.color}"
-         onclick="selectQuizSource('${s.id}')">
-      <div style="font-size:18px;margin-bottom:4px">${s.icon}</div>
-      <div style="font-weight:700;color:${s.color}">${s.name}</div>
-      <div style="font-size:10px;color:var(--text-muted);margin-top:2px;line-height:1.3">${s.full.slice(0,40)}…</div>
-    </div>`).join('');
-  checkSpecAi('quiz');
-}
+// [REF] Productivity Rates field IDs
+const PROD = {
+  actType: 'fldaBfEZ2Y2OoxZhG',   // Activity_Type
+  desc:    'fldMHtqiXEv9HCaG5',   // Description
+  unit:    'fld4s81FuVFseAJRg',   // Unit_of_Measurement
+  crew:    'fld1xNDYYkaGNT1lA',   // Crew_Composition
+  output:  'fldncg3FGzVRElBLK',   // Output_per_Day
+  cond:    'fldchZRebqWyeGpks',   // Conditions
+  notes:   'fldTjfKTgfL7ksSLF'    // Notes
+};
 
-function selectQuizSource(id) {
-  quizState.source = id;
-  quizState.chapter = null;
-  document.querySelectorAll('.quiz-source-btn').forEach(b => b.classList.remove('active'));
-  const btn = document.getElementById('qsrc-' + id);
-  if (btn) btn.classList.add('active');
-  const src = SPEC_SOURCES.find(s => s.id === id);
-  const area = document.getElementById('quiz-chapter-area');
-  area.style.display = 'block';
-  const chips = document.getElementById('quiz-chapter-chips');
-  chips.innerHTML = src.chapters.map(ch => `
-    <button class="spec-topic-chip" id="qch-${ch.id}" style="font-size:11px;padding:5px 12px"
-            onclick="selectQuizChapter('${ch.id}','${ch.name.replace(/'/g,"\\'")}')">
-      ${ch.name}
-    </button>`).join('');
-  updateQuizStartBtn();
-}
+let _atSyncDone = false;
 
-function selectQuizChapter(id, name) {
-  quizState.chapter = id;
-  document.querySelectorAll('#quiz-chapter-chips .spec-topic-chip').forEach(c => {
-    c.style.background = 'var(--bg-border)';
-    c.style.color = 'var(--text-muted)';
-  });
-  const chip = document.getElementById('qch-' + id);
-  if (chip) { chip.style.background = '#f472b6'; chip.style.color = '#000'; }
-  updateQuizStartBtn();
-}
-
-function setQuizDiff(d) {
-  quizState.difficulty = d;
-  ['foundation','intermediate','expert'].forEach(x => {
-    const b = document.getElementById('qdiff-' + x);
-    if (b) b.classList.toggle('active', x === d);
-  });
-}
-
-function updateQuizStartBtn() {
-  const btn = document.getElementById('quiz-start-btn');
-  const stat = document.getElementById('quiz-setup-status');
-  const ready = quizState.source && quizState.chapter;
-  if (btn) btn.disabled = !ready;
-  if (stat) stat.textContent = ready
-    ? `Ready! Difficulty: ${quizState.difficulty}`
-    : (!quizState.source ? 'Select a specification source' : 'Select a chapter/series');
-}
-
-function preloadQuizFromEnrich(specRef) {
-  // Try to match the spec ref to a source
-  const src = SPEC_SOURCES.find(s => specRef.toLowerCase().includes(s.id));
-  if (src) selectQuizSource(src.id);
-  initQuiz();
-}
-
-async function startSpecQuiz() {
-  if (!quizState.source || !quizState.chapter) return;
-  document.getElementById('quiz-setup').style.display = 'none';
-  document.getElementById('quiz-active-area').style.display = 'block';
-  document.getElementById('quiz-results-area').style.display = 'none';
-  document.getElementById('quiz-questions-wrap').innerHTML =
-    `<div class="enrich-loading"><span style="font-size:20px;animation:pulse 1s infinite">🎯</span> Generating 5 questions...</div>`;
-
-  quizState.answers = {};
-  quizState.submitted = false;
-
+async function loadAirtableRates() {
+  if (_atSyncDone) return;
   try {
-    const url = `${SPEC_ENDPOINT}?action=quiz&spec=${encodeURIComponent(quizState.chapter)}&difficulty=${quizState.difficulty}&count=5`;
-    const r = await fetch(url);
-    if (!r.ok) throw new Error('API ' + r.status);
-    const data = await r.json();
-    quizState.questions = data.questions || [];
-    renderQuizQuestions();
-  } catch(e) {
-    document.getElementById('quiz-questions-wrap').innerHTML =
-      `<div class="panel" style="text-align:center;padding:24px">
-        <div style="font-size:28px;margin-bottom:8px">📡</div>
-        <div style="font-size:14px;color:var(--text-secondary);margin-bottom:6px">AI offline</div>
-        <div style="font-size:12px;color:var(--text-muted)">Deploy to Vercel with ANTHROPIC_API_KEY to enable live quiz generation.</div>
-        <button class="quiz-diff-btn" style="margin-top:16px" onclick="resetSpecQuiz()">↩ Back</button>
-      </div>`;
+    // ── Material Resources ──
+    const matRecs = await _atAll('[REF] Material Resources');
+    const newMaterials = matRecs.map(r => {
+      const f = r.fields || {};
+      const allin = parseFloat(f[MAT.allin]) || 0;
+      const supply = parseFloat(f[MAT.supply]) || allin;
+      const wastage = parseFloat(f[MAT.wastage]) || 0;
+      return {
+        code:      f[MAT.code]    || r.id,
+        desc:      f[MAT.desc]    || '—',
+        unit:      `/${f[MAT.unit] || 'unit'}`,
+        rate:      allin || supply,
+        cat:       'material',
+        cx:        'simplex',
+        supply,
+        wastage,
+        note:      [f[MAT.spec], f[MAT.notes]].filter(Boolean).join(' · ') || undefined,
+        _source:   'airtable'
+      };
+    }).filter(m => m.rate > 0);
+
+    // Merge: add Airtable materials that don't already exist in RESOURCES
+    const existingCodes = new Set(RESOURCES.map(r => r.code));
+    let added = 0;
+    newMaterials.forEach(m => {
+      if (!existingCodes.has(m.code)) {
+        RESOURCES.push(m);
+        existingCodes.add(m.code);
+        added++;
+      } else {
+        // Update rate with live Airtable rate
+        const existing = RESOURCES.find(r => r.code === m.code);
+        if (existing && m.rate) { existing.rate = m.rate; existing._source = 'airtable'; }
+      }
+    });
+
+    _atSyncDone = true;
+    console.log(`[TenderMind] Airtable: merged ${newMaterials.length} materials (${added} new)`);
+
+    // Show sync badge in header
+    const badge = document.getElementById('at-sync-badge');
+    if (badge) {
+      badge.textContent = `⬇ ${newMaterials.length} rates from Airtable`;
+      badge.style.display = 'inline-flex';
+    }
+
+    // Refresh the Resource Library if it's open
+    if (document.getElementById('sec-resources')?.classList.contains('active')) {
+      renderResources();
+    }
+  } catch (err) {
+    console.warn('[TenderMind] Airtable rate sync skipped:', err.message);
   }
 }
 
-function renderQuizQuestions() {
-  const wrap = document.getElementById('quiz-questions-wrap');
-  wrap.innerHTML = quizState.questions.map((q, i) => {
-    const typeMap = { mcq:'quiz-q-type-mcq', short_answer:'quiz-q-type-sa', true_false:'quiz-q-type-tf' };
-    const typeLbl = { mcq:'Multiple Choice', short_answer:'Short Answer', true_false:'True / False' };
-    const isChoice = q.type === 'mcq' || q.type === 'true_false';
-    return `<div class="quiz-q-card" id="qcard-${i}">
-      <div class="quiz-q-number">
-        <span>Question ${i+1} of ${quizState.questions.length}</span>
-        <span class="quiz-q-type-badge ${typeMap[q.type]||'quiz-q-type-mcq'}">${typeLbl[q.type]||q.type}</span>
+document.addEventListener('DOMContentLoaded', () => {
+  init();
+  loadAirtableRates();
+  checkAIStatus();
+});
+</script>
+
+<!-- ═══════════════════ STANDARDS TUTOR SECTION ═══════════════════ -->
+<section id="sec-tutor" class="section">
+<style>
+/* ── Tutor layout ── */
+.tutor-wrap{display:flex;gap:16px;flex:1;min-height:0}
+.tutor-sidebar{width:240px;flex-shrink:0;display:flex;flex-direction:column;gap:12px}
+.tutor-main{flex:1;display:flex;flex-direction:column;gap:14px;min-width:0}
+.tutor-card{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:10px;padding:16px}
+.tutor-card-title{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent-purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+/* Topic pills */
+.topic-pill{display:block;width:100%;text-align:left;padding:7px 10px;border-radius:6px;border:1px solid var(--bg-border);background:transparent;color:var(--text-secondary);font-size:12px;cursor:pointer;transition:all .15s;margin-bottom:4px}
+.topic-pill:hover{background:var(--bg-elevated);color:var(--text-primary);border-color:rgba(139,92,246,.4)}
+.topic-pill.active{background:rgba(139,92,246,.12);border-color:var(--accent-purple);color:var(--accent-purple);font-weight:600}
+/* Difficulty selector */
+.diff-row{display:flex;gap:6px;flex-wrap:wrap}
+.diff-pill{padding:5px 12px;border-radius:16px;border:1px solid var(--bg-border);background:transparent;color:var(--text-muted);font-size:11px;cursor:pointer;font-weight:600;transition:all .15s}
+.diff-pill:hover{border-color:var(--accent-purple);color:var(--accent-purple)}
+.diff-pill.active{background:var(--accent-purple);color:#fff;border-color:var(--accent-purple)}
+/* Format selector */
+.fmt-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+.fmt-pill{padding:5px 12px;border-radius:16px;border:1px solid var(--bg-border);background:transparent;color:var(--text-muted);font-size:11px;cursor:pointer;transition:all .15s}
+.fmt-pill:hover{border-color:rgba(20,184,166,.5);color:var(--accent-teal)}
+.fmt-pill.active{background:rgba(20,184,166,.12);border-color:var(--accent-teal);color:var(--accent-teal);font-weight:600}
+/* Question card */
+.question-display{background:var(--bg-base);border:1px solid rgba(139,92,246,.25);border-radius:10px;padding:20px;font-size:14px;line-height:1.7;color:var(--text-primary);min-height:120px;white-space:pre-wrap;position:relative}
+.question-display.loading{opacity:.5}
+.question-topic-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:10px;font-size:10px;font-weight:700;letter-spacing:.04em;background:rgba(139,92,246,.15);color:var(--accent-purple);margin-bottom:10px}
+/* MC options */
+.mc-option{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--bg-border);border-radius:7px;cursor:pointer;transition:all .15s;font-size:13px;color:var(--text-secondary);margin-bottom:7px}
+.mc-option:hover{border-color:rgba(139,92,246,.5);color:var(--text-primary);background:var(--bg-elevated)}
+.mc-option.selected{border-color:var(--accent-purple);background:rgba(139,92,246,.1);color:var(--text-primary)}
+.mc-option.correct{border-color:var(--accent-green)!important;background:rgba(34,197,94,.1)!important;color:var(--accent-green)!important}
+.mc-option.wrong{border-color:var(--accent-red)!important;background:rgba(239,68,68,.08)!important;color:var(--accent-red)!important}
+.mc-letter{width:24px;height:24px;border-radius:50%;background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;flex-shrink:0}
+/* Open answer textarea */
+.answer-textarea{width:100%;background:var(--bg-elevated);border:1px solid var(--bg-border);border-radius:8px;color:var(--text-primary);font-size:13px;font-family:'Inter',sans-serif;padding:12px;min-height:100px;resize:vertical;outline:none;line-height:1.6;transition:border-color .15s}
+.answer-textarea:focus{border-color:var(--accent-purple)}
+/* Grade card */
+.grade-card{border-radius:10px;padding:18px;font-size:13px;line-height:1.7;white-space:pre-wrap;display:none}
+.grade-card.visible{display:block}
+.grade-card h4{font-family:'DM Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.grade-A{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);color:var(--text-primary)}
+.grade-B{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.3);color:var(--text-primary)}
+.grade-C{background:rgba(234,179,8,.08);border:1px solid rgba(234,179,8,.3);color:var(--text-primary)}
+.grade-D{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);color:var(--text-primary)}
+.grade-F{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);color:var(--text-primary)}
+.score-chip{display:inline-block;padding:3px 12px;border-radius:10px;font-family:'DM Mono',monospace;font-size:22px;font-weight:700;margin-bottom:8px}
+.chip-A{background:rgba(34,197,94,.2);color:var(--accent-green)}
+.chip-B{background:rgba(20,184,166,.2);color:var(--accent-teal)}
+.chip-C{background:rgba(234,179,8,.2);color:var(--accent-yellow)}
+.chip-D{background:rgba(245,158,11,.2);color:var(--accent-amber)}
+.chip-F{background:rgba(239,68,68,.2);color:var(--accent-red)}
+/* Session stats */
+.stat-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.stat-box{flex:1;min-width:80px;background:var(--bg-elevated);border:1px solid var(--bg-border);border-radius:7px;padding:10px;text-align:center}
+.stat-val{font-family:'DM Mono',monospace;font-size:22px;color:var(--accent-purple);font-weight:500}
+.stat-lbl{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+/* Buttons */
+.tutor-btn-primary{background:var(--accent-purple);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .15s;font-family:'Inter',sans-serif}
+.tutor-btn-primary:hover{opacity:.85}
+.tutor-btn-primary:disabled{opacity:.35;cursor:not-allowed}
+.tutor-btn-ghost{background:transparent;color:var(--text-secondary);border:1px solid var(--bg-border);padding:9px 20px;border-radius:8px;font-size:13px;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
+.tutor-btn-ghost:hover{border-color:var(--accent-purple);color:var(--accent-purple)}
+/* Loading spinner */
+.tutor-spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(139,92,246,.3);border-top-color:var(--accent-purple);border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* History table */
+.hist-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-bottom:1px solid var(--bg-border);font-size:12px;color:var(--text-secondary)}
+.hist-row:last-child{border-bottom:none}
+.hist-grade{font-family:'DM Mono',monospace;font-weight:700;width:28px;text-align:center}
+/* Streak badge */
+.streak-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:10px;font-size:12px;font-weight:600;background:rgba(245,158,11,.15);color:var(--accent-amber)}
+</style>
+
+<!-- Header row -->
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-shrink:0">
+  <div>
+    <h2 style="font-family:'DM Mono',monospace;font-size:16px;color:var(--accent-purple)">📚 Standards & Industry Tutor</h2>
+    <p style="font-size:12px;color:var(--text-muted);margin-top:2px">AI-powered quiz on COLTO, SANS, plant operations, earthworks, paving, structures, tender strategy, CCS Candy and more</p>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div id="tutor-streak" class="streak-badge" style="display:none">🔥 <span id="tutor-streak-num">0</span> streak</div>
+    <div id="tutor-ai-badge" style="font-size:11px;padding:4px 12px;border-radius:12px;background:rgba(71,85,105,.4);color:var(--text-muted);font-weight:600">Checking AI…</div>
+  </div>
+</div>
+
+<!-- Session stats -->
+<div class="stat-row" style="flex-shrink:0">
+  <div class="stat-box"><div class="stat-val" id="t-stat-asked">0</div><div class="stat-lbl">Asked</div></div>
+  <div class="stat-box"><div class="stat-val" id="t-stat-correct" style="color:var(--accent-green)">0</div><div class="stat-lbl">Correct</div></div>
+  <div class="stat-box"><div class="stat-val" id="t-stat-pct">—</div><div class="stat-lbl">Score %</div></div>
+  <div class="stat-box"><div class="stat-val" id="t-stat-grade" style="color:var(--accent-amber)">—</div><div class="stat-lbl">Grade</div></div>
+</div>
+
+<!-- Main tutor layout -->
+<div class="tutor-wrap">
+
+  <!-- LEFT SIDEBAR: controls -->
+  <div class="tutor-sidebar">
+
+    <div class="tutor-card">
+      <div class="tutor-card-title">📂 Topic</div>
+      <button class="topic-pill active" data-topic="ALL" onclick="tutorSetTopic(this)">🌐 All Topics</button>
+      <button class="topic-pill" data-topic="PLANT_OPS" onclick="tutorSetTopic(this)">🏗️ Plant Operations</button>
+      <button class="topic-pill" data-topic="EARTHWORKS" onclick="tutorSetTopic(this)">⛏️ Earthworks</button>
+      <button class="topic-pill" data-topic="PAVING" onclick="tutorSetTopic(this)">🛣️ Paving & Bitumen</button>
+      <button class="topic-pill" data-topic="COLTO" onclick="tutorSetTopic(this)">📋 COLTO Specs</button>
+      <button class="topic-pill" data-topic="STRUCTURES" onclick="tutorSetTopic(this)">🏛️ Structures & Concrete</button>
+      <button class="topic-pill" data-topic="BOQ" onclick="tutorSetTopic(this)">📄 BOQ & Measurement</button>
+      <button class="topic-pill" data-topic="RATES" onclick="tutorSetTopic(this)">🧮 Rate Build-Up</button>
+      <button class="topic-pill" data-topic="MACHINE_OUTPUT" onclick="tutorSetTopic(this)">⚙️ Machine Output</button>
+      <button class="topic-pill" data-topic="TENDER" onclick="tutorSetTopic(this)">📊 Tender Strategy</button>
+      <button class="topic-pill" data-topic="CCS" onclick="tutorSetTopic(this)">💻 CCS Candy</button>
+      <button class="topic-pill" data-topic="HEALTH_SAFETY" onclick="tutorSetTopic(this)">⛑️ H&amp;S & Environment</button>
+    </div>
+
+    <div class="tutor-card">
+      <div class="tutor-card-title">🎯 Difficulty</div>
+      <div class="diff-row">
+        <button class="diff-pill active" data-diff="easy" onclick="tutorSetDiff(this)">Easy</button>
+        <button class="diff-pill" data-diff="medium" onclick="tutorSetDiff(this)">Medium</button>
+        <button class="diff-pill" data-diff="hard" onclick="tutorSetDiff(this)">Hard</button>
+        <button class="diff-pill" data-diff="expert" onclick="tutorSetDiff(this)">Expert</button>
       </div>
-      <div class="quiz-q-text">${q.question}</div>
-      ${isChoice ? q.options.map(opt => {
-        const key = opt.charAt(0);
-        return `<div class="quiz-option" id="qopt-${i}-${key}" onclick="selectQuizOption(${i},'${key}')">
-          <span class="quiz-option-key">${key}</span>
-          <span>${opt.slice(3)}</span>
-        </div>`;
-      }).join('') : `<textarea class="quiz-sa-input" id="qsa-${i}" placeholder="Type your answer here..." oninput="recordSAAnswer(${i},this.value)"></textarea>`}
-      <div class="quiz-explanation" id="qexpl-${i}">
-        <strong style="color:#22c55e">✓ Explanation:</strong> ${q.explanation || ''}
-        <div class="quiz-clause-ref">${q.spec_clause ? '📌 ' + q.spec_clause : ''}</div>
+    </div>
+
+    <div class="tutor-card">
+      <div class="tutor-card-title">📝 Format</div>
+      <div class="fmt-row">
+        <button class="fmt-pill active" data-fmt="mcq" onclick="tutorSetFmt(this)">MCQ</button>
+        <button class="fmt-pill" data-fmt="open" onclick="tutorSetFmt(this)">Open</button>
+        <button class="fmt-pill" data-fmt="calc" onclick="tutorSetFmt(this)">Calculation</button>
       </div>
-    </div>`;
-  }).join('');
-  updateAnsweredCount();
-  document.getElementById('quiz-progress-fill').style.width = '0%';
+    </div>
+
+    <!-- History -->
+    <div class="tutor-card" style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+      <div class="tutor-card-title">🕐 Session History</div>
+      <div id="tutor-history" style="overflow-y:auto;flex:1;font-size:11px">
+        <div style="color:var(--text-muted);font-size:11px">No questions yet</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT MAIN: question + answer area -->
+  <div class="tutor-main">
+
+    <!-- Question panel -->
+    <div class="tutor-card" style="flex-shrink:0">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div class="tutor-card-title" style="margin-bottom:0">❓ Question</div>
+        <span id="tutor-q-num" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted)">Q —</span>
+      </div>
+      <div id="tutor-topic-badge" class="question-topic-badge" style="display:none"></div>
+      <div id="tutor-question-display" class="question-display">
+        <span style="color:var(--text-muted);font-size:13px">Click <strong style="color:var(--accent-purple)">Ask Me a Question</strong> to start your session.<br><br>
+        Select a topic, difficulty, and format on the left, then let the AI tutor test your knowledge of construction standards, plant operations, COLTO specifications, BOQ measurement, and more.</span>
+      </div>
+    </div>
+
+    <!-- Answer panel -->
+    <div id="tutor-answer-panel" class="tutor-card" style="display:none;flex-shrink:0">
+      <div class="tutor-card-title" style="margin-bottom:10px">✏️ Your Answer</div>
+      <!-- MCQ options rendered here -->
+      <div id="tutor-mc-options"></div>
+      <!-- Open / Calc textarea -->
+      <textarea id="tutor-open-answer" class="answer-textarea" placeholder="Type your answer here…" style="display:none"></textarea>
+      <div style="display:flex;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap">
+        <button class="tutor-btn-primary" id="tutor-submit-btn" onclick="tutorSubmitAnswer()" disabled>Submit Answer</button>
+        <button class="tutor-btn-ghost" onclick="tutorSkip()">Skip / Reveal</button>
+        <button class="tutor-btn-ghost" style="margin-left:auto;font-size:11px;padding:6px 14px" onclick="tutorNewQuestion()">New Question ↩</button>
+      </div>
+    </div>
+
+    <!-- Grade / feedback panel -->
+    <div id="tutor-grade-card" class="grade-card tutor-card">
+      <div id="tutor-grade-content"></div>
+      <div style="margin-top:14px">
+        <button class="tutor-btn-primary" onclick="tutorNextQuestion()">Next Question →</button>
+      </div>
+    </div>
+
+    <!-- Ask button (shown when idle) -->
+    <div id="tutor-ask-wrap" style="display:flex;justify-content:center;padding:10px 0;flex-shrink:0">
+      <button class="tutor-btn-primary" id="tutor-ask-btn" onclick="tutorAskQuestion()" style="padding:14px 40px;font-size:14px;border-radius:10px">
+        📚 Ask Me a Question
+      </button>
+    </div>
+    <div id="tutor-offline-note" style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:6px;display:none">
+      ⚡ Deploy to Vercel with ANTHROPIC_API_KEY to activate the AI tutor
+    </div>
+
+  </div>
+</div>
+</section>
+
+<script>
+// ════ STANDARDS TUTOR ENGINE ════
+const TUTOR_ENDPOINT = '/api/tutor';
+let tutorOnline = false;
+let tutorState = {
+  topic: 'ALL', diff: 'easy', fmt: 'mcq',
+  currentQ: null, currentOptions: [], selectedOption: null,
+  asked: 0, correct: 0, streak: 0,
+  history: []
+};
+
+async function tutorInit(){
+  // Check AI status once
+  if(document.getElementById('tutor-ai-badge').textContent !== '🟢 AI Active')
+    await checkTutorAI();
 }
 
-function selectQuizOption(qIdx, key) {
-  if (quizState.submitted) return;
-  quizState.answers[qIdx] = key;
-  const q = quizState.questions[qIdx];
-  document.querySelectorAll(`[id^="qopt-${qIdx}-"]`).forEach(el => el.classList.remove('selected'));
-  const el = document.getElementById(`qopt-${qIdx}-${key}`);
-  if (el) el.classList.add('selected');
-  updateAnsweredCount();
-  const pct = (Object.keys(quizState.answers).length / quizState.questions.length) * 100;
-  document.getElementById('quiz-progress-fill').style.width = pct + '%';
+async function checkTutorAI(){
+  const badge = document.getElementById('tutor-ai-badge');
+  const btn   = document.getElementById('tutor-ask-btn');
+  const note  = document.getElementById('tutor-offline-note');
+  const isVercel = window.location.hostname !== 'localhost' && !window.location.protocol.startsWith('file');
+  if(!isVercel){
+    badge.textContent = '⚡ Deploy to Activate';
+    badge.style.background = 'rgba(71,85,105,.4)';
+    badge.style.color = 'var(--text-muted)';
+    if(note) note.style.display='block';
+    return;
+  }
+  try{
+    const r = await fetch(TUTOR_ENDPOINT + '?action=ping');
+    if(r.ok || r.status===400){
+      tutorOnline = true;
+      badge.textContent = '🟢 AI Active';
+      badge.style.background = 'rgba(139,92,246,.2)';
+      badge.style.color = 'var(--accent-purple)';
+      if(note) note.style.display='none';
+    }else throw new Error();
+  }catch{
+    badge.textContent = '🔴 Offline';
+    badge.style.background = 'rgba(239,68,68,.15)';
+    badge.style.color = 'var(--accent-red)';
+  }
 }
 
-function recordSAAnswer(qIdx, val) {
-  quizState.answers[qIdx] = val;
-  updateAnsweredCount();
-  const pct = (Object.keys(quizState.answers).length / quizState.questions.length) * 100;
-  document.getElementById('quiz-progress-fill').style.width = pct + '%';
+function tutorSetTopic(btn){
+  document.querySelectorAll('.topic-pill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  tutorState.topic = btn.dataset.topic;
+}
+function tutorSetDiff(btn){
+  document.querySelectorAll('.diff-pill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  tutorState.diff = btn.dataset.diff;
+}
+function tutorSetFmt(btn){
+  document.querySelectorAll('.fmt-pill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  tutorState.fmt = btn.dataset.fmt;
 }
 
-function updateAnsweredCount() {
-  const n = Object.keys(quizState.answers).length;
-  const total = quizState.questions.length;
-  const el = document.getElementById('quiz-answered-count');
-  if (el) el.textContent = `${n} / ${total} answered`;
-}
+async function tutorAskQuestion(){
+  if(!tutorOnline){ alert('Tutor requires Vercel deployment with ANTHROPIC_API_KEY set.'); return; }
+  const askBtn = document.getElementById('tutor-ask-btn');
+  const qDisplay = document.getElementById('tutor-question-display');
+  const ansPanel = document.getElementById('tutor-answer-panel');
+  const gradeCard = document.getElementById('tutor-grade-card');
+  const topicBadge = document.getElementById('tutor-topic-badge');
 
-function submitSpecQuiz() {
-  if (!quizState.questions.length) return;
-  quizState.submitted = true;
-  let correct = 0;
-  const review = [];
+  // Reset state
+  tutorState.currentQ = null; tutorState.currentOptions = []; tutorState.selectedOption = null;
+  gradeCard.className='grade-card tutor-card';
+  gradeCard.style.display='none';
+  ansPanel.style.display='none';
+  document.getElementById('tutor-ask-wrap').style.display='none';
 
-  quizState.questions.forEach((q, i) => {
-    const userAns = quizState.answers[i] || '';
-    const isChoice = q.type === 'mcq' || q.type === 'true_false';
-    let isCorrect = false;
+  askBtn.disabled = true;
+  qDisplay.className = 'question-display loading';
+  qDisplay.innerHTML = '<span class="tutor-spinner"></span> Generating your question…';
 
-    if (isChoice) {
-      isCorrect = userAns.toUpperCase() === q.correct.toUpperCase();
-      // Colour-code options
-      document.querySelectorAll(`[id^="qopt-${i}-"]`).forEach(el => {
-        el.classList.remove('selected');
-        const key = el.id.split('-').pop();
-        if (key === q.correct.toUpperCase()) el.classList.add('correct');
-        else if (key === userAns.toUpperCase() && !isCorrect) el.classList.add('wrong');
+  try{
+    const url = `${TUTOR_ENDPOINT}?action=question&topic=${tutorState.topic}&diff=${tutorState.diff}&fmt=${tutorState.fmt}`;
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    if(!data.question) throw new Error(data.error||'No question returned');
+
+    tutorState.currentQ = data;
+    tutorState.asked++;
+    document.getElementById('tutor-q-num').textContent = `Q ${tutorState.asked}`;
+
+    // Topic badge
+    const topicLabels = {ALL:'All Topics',PLANT_OPS:'Plant Operations',EARTHWORKS:'Earthworks',
+      PAVING:'Paving',COLTO:'COLTO',STRUCTURES:'Structures',BOQ:'BOQ',
+      RATES:'Rate Build-Up',MACHINE_OUTPUT:'Machine Output',TENDER:'Tender Strategy',
+      CCS:'CCS Candy',HEALTH_SAFETY:'H&S'};
+    topicBadge.textContent = topicLabels[tutorState.topic]||tutorState.topic;
+    topicBadge.style.display='inline-flex';
+
+    qDisplay.className='question-display';
+    qDisplay.textContent = data.question;
+
+    // Render answer area
+    const mcWrap = document.getElementById('tutor-mc-options');
+    const openTA = document.getElementById('tutor-open-answer');
+    const submitBtn = document.getElementById('tutor-submit-btn');
+    mcWrap.innerHTML=''; openTA.value=''; openTA.style.display='none';
+
+    if(data.options && data.options.length){
+      tutorState.currentOptions = data.options;
+      const letters = ['A','B','C','D','E'];
+      data.options.forEach((opt,i)=>{
+        const div = document.createElement('div');
+        div.className='mc-option';
+        div.innerHTML=`<span class="mc-letter">${letters[i]}</span><span>${opt}</span>`;
+        div.addEventListener('click',()=>tutorSelectMC(div,i));
+        mcWrap.appendChild(div);
       });
-    } else {
-      // Short answer — auto-mark as "attempted", show model answer
-      isCorrect = userAns.trim().length > 10;
+      submitBtn.disabled = true;
+    }else{
+      mcWrap.innerHTML='';
+      openTA.style.display='block';
+      openTA.placeholder = tutorState.fmt==='calc'
+        ? 'Show your working step by step, then state your final answer…'
+        : 'Type your answer here…';
+      openTA.addEventListener('input',()=>{
+        submitBtn.disabled = openTA.value.trim().length < 3;
+      });
+      submitBtn.disabled = true;
     }
 
-    if (isCorrect) correct++;
-    // Show explanation
-    const expl = document.getElementById('qexpl-' + i);
-    if (expl) expl.style.display = 'block';
-    review.push({ q, userAns, isCorrect });
-  });
+    ansPanel.style.display='block';
+  }catch(err){
+    qDisplay.className='question-display';
+    qDisplay.innerHTML=`<span style="color:var(--accent-red)">❌ Error generating question: ${err.message}</span>`;
+    document.getElementById('tutor-ask-wrap').style.display='flex';
+  }finally{
+    askBtn.disabled=false;
+  }
+}
 
-  const pct = Math.round((correct / quizState.questions.length) * 100);
-  const labels = [
-    [80, '🏆 Excellent — Strong specification knowledge!'],
-    [60, '✅ Good — Solid foundation, review the misses.'],
-    [40, '📚 Needs work — Focus on the explanations below.'],
-    [0,  '🔄 Keep studying — Review the spec chapters and try again.'],
-  ];
-  const label = (labels.find(([t]) => pct >= t) || labels[labels.length-1])[1];
+function tutorSelectMC(div,idx){
+  document.querySelectorAll('.mc-option').forEach(o=>o.classList.remove('selected'));
+  div.classList.add('selected');
+  tutorState.selectedOption = idx;
+  document.getElementById('tutor-submit-btn').disabled=false;
+}
 
-  document.getElementById('quiz-active-area').style.display = 'none';
-  document.getElementById('quiz-results-area').style.display = 'block';
-  document.getElementById('quiz-final-score').textContent = `${correct}/${quizState.questions.length}`;
-  document.getElementById('quiz-final-label').textContent = label;
-  document.getElementById('quiz-score-bar').style.width = pct + '%';
-  document.getElementById('quiz-results-breakdown').innerHTML =
-    `<strong style="color:var(--text-primary)">${pct}%</strong> — ${correct} correct, ${quizState.questions.length - correct} incorrect`;
+async function tutorSubmitAnswer(){
+  const qData = tutorState.currentQ;
+  if(!qData) return;
+  const submitBtn = document.getElementById('tutor-submit-btn');
+  const gradeCard = document.getElementById('tutor-grade-card');
+  submitBtn.disabled=true;
+  submitBtn.innerHTML='<span class="tutor-spinner"></span>Grading…';
 
-  // Review section
-  document.getElementById('quiz-review-wrap').innerHTML = review.map(({q, userAns, isCorrect}, i) =>
-    `<div class="quiz-q-card" style="border-left:3px solid ${isCorrect ? '#22c55e' : '#ef4444'}">
-      <div class="quiz-q-number"><span>Q${i+1}: ${isCorrect ? '✓ Correct' : '✗ Incorrect'}</span></div>
-      <div class="quiz-q-text" style="font-size:13px">${q.question}</div>
-      ${q.type !== 'short_answer' ? `<div style="font-size:12px;margin-bottom:6px">
-        <span style="color:var(--text-muted)">Your answer:</span> <strong style="color:${isCorrect?'#22c55e':'#ef4444'}">${userAns || 'Not answered'}</strong>
-        &nbsp;|&nbsp;
-        <span style="color:var(--text-muted)">Correct:</span> <strong style="color:#22c55e">${q.correct}</strong>
-      </div>` : `<div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">Your answer: "${userAns || 'Not answered'}"</div>`}
-      <div class="quiz-explanation" style="display:block">
-        <strong style="color:#22c55e">Explanation:</strong> ${q.explanation || ''}
-        <div class="quiz-clause-ref">${q.spec_clause ? '📌 ' + q.spec_clause : ''}</div>
+  let userAnswer = '';
+  if(qData.options && qData.options.length){
+    const letters=['A','B','C','D','E'];
+    userAnswer = tutorState.selectedOption!=null
+      ? `${letters[tutorState.selectedOption]}) ${qData.options[tutorState.selectedOption]}`
+      : '';
+  }else{
+    userAnswer = document.getElementById('tutor-open-answer').value.trim();
+  }
+
+  try{
+    const res = await fetch(TUTOR_ENDPOINT,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        action:'grade',
+        question: qData.question,
+        correct_answer: qData.answer,
+        options: qData.options||[],
+        user_answer: userAnswer,
+        topic: tutorState.topic,
+        diff: tutorState.diff
+      })
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+
+    // Highlight MC result
+    if(qData.options&&qData.options.length&&qData.correct_index!=null){
+      document.querySelectorAll('.mc-option').forEach((el,i)=>{
+        if(i===qData.correct_index) el.classList.add('correct');
+        else if(i===tutorState.selectedOption&&i!==qData.correct_index) el.classList.add('wrong');
+      });
+    }
+
+    // Grade card
+    const grade = data.grade||'C';
+    const isPass = ['A','B','C'].includes(grade);
+    if(isPass){ tutorState.correct++; tutorState.streak++; }else{ tutorState.streak=0; }
+    tutorUpdateStats();
+
+    const gradeClass = {A:'grade-A',B:'grade-B',C:'grade-C',D:'grade-D',F:'grade-F'}[grade]||'grade-C';
+    const chipClass  = {A:'chip-A', B:'chip-B', C:'chip-C', D:'chip-D', F:'chip-F'}[grade]||'chip-C';
+    const scoreLabel = {A:'Excellent!',B:'Good',C:'Okay',D:'Needs Work',F:'Incorrect'}[grade]||'Done';
+    gradeCard.className = `grade-card tutor-card ${gradeClass} visible`;
+    gradeCard.style.display='block';
+
+    document.getElementById('tutor-grade-content').innerHTML=
+      `<div style="margin-bottom:12px;display:flex;align-items:center;gap:12px">
+        <span class="score-chip ${chipClass}">${grade}</span>
+        <span style="font-size:16px;font-weight:700">${scoreLabel}</span>
+        ${data.score_pct!=null?`<span style="font-size:13px;color:var(--text-muted);margin-left:auto">${data.score_pct}%</span>`:''}
       </div>
+      <div style="white-space:pre-wrap;font-size:13px;line-height:1.7;color:var(--text-primary)">${data.feedback||''}</div>`;
+
+    // Add to history
+    tutorState.history.unshift({q:qData.question.slice(0,60)+'…', grade, topic:tutorState.topic});
+    tutorRenderHistory();
+
+    // Disable answer area
+    document.getElementById('tutor-submit-btn').style.display='none';
+    document.querySelector('.tutor-btn-ghost').style.display='none';
+
+  }catch(err){
+    gradeCard.className='grade-card tutor-card grade-D visible';
+    gradeCard.style.display='block';
+    document.getElementById('tutor-grade-content').innerHTML=
+      `<span style="color:var(--accent-red)">Grading error: ${err.message}</span>`;
+  }finally{
+    submitBtn.innerHTML='Submit Answer';
+  }
+}
+
+async function tutorSkip(){
+  const qData = tutorState.currentQ;
+  if(!qData) return;
+  const gradeCard = document.getElementById('tutor-grade-card');
+  tutorState.streak=0;
+  tutorUpdateStats();
+
+  // Reveal correct answer without grading
+  if(qData.options&&qData.options.length&&qData.correct_index!=null){
+    document.querySelectorAll('.mc-option').forEach((el,i)=>{
+      if(i===qData.correct_index) el.classList.add('correct');
+    });
+  }
+  gradeCard.className='grade-card tutor-card grade-D visible';
+  gradeCard.style.display='block';
+  document.getElementById('tutor-grade-content').innerHTML=
+    `<div style="font-weight:700;margin-bottom:6px">⏭ Skipped — correct answer:</div>
+    <div style="white-space:pre-wrap;font-size:13px;color:var(--text-primary)">${qData.answer||'See explanation below.'}</div>`;
+  document.getElementById('tutor-submit-btn').style.display='none';
+  document.querySelector('.tutor-btn-ghost').style.display='none';
+}
+
+function tutorNextQuestion(){ tutorAskQuestion(); }
+function tutorNewQuestion(){
+  document.getElementById('tutor-answer-panel').style.display='none';
+  document.getElementById('tutor-grade-card').style.display='none';
+  document.getElementById('tutor-ask-wrap').style.display='flex';
+  document.getElementById('tutor-submit-btn').style.display='block';
+  document.querySelector('.tutor-btn-ghost').style.display='block';
+  document.getElementById('tutor-question-display').innerHTML=
+    '<span style="color:var(--text-muted)">Click <strong style="color:var(--accent-purple)">Ask Me a Question</strong> to continue.</span>';
+  document.getElementById('tutor-topic-badge').style.display='none';
+}
+
+function tutorUpdateStats(){
+  document.getElementById('t-stat-asked').textContent = tutorState.asked;
+  document.getElementById('t-stat-correct').textContent = tutorState.correct;
+  const pct = tutorState.asked>0 ? Math.round(tutorState.correct/tutorState.asked*100) : 0;
+  document.getElementById('t-stat-pct').textContent = tutorState.asked>0 ? pct+'%' : '—';
+  const g = pct>=85?'A':pct>=70?'B':pct>=55?'C':pct>=40?'D':'F';
+  const gEl = document.getElementById('t-stat-grade');
+  gEl.textContent = tutorState.asked>0 ? g : '—';
+  gEl.style.color = {A:'var(--accent-green)',B:'var(--accent-teal)',C:'var(--accent-yellow)',D:'var(--accent-amber)',F:'var(--accent-red)'}[g]||'var(--accent-purple)';
+  // Streak badge
+  const strk = document.getElementById('tutor-streak');
+  const strkN = document.getElementById('tutor-streak-num');
+  if(tutorState.streak>=2){ strk.style.display='inline-flex'; strkN.textContent=tutorState.streak; }
+  else strk.style.display='none';
+}
+
+function tutorRenderHistory(){
+  const el = document.getElementById('tutor-history');
+  if(!tutorState.history.length){ el.innerHTML='<div style="color:var(--text-muted);font-size:11px">No questions yet</div>'; return; }
+  const gradeColors={A:'var(--accent-green)',B:'var(--accent-teal)',C:'var(--accent-yellow)',D:'var(--accent-amber)',F:'var(--accent-red)'};
+  el.innerHTML = tutorState.history.slice(0,20).map(h=>
+    `<div class="hist-row">
+      <span class="hist-grade" style="color:${gradeColors[h.grade]||'var(--accent-purple)'}">${h.grade}</span>
+      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${h.q}">${h.q}</span>
     </div>`
   ).join('');
 }
-
-function resetSpecQuiz() {
-  quizState = { source: null, chapter: null, difficulty: 'intermediate', questions: [], answers: {}, submitted: false };
-  document.getElementById('quiz-setup').style.display = 'block';
-  document.getElementById('quiz-active-area').style.display = 'none';
-  document.getElementById('quiz-results-area').style.display = 'none';
-  document.querySelectorAll('.quiz-source-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('quiz-chapter-area').style.display = 'none';
-  updateQuizStartBtn();
-}
-
-function retrySpecQuiz() {
-  document.getElementById('quiz-active-area').style.display = 'none';
-  document.getElementById('quiz-results-area').style.display = 'none';
-  document.getElementById('quiz-setup').style.display = 'block';
-  updateQuizStartBtn();
-}
-
-// ── AI Status Check ─────────────────────────────────────────────────────
-async function checkSpecAi(mode) {
-  if (specAiLive) return;
-  try {
-    const r = await fetch(SPEC_ENDPOINT + '?action=ping', { method: 'GET' });
-    if (r.ok) {
-      specAiLive = true;
-      const badge = document.getElementById(mode + '-ai-badge');
-      if (badge) badge.style.display = 'block';
-    }
-  } catch {}
-}
-
-// ── Section init hooks ───────────────────────────────────────────────────
-const _origShowSection = showSection;
-function showSection(id) {
-  _origShowSection(id);
-  if (id === 'enrich')   setTimeout(initEnrich, 50);
-  if (id === 'quiz')     setTimeout(initQuiz, 50);
-  if (id === 'concepts') setTimeout(initConcepts, 50);
-}
-
-document.addEventListener('DOMContentLoaded', init);
-
-// ═══════════════════════════════════════════════════════════════════════════
-//  TENDERING CONCEPTS EDUCATION
-// ═══════════════════════════════════════════════════════════════════════════
-
-const CONCEPTS_ENDPOINT = '/api/concepts';
-let conceptsAiLive = false;
-
-const CONCEPT_CATEGORIES = [
-  { id: 'tendering',  name: 'Tendering Process',        icon: '📋', color: '#60a5fa',
-    topics: ['CIDB Grading & Registration','Tender Documents Overview','PPPFA Price Scoring Formula','B-BBEE Evaluation','Tender Validity & Guarantees','CSD Registration'] },
-  { id: 'boq',        name: 'Bill of Quantities',        icon: '📄', color: '#f59e0b',
-    topics: ['BOQ Structure & Series','Measurement Rules','Swell & Shrinkage Factors','Preliminary & General Items','Prime Cost & Provisional Sums','Earthworks Measurement (BCM/CCM/LCM)'] },
-  { id: 'estimating', name: 'Cost Estimating',           icon: '🔢', color: '#a78bfa',
-    topics: ['Rate Build-Up Method','Direct vs Indirect Costs','Escalation & Price Adjustment','Productivity Rate Estimation','Oncosts & Profit Margins','Foreign Exchange Risk'] },
-  { id: 'planning',   name: 'Planning & Programming',    icon: '📅', color: '#34d399',
-    topics: ['Critical Path Method (CPM)','Programme Types & Levels','Baseline Programme','Earned Value Management','Float & Delay Analysis','EOT Claims & Notice Requirements'] },
-  { id: 'contracts',  name: 'Contract Administration',   icon: '⚖️', color: '#f472b6',
-    topics: ['GCC 2015 Overview','NEC3/NEC4 ECC Main Options','FIDIC Red Book','Variations & Change Orders','Compensation Events (NEC3)','Retention & Payment Certificates'] },
-  { id: 'resources',  name: 'Resources & Productivity',  icon: '🚜', color: '#fb923c',
-    topics: ['Plant Ownership vs Rental','Mechanical Availability','Gang Ratios & Fleet Planning','Labour Categories & Rates','Utilisation & Availability %','CAT PHB 42 Cost Tables'] },
-  { id: 'risk',       name: 'Risk in Tendering',         icon: '⚠️', color: '#ef4444',
-    topics: ['Tender Risk Register','Geotechnical Risk','Weather & Programme Risk','Back-to-Back Subcontracts','Onerous Contract Clauses','Risk Pricing in Rates'] },
-  { id: 'cashflow',   name: 'Cash Flow & Finance',       icon: '💰', color: '#22d3ee',
-    topics: ['S-Curve Cash Flow','Front-Loading Strategy','Payment Certificate Cycle','Retention Deductions & Release','Defects Liability Period','Working Capital Management'] },
-  { id: 'bbbee',      name: 'B-BBEE & Compliance',       icon: '🤝', color: '#84cc16',
-    topics: ['DTI B-BBEE Levels & Procurement Points','PPPFA Reg 9 Subcontracting','CIDB Contractor Development','SETA & Skills Levy','Tax Clearance & CSD','SABS/SANS Compliance'] },
-  { id: 'quality',    name: 'Quality & Compliance',      icon: '✅', color: '#e879f9',
-    topics: ['Quality Management Plan (QMP)','Inspection & Test Plans (ITP)','Hold Points vs Witness Points','Non-Conformance Reports (NCR)','As-Built Drawings','Payment Milestone Compliance'] },
-];
-
-let conceptsState = {
-  tab: 'learn',
-  cat: null,
-  topic: null,
-  loading: false,
-  // quiz
-  qCat: null,
-  qTopic: null,
-  qDiff: 'intermediate',
-  qData: null,
-  qAnswers: {},
-  qSubmitted: false,
-};
-
-// ── INIT ─────────────────────────────────────────────────────────────────
-function initConcepts() {
-  if (document.getElementById('concept-cats').innerHTML) return;
-  renderConceptCats();
-  renderCqCatGrid();
-  checkConceptsAi();
-}
-
-function renderConceptCats() {
-  const el = document.getElementById('concept-cats');
-  if (!el) return;
-  el.innerHTML = CONCEPT_CATEGORIES.map(c => `
-    <button class="concept-cat-btn${conceptsState.cat === c.id ? ' active' : ''}"
-      onclick="selectConceptCat('${c.id}')" style="${conceptsState.cat===c.id?'color:'+c.color:''}">
-      ${c.icon} ${c.name}
-    </button>`).join('');
-}
-
-function selectConceptCat(id) {
-  conceptsState.cat = id;
-  conceptsState.topic = null;
-  renderConceptCats();
-  const cat = CONCEPT_CATEGORIES.find(c => c.id === id);
-  if (!cat) return;
-  const tEl = document.getElementById('concept-topics');
-  tEl.innerHTML = cat.topics.map(t => `
-    <button class="concept-topic-chip" onclick="selectConceptTopic('${id}','${t.replace(/'/g,'\\\'')}')"
-      style="border-color:rgba(${hexToRgb(cat.color)},.25)">${t}</button>`).join('');
-  document.getElementById('concept-content').innerHTML = `
-    <div style="color:var(--text-muted);font-size:13px;padding:20px 0">
-      Select a topic above to load enrichment content, or click <strong style="color:${cat.color}">Generate Overview</strong> for a category summary.
-      <br><br>
-      <button class="filter-btn" onclick="loadConceptContent('${id}','')" style="border-color:${cat.color};color:${cat.color}">
-        ✦ Generate Overview
-      </button>
-    </div>`;
-}
-
-function selectConceptTopic(catId, topic) {
-  conceptsState.topic = topic;
-  const cat = CONCEPT_CATEGORIES.find(c => c.id === catId);
-  const tEl = document.getElementById('concept-topics');
-  tEl.querySelectorAll('.concept-topic-chip').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.trim() === topic);
-    if (btn.textContent.trim() === topic && cat) btn.style.borderColor = cat.color;
-  });
-  loadConceptContent(catId, topic);
-}
-
-async function loadConceptContent(catId, topic) {
-  const el = document.getElementById('concept-content');
-  const cat = CONCEPT_CATEGORIES.find(c => c.id === catId);
-  if (!conceptsAiLive) {
-    el.innerHTML = renderConceptOffline(catId, topic);
-    return;
-  }
-  el.innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-muted)">
-    <div style="font-size:28px;margin-bottom:10px">✦</div>
-    <div>Generating concept enrichment…</div></div>`;
-  try {
-    const params = new URLSearchParams({ action:'enrich', category:catId });
-    if (topic) params.set('topic', topic);
-    const r = await fetch(CONCEPTS_ENDPOINT + '?' + params);
-    if (!r.ok) throw new Error('API error ' + r.status);
-    const d = await r.json();
-    el.innerHTML = renderConceptCard(d, cat);
-  } catch(e) {
-    el.innerHTML = `<div class="concept-card" style="border-color:rgba(239,68,68,.3)">
-      <div style="color:#ef4444">⚠ Could not load concept: ${e.message}</div>
-    </div>`;
-  }
-}
-
-function renderConceptCard(d, cat) {
-  const color = cat ? cat.color : '#34d399';
-  let html = `<div class="concept-card" style="border-color:rgba(${hexToRgb(color)},.25)">
-    <h2 style="color:${color}">${d.title || d.topic}</h2>
-    <span class="cat-badge" style="background:rgba(${hexToRgb(color)},.15);color:${color}">${d.category}</span>`;
-
-  if (d.what_it_is) {
-    html += `<div class="concept-section-label">What It Is</div>
-      <p style="font-size:13px;color:var(--text-secondary);margin:0 0 8px;line-height:1.6">${d.what_it_is}</p>`;
-  }
-  if (d.why_it_matters) {
-    html += `<div class="concept-section-label">Why It Matters</div>
-      <p style="font-size:13px;color:var(--text-secondary);margin:0 0 8px;line-height:1.6">${d.why_it_matters}</p>`;
-  }
-  if (d.key_points?.length) {
-    html += `<div class="concept-section-label">Key Points</div>
-      <ul class="concept-points">${d.key_points.map(p=>`<li>${p}</li>`).join('')}</ul>`;
-  }
-  if (d.sa_context) {
-    html += `<div class="concept-section-label">🇿🇦 South African Context</div>
-      <div class="concept-example">${d.sa_context}</div>`;
-  }
-  if (d.worked_example) {
-    html += `<div class="concept-section-label">Worked Example</div>
-      <div class="concept-example">${d.worked_example}</div>`;
-  }
-  if (d.common_mistakes?.length) {
-    html += `<div class="concept-section-label">Common Mistakes</div>
-      <ul class="concept-mistakes">${d.common_mistakes.map(m=>`<li>${m}</li>`).join('')}</ul>`;
-  }
-  if (d.key_table?.headers?.length) {
-    html += `<div class="concept-section-label">Reference Table</div>
-      <div style="overflow-x:auto"><table class="enrich-table">
-        <thead><tr>${d.key_table.headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
-        <tbody>${d.key_table.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>
-      </table></div>`;
-  }
-  if (d.quick_qa?.length) {
-    html += `<div class="concept-section-label">Quick Q&A</div>
-      <div class="concept-qa-grid">${d.quick_qa.map(q=>`
-        <div class="concept-qa-item">
-          <div class="concept-qa-q">Q: ${q.q}</div>
-          <div class="concept-qa-a">A: ${q.a}</div>
-        </div>`).join('')}</div>`;
-  }
-  html += `<div style="margin-top:16px;display:flex;gap:8px">
-    <button class="filter-btn" onclick="loadConceptContent('${d.category ? CONCEPT_CATEGORIES.find(c=>c.name===d.category)?.id||conceptsState.cat : conceptsState.cat}','${(d.topic||'').replace(/'/g,"\\'")}')">🔄 Regenerate</button>
-    <button class="filter-btn" onclick="preloadCqFromLearn('${conceptsState.cat||''}','${(d.topic||'').replace(/'/g,"\\'")}')">🎯 Quiz Me On This →</button>
-  </div>`;
-  html += `</div>`;
-  return html;
-}
-
-function renderConceptOffline(catId, topic) {
-  return `<div class="concept-card">
-    <h2>${topic || (CONCEPT_CATEGORIES.find(c=>c.id===catId)?.name||'Concept')}</h2>
-    <div class="concept-section-label">AI Not Available</div>
-    <p style="font-size:13px;color:var(--text-secondary)">
-      Connect to the live API (deploy to Vercel with <code>ANTHROPIC_API_KEY</code>) to generate enrichment content.
-      In the meantime, refer to the <strong>AI_CONCEPTS_TUTOR_INSTRUCTIONS.md</strong> file for comprehensive tendering knowledge.
-    </p>
-    <button class="quiz-start-btn" style="margin-top:16px" onclick="setConceptsTab('cquiz')">Try Concept Quiz →</button>
-  </div>`;
-}
-
-// ── MODE TABS ─────────────────────────────────────────────────────────────
-function setConceptsTab(tab) {
-  conceptsState.tab = tab;
-  document.getElementById('ctab-learn').classList.toggle('active', tab==='learn');
-  document.getElementById('ctab-quiz').classList.toggle('active', tab==='cquiz');
-  document.getElementById('concepts-learn-mode').style.display = tab==='learn' ? '' : 'none';
-  document.getElementById('concepts-quiz-mode').style.display = tab==='cquiz' ? '' : 'none';
-}
-
-// ── CONCEPT QUIZ ──────────────────────────────────────────────────────────
-function renderCqCatGrid() {
-  const el = document.getElementById('cq-cat-grid');
-  if (!el) return;
-  el.innerHTML = CONCEPT_CATEGORIES.map(c => `
-    <div class="spec-source-card${conceptsState.qCat===c.id?' selected':''}"
-      onclick="selectCqCat('${c.id}')"
-      style="${conceptsState.qCat===c.id?'border-color:'+c.color+';background:rgba('+hexToRgb(c.color)+',.08)':''}">
-      <div style="font-size:18px;margin-bottom:4px">${c.icon}</div>
-      <div style="font-weight:700;font-size:12px;color:${c.color}">${c.name}</div>
-    </div>`).join('');
-}
-
-function selectCqCat(id) {
-  conceptsState.qCat = id;
-  conceptsState.qTopic = null;
-  renderCqCatGrid();
-  const cat = CONCEPT_CATEGORIES.find(c=>c.id===id);
-  const tRow = document.getElementById('cq-topic-row');
-  const tEl = document.getElementById('cq-topics');
-  if (cat && cat.topics.length) {
-    tRow.style.display = '';
-    tEl.innerHTML = cat.topics.map(t => `
-      <button class="concept-topic-chip" onclick="selectCqTopic('${t.replace(/'/g,'\\\'')}')"
-        style="border-color:rgba(${hexToRgb(cat.color)},.25)">${t}</button>`).join('');
-  } else { tRow.style.display = 'none'; }
-  document.getElementById('cq-start-btn').disabled = false;
-}
-
-function selectCqTopic(topic) {
-  conceptsState.qTopic = topic;
-  document.querySelectorAll('#cq-topics .concept-topic-chip').forEach(b => {
-    b.classList.toggle('active', b.textContent.trim()===topic);
-  });
-}
-
-function setCqDiff(d) {
-  conceptsState.qDiff = d;
-  ['foundation','intermediate','expert'].forEach(x => {
-    document.getElementById('cqd-'+x).classList.toggle('active', x===d);
-  });
-}
-
-async function startConceptQuiz() {
-  if (!conceptsState.qCat) return;
-  const setup = document.getElementById('cq-setup');
-  const active = document.getElementById('cq-active');
-  const results = document.getElementById('cq-results');
-  setup.style.display = 'none';
-  results.style.display = 'none';
-  active.style.display = '';
-  document.getElementById('cq-questions').innerHTML =
-    '<div style="padding:40px;text-align:center;color:var(--text-muted)"><div style="font-size:28px;margin-bottom:10px">✦</div><div>Generating questions…</div></div>';
-
-  if (!conceptsAiLive) {
-    document.getElementById('cq-questions').innerHTML =
-      '<div style="padding:20px;color:#ef4444">AI not available. Deploy to Vercel with ANTHROPIC_API_KEY to use quiz mode.</div>';
-    return;
-  }
-  try {
-    const params = new URLSearchParams({
-      action: 'quiz', category: conceptsState.qCat,
-      difficulty: conceptsState.qDiff, count: '5'
-    });
-    if (conceptsState.qTopic) params.set('topic', conceptsState.qTopic);
-    const r = await fetch(CONCEPTS_ENDPOINT + '?' + params);
-    if (!r.ok) throw new Error('API error ' + r.status);
-    conceptsState.qData = await r.json();
-    conceptsState.qAnswers = {};
-    conceptsState.qSubmitted = false;
-    renderCqQuestions();
-  } catch(e) {
-    document.getElementById('cq-questions').innerHTML =
-      `<div style="color:#ef4444;padding:20px">Error: ${e.message}</div>`;
-  }
-}
-
-function renderCqQuestions() {
-  const qs = conceptsState.qData?.questions || [];
-  document.getElementById('cq-q-counter').textContent = `${qs.length} Questions`;
-  document.getElementById('cq-progress-bar').style.width = '0%';
-  document.getElementById('cq-questions').innerHTML = qs.map((q,i) => {
-    const isShort = q.type === 'short_answer';
-    return `<div class="quiz-q-card" id="cqcard-${i}" style="margin-bottom:14px">
-      <div class="quiz-q-num">Question ${i+1} of ${qs.length}</div>
-      <div class="quiz-q-text">${q.question}</div>
-      ${isShort
-        ? `<textarea id="cq-sa-${i}" class="script-input" rows="2" placeholder="Type your answer…"
-            oninput="recordCqSA(${i},this.value)" style="width:100%;margin-top:8px;font-size:13px"></textarea>`
-        : `<div class="quiz-options">${(q.options||[]).map((opt,j) => {
-            const letter = String.fromCharCode(65+j);
-            return `<button class="quiz-opt" id="cqopt-${i}-${letter}" onclick="selectCqOption(${i},'${letter}')">${opt}</button>`;
-          }).join('')}</div>`
-      }
-    </div>`;
-  }).join('');
-}
-
-function selectCqOption(qIdx, letter) {
-  conceptsState.qAnswers[qIdx] = letter;
-  const qs = conceptsState.qData?.questions || [];
-  const q = qs[qIdx];
-  if (!q) return;
-  (q.options||[]).forEach((_,j) => {
-    const l = String.fromCharCode(65+j);
-    const btn = document.getElementById(`cqopt-${qIdx}-${l}`);
-    if (btn) { btn.classList.remove('selected'); if (l===letter) btn.classList.add('selected'); }
-  });
-  const answered = Object.keys(conceptsState.qAnswers).length;
-  document.getElementById('cq-progress-bar').style.width = (answered/qs.length*100)+'%';
-}
-
-function recordCqSA(idx, val) {
-  conceptsState.qAnswers[idx] = val.trim();
-}
-
-function submitConceptQuiz() {
-  const qs = conceptsState.qData?.questions || [];
-  conceptsState.qSubmitted = true;
-  let score = 0;
-  qs.forEach((q,i) => {
-    const userAns = (conceptsState.qAnswers[i]||'').trim().toUpperCase();
-    const correct = (q.correct||'').trim().toUpperCase();
-    if (q.type !== 'short_answer' && userAns === correct.charAt(0)) score++;
-    // Highlight options
-    if (q.type !== 'short_answer') {
-      (q.options||[]).forEach((_,j) => {
-        const l = String.fromCharCode(65+j);
-        const btn = document.getElementById(`cqopt-${i}-${l}`);
-        if (!btn) return;
-        btn.disabled = true;
-        if (l === correct.charAt(0)) btn.classList.add('correct');
-        else if (l === userAns) btn.classList.add('incorrect');
-      });
-    }
-    // Add explanation
-    const card = document.getElementById(`cqcard-${i}`);
-    if (card && q.explanation) {
-      const ex = document.createElement('div');
-      ex.className = 'quiz-explanation';
-      ex.innerHTML = `<strong>${q.type==='short_answer'?'Model Answer':'Explanation'}:</strong> ${q.explanation}
-        ${q.ref ? `<div style="margin-top:4px;font-size:11px;color:var(--text-muted)">Ref: ${q.ref}</div>` : ''}`;
-      card.appendChild(ex);
-    }
-  });
-  const nonSA = qs.filter(q=>q.type!=='short_answer').length;
-  document.getElementById('cq-active').style.display = 'none';
-  document.getElementById('cq-results').style.display = '';
-  const pct = nonSA > 0 ? Math.round(score/nonSA*100) : 0;
-  document.getElementById('cq-score-display').innerHTML = `
-    <div style="font-size:48px;font-weight:800;color:${pct>=70?'#34d399':pct>=50?'#f59e0b':'#ef4444'}">${score}/${nonSA}</div>
-    <div style="font-size:16px;color:var(--text-secondary);margin-top:4px">${pct}% on auto-graded questions</div>
-    <div style="font-size:13px;color:var(--text-muted);margin-top:4px">${pct>=70?'Great work! ✦':pct>=50?'Good effort — review explanations below.':'Keep studying — check the explanations.'}</div>`;
-  // Show all cards in results
-  const reviewEl = document.getElementById('cq-review');
-  const activeCards = document.getElementById('cq-questions').innerHTML;
-  reviewEl.innerHTML = `<div style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:10px">Review</div>` + activeCards;
-}
-
-function retryConceptQuiz() {
-  conceptsState.qAnswers = {};
-  conceptsState.qSubmitted = false;
-  document.getElementById('cq-results').style.display = 'none';
-  document.getElementById('cq-active').style.display = '';
-  renderCqQuestions();
-}
-
-function resetConceptQuiz() {
-  conceptsState.qData = null;
-  conceptsState.qAnswers = {};
-  conceptsState.qTopic = null;
-  document.getElementById('cq-results').style.display = 'none';
-  document.getElementById('cq-active').style.display = 'none';
-  document.getElementById('cq-setup').style.display = '';
-}
-
-function preloadCqFromLearn(catId, topic) {
-  setConceptsTab('cquiz');
-  if (catId) { selectCqCat(catId); }
-  if (topic) { setTimeout(()=>selectCqTopic(topic), 100); }
-}
-
-// ── AI Status Check ──────────────────────────────────────────────────────
-async function checkConceptsAi() {
-  if (conceptsAiLive) return;
-  try {
-    const r = await fetch(CONCEPTS_ENDPOINT + '?action=ping', { method: 'GET' });
-    if (r.ok) {
-      conceptsAiLive = true;
-      const badge = document.getElementById('concepts-ai-badge');
-      if (badge) badge.style.display = 'inline-block';
-    }
-  } catch {}
-}
-
-// ── Utility: hex colour → "r,g,b" ──────────────────────────────────────
-function hexToRgb(hex) {
-  const r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return r ? `${parseInt(r[1],16)},${parseInt(r[2],16)},${parseInt(r[3],16)}` : '255,255,255';
-}
 </script>
+
 </body>
 </html>

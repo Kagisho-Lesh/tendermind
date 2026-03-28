@@ -2,9 +2,10 @@
   "version": 2,
   "name": "tendermind",
   "functions": {
-    "api/game.js":  { "maxDuration": 30 },
-    "api/data.js":  { "maxDuration": 10 },
-    "api/airtable.js": { "maxDuration": 30 }
+    "api/game.js":    { "maxDuration": 30 },
+    "api/data.js":    { "maxDuration": 10 },
+    "api/tutor.js":   { "maxDuration": 30 },
+    "api/airtable.js":{ "maxDuration": 30 }
   },
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1.js" },
@@ -14,8 +15,9 @@
     { "src": "/(.*)",      "dest": "/front_end_design/index.html" }
   ],
   "env": {
-    "MODEL":      "claude-haiku-4-5-20251001",
-    "MAX_TOKENS": "2048"
+    "MODEL":       "claude-sonnet-4-6",
+    "TUTOR_MODEL": "claude-sonnet-4-6",
+    "MAX_TOKENS":  "2048"
   },
   "headers": [
     {
