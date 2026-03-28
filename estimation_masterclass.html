@@ -4683,8 +4683,8 @@ document.addEventListener('DOMContentLoaded', () => {
 <section id="sec-tutor" class="section">
 <style>
 /* ── Tutor layout ── */
-.tutor-wrap{display:flex;gap:16px;flex:1;min-height:0}
-.tutor-sidebar{width:240px;flex-shrink:0;display:flex;flex-direction:column;gap:12px}
+.tutor-wrap{display:flex;gap:16px;align-items:flex-start}
+.tutor-sidebar{width:240px;flex-shrink:0;display:flex;flex-direction:column;gap:12px;position:sticky;top:0}
 .tutor-main{flex:1;display:flex;flex-direction:column;gap:14px;min-width:0}
 .tutor-card{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:10px;padding:16px}
 .tutor-card-title{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent-purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;display:flex;align-items:center;gap:6px}
@@ -4815,9 +4815,9 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 
     <!-- History -->
-    <div class="tutor-card" style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+    <div class="tutor-card">
       <div class="tutor-card-title">🕐 Session History</div>
-      <div id="tutor-history" style="overflow-y:auto;flex:1;font-size:11px">
+      <div id="tutor-history" style="overflow-y:auto;max-height:340px;font-size:11px">
         <div style="color:var(--text-muted);font-size:11px">No questions yet</div>
       </div>
     </div>
