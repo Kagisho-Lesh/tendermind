@@ -31,7 +31,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg-base);color:var(--text-p
 /* MAIN */
 #main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 .section{display:none;flex:1;overflow-y:auto;padding:24px}
-.section.active{display:flex;flex-direction:column}
+.section.active{display:block}
 /* STATUS BAR */
 #statusbar{background:var(--bg-surface);border-top:1px solid var(--bg-border);padding:4px 16px;display:flex;justify-content:space-between;align-items:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted)}
 #statusbar .status-active{color:var(--accent-amber)}
@@ -124,13 +124,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg-base);color:var(--text-p
 .tab:hover{color:var(--text-primary)}
 .tab.active{color:var(--accent-amber);border-bottom-color:var(--accent-amber)}
 /* CALC PAD */
-.calc-layout{display:grid;grid-template-columns:240px 1fr;gap:16px;flex:1;min-height:0}
-.calc-palette{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:8px;display:flex;flex-direction:column;overflow:hidden}
+.calc-layout{display:grid;grid-template-columns:240px 1fr;gap:16px}
+.calc-palette{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:8px;display:flex;flex-direction:column}
 .calc-palette-header{padding:10px 12px;border-bottom:1px solid var(--bg-border);font-size:11px;color:var(--accent-amber);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em}
 .calc-palette-filter{padding:8px 10px;border-bottom:1px solid var(--bg-border);display:flex;gap:4px;flex-wrap:wrap}
 .palette-filter-btn{padding:3px 8px;font-size:10px;border-radius:10px;border:1px solid var(--bg-border);background:none;color:var(--text-muted);cursor:pointer;transition:all .15s}
 .palette-filter-btn.active{background:var(--accent-amber);color:#000;border-color:var(--accent-amber)}
-.calc-palette-list{flex:1;overflow-y:auto;padding:6px}
+.calc-palette-list{min-height:300px;max-height:62vh;overflow-y:auto;padding:6px}
 .palette-item{background:var(--bg-elevated);border:1px solid var(--bg-border);border-radius:6px;padding:8px 10px;margin-bottom:4px;cursor:grab;transition:all .15s;user-select:none}
 .palette-item:hover{border-color:var(--accent-amber)}
 .palette-item:active{cursor:grabbing}
@@ -138,7 +138,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg-base);color:var(--text-p
 .palette-item-name{font-size:11px;color:var(--text-primary);font-weight:500;margin:2px 0}
 .palette-item-rate{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent-amber)}
 /* WORKSPACE */
-.calc-workspace{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:8px;display:flex;flex-direction:column;overflow:hidden}
+.calc-workspace{background:var(--bg-surface);border:1px solid var(--bg-border);border-radius:8px;display:flex;flex-direction:column}
 .workspace-toolbar{padding:10px 14px;border-bottom:1px solid var(--bg-border);display:flex;gap:8px;align-items:center}
 .workspace-toolbar .boq-label{flex:1}
 .boq-label-input{background:var(--bg-elevated);border:1px solid var(--bg-border);border-radius:6px;padding:5px 10px;color:var(--text-primary);font-size:12px;width:100%;outline:none}
@@ -153,7 +153,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg-base);color:var(--text-p
 .drop-zone{border:2px dashed var(--bg-border);border-radius:8px;padding:30px;text-align:center;color:var(--text-muted);font-size:13px;margin:12px;transition:all .15s}
 .drop-zone.dragover{border-color:var(--accent-amber);color:var(--accent-amber);background:rgba(245,158,11,.05)}
 .drop-zone-hint{font-size:24px;margin-bottom:8px}
-.calc-table-wrap{flex:1;overflow-y:auto;padding:0 12px}
+.calc-table-wrap{min-height:300px;max-height:62vh;overflow-y:auto;padding:0 12px}
 .calc-table{width:100%;border-collapse:collapse;font-size:12px}
 .calc-table th{background:var(--bg-elevated);color:var(--text-muted);font-size:10px;text-transform:uppercase;letter-spacing:.06em;padding:6px 8px;text-align:left;position:sticky;top:0}
 .calc-table td{padding:6px 8px;border-bottom:1px solid var(--bg-border)}
@@ -183,11 +183,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg-base);color:var(--text-p
 .slider-val{font-family:'DM Mono',monospace;color:var(--accent-amber);font-weight:500}
 input[type=range]{width:100%;accent-color:var(--accent-amber);height:4px;cursor:pointer}
 /* VAR SCRIPT PAD */
-.script-pad{background:var(--bg-base);border:1px solid var(--bg-border);border-radius:8px;font-family:'DM Mono',monospace;font-size:13px;overflow:hidden;display:flex;flex-direction:column;flex:1}
+.script-pad{background:var(--bg-base);border:1px solid var(--bg-border);border-radius:8px;font-family:'DM Mono',monospace;font-size:13px;display:flex;flex-direction:column;min-height:520px}
 .script-toolbar{background:var(--bg-elevated);border-bottom:1px solid var(--bg-border);padding:8px 14px;display:flex;gap:8px;align-items:center}
 .script-toolbar-title{font-size:11px;color:var(--accent-teal);text-transform:uppercase;letter-spacing:.08em;flex:1}
-.script-area{display:flex;flex:1;min-height:0}
-.script-lines{flex:1;overflow-y:auto;padding:0}
+.script-area{display:flex;flex:1;min-height:460px}
+.script-lines{flex:1;overflow-y:auto;padding:0;min-height:420px}
 .script-line{display:grid;grid-template-columns:36px 1fr 200px;min-height:32px;border-bottom:1px solid rgba(42,47,69,.5)}
 .script-line:hover{background:rgba(31,36,54,.5)}
 .script-line.comment-line .line-expr{color:var(--text-muted);font-style:italic}
@@ -475,8 +475,8 @@ input[type=range]{width:100%;accent-color:var(--accent-amber);height:4px;cursor:
     <div class="tab active" onclick="switchCalcTab('boq',this)">📋 BOQ Builder</div>
     <div class="tab" onclick="switchCalcTab('prodcalc',this)">⚙️ Production Calculator</div>
   </div>
-  <div id="boq-tab" style="flex:1;display:flex;flex-direction:column;min-height:0">
-    <div class="calc-layout" style="flex:1;min-height:0">
+  <div id="boq-tab" style="display:flex;flex-direction:column">
+    <div class="calc-layout">
       <div class="calc-palette">
         <div class="calc-palette-header">Resource Palette — Drag to workspace →</div>
         <div class="calc-palette-filter">
@@ -522,8 +522,8 @@ input[type=range]{width:100%;accent-color:var(--accent-amber);height:4px;cursor:
       </div>
     </div>
   </div>
-  <div id="prodcalc-tab" style="flex:1;display:none;flex-direction:column;min-height:0">
-    <div class="prod-calc-layout" style="flex:1">
+  <div id="prodcalc-tab" style="display:none;flex-direction:column">
+    <div class="prod-calc-layout">
       <div class="prod-calc-inputs">
         <div class="calc-section-title">Step 1 — Select Operation</div>
         <div class="form-group">
@@ -610,7 +610,7 @@ input[type=range]{width:100%;accent-color:var(--accent-amber);height:4px;cursor:
   <div class="notice" style="flex-shrink:0">
     💡 <strong>Syntax:</strong> &nbsp;<code>[Variable] = expression</code> &nbsp;·&nbsp; Reference with <code>[VarName]</code> &nbsp;·&nbsp; Comments: <code>// text</code> &nbsp;·&nbsp; Headers: <code>## Section</code> &nbsp;·&nbsp; Math: <code>+ - * / ( )</code> &nbsp;·&nbsp; All variables shown in live register →
   </div>
-  <div class="script-pad" style="flex:1;min-height:0">
+  <div class="script-pad">
     <div class="script-toolbar">
       <span class="script-toolbar-title">📝 Calculation Script — [Variables] Auto-Cascade</span>
       <button class="btn btn-ghost" style="font-size:11px;padding:3px 10px" onclick="addScriptLine()">+ Line</button>
