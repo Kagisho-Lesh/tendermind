@@ -9,10 +9,9 @@
   },
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1.js" },
-    { "src": "/dashboard", "dest": "/front_end_design/n4_dashboard.html" },
     { "src": "/sbde",      "dest": "/front_end_design/index.html" },
-    { "src": "/game",      "dest": "/estimation_masterclass.html" },
-    { "src": "/(.*)",      "dest": "/front_end_design/index.html" }
+    { "src": "/dashboard", "dest": "/front_end_design/n4_dashboard.html" },
+    { "src": "/(.*)",      "dest": "/estimation_masterclass.html" }
   ],
   "env": {
     "MODEL":       "claude-sonnet-4-6",
